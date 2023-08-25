@@ -1,0 +1,9482 @@
+<!DOCTYPE HTML>
+
+<html>
+    
+  <head>
+      
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="The Godfather">
+    <title>File Server</title>
+    
+   <link rel="icon" type="image/x-icon" href={{%ICON%}} >
+
+  
+  <style>
+  
+  * {
+      box-sizing: border-box;
+  }
+  
+  body {
+    margin: 0;
+   
+  }
+  
+  #empty-div {
+      
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 11;
+    display: none;
+  }
+  
+  #head {
+     display: flex;
+     flex-direction: column;
+     position: sticky;
+     top: 0;
+     background: white;
+     z-index: 5;
+    
+  }
+  
+  #head-text {
+      text-align-last: center;
+      margin-top: 15px;
+      text-decoration: underline;
+      font-size: 1.3rem;
+    font-family: "Times New Roman";
+   font-variant: small-caps;
+     
+  }
+  
+  #links {
+      
+  font-size: 1.25rem;
+  background: black;
+  color: white;
+  padding: 7px;
+  white-space: nowrap;
+  overflow: auto;
+ 
+  }
+  
+  #links a {
+      
+      color: white;
+      text-decoration: none;
+  }
+    
+   #links a:visited {
+  
+  text-decoration: none;
+ color: white;
+   }
+   
+   #links a:hover {
+  
+  text-decoration: underline;
+  color: white;
+  
+   }
+   
+  #links a:active {
+  
+  text-decoration: none;
+  color: white;
+   }
+
+  
+    #filesContainer {
+   
+    display: flex;
+    flex-direction: column;
+  } 
+  
+  .img {
+  
+    width: 50px;
+    height: 55px;
+    margin-left: 10px;
+  }
+  
+  .other-img {
+      
+       width: 38px;
+    height: 38px;
+    margin-left: 10px;
+  }
+  .files {
+      display: flex;
+    align-items: center;
+   
+   margin-bottom: 17px;
+  }
+
+.other-files {
+    
+     margin-bottom: 30px;
+}
+
+
+  
+  .files a  {
+    display: flex;
+   
+    align-items: center;
+    margin-bottom: 0px;
+    text-decoration: none;
+color: black;
+  }
+  
+  .file-name {
+    font-size: 1.1rem;
+   margin-left: 10px;
+   word-break: break-word;
+ 
+
+  
+  }
+  
+
+   
+   .files a:visited {
+  
+  text-decoration: none;
+ color: black;
+   }
+   
+   .files a:hover {
+  
+  text-decoration: underline;
+  color: black;
+  
+   }
+   
+  .files a:active {
+  
+  text-decoration: none;
+  color: black;
+   }
+   
+   .sign {
+       vertical-align: 5px;
+      font-size: 1.2rem;
+   }
+   
+   .sign:hover  {
+    text-decoration: none;
+   }
+   
+  .files-box {
+   appearance: none;
+   background: white;
+   border-radius: 50%;
+    width: 1.3rem;
+    height: 1.3rem;
+    margin-left: auto;
+    margin-right: 10px;
+    border: 2px solid black;
+    outline-offset: 2px;
+   
+  }
+  
+  #menu-box {
+      display: none;
+   position: fixed;
+   bottom: 20px;
+   z-index: 10;
+   right: 35px;
+   background: gold;
+   padding: 10px;
+ border-radius: 50%;
+ 
+ justify-content: center;
+ align-items: center;
+ display: {{%MENUBOX%}};
+  }
+  
+  #config-box {
+  display: none;
+  position: fixed;
+ z-index: 10;
+   right: 35px;
+   background: gold;
+   padding: 10px;
+ border-radius: 50%;
+ justify-content: center;
+ align-items: center;
+ animation-name: showConfig;
+ animation-duration: 0.3s;
+ animation-iteration-count: ease-in-out;
+ animation-fill-mode: both;
+  }
+  
+  #upload-box {
+   display: none;
+  position: fixed;
+  bottom: 140px;
+  z-index: 10;
+   right: 35px;
+   background: gold;
+   padding: 10px;
+ border-radius: 50%;
+ justify-content: center;
+ align-items: center;
+animation-name: showUpload;
+ animation-duration: 0.3s;
+ animation-iteration-count: ease-in-out;
+ animation-fill-mode: both;
+  }
+  
+  #client-upload-box {
+   display: none;
+  position: fixed;
+  bottom: 30px;
+  z-index: 10;
+   right: 35px;
+   background: gold;
+   padding: 10px;
+ border-radius: 50%;
+ justify-content: center;
+ align-items: center;
+ display: {{%CLIENTBOX%}};
+  }
+  #menu-icon, #config-icon, #upload-icon, #client-upload-icon {
+   
+   width: 30px;
+   height: 30px;
+ 
+  }
+ 
+ #menu-box:hover, #config-box:hover, #upload-box:hover, #client-upload-box:hover {
+     
+  border: 2px solid black;
+ }
+ 
+ 
+ #config-url {
+  color: black;
+  text-decoration: none;
+ }
+ 
+ #config-url:visited {
+  color: black;
+  text-decoration: none;
+ }
+ 
+ #config-url:hover {
+  color: black;
+  text-decoration: none;
+ }
+ 
+ #config-url:active {
+  color: black;
+  text-decoration: none;
+ }
+ 
+ 
+ .confirm-message-box {
+     top: 0;
+    left: 0;
+
+   position: fixed;
+   z-index: 30;
+  background: transparent;
+  display: none;
+  align-items: flex-start;
+  justify-content: center;
+width: 100%;
+height: 100%;
+ }
+ 
+ .confirm-box {
+  width: 300px;
+  margin-top: 20px;
+  background: gold;
+  color: black;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 1px 1px 10px 1px black;
+  display: flex;
+  flex-direction: column;
+   
+ }
+ 
+ .confirm-head-text {
+     
+    font-size: 1.3rem;
+   font-family: "Times New Roman";
+   font-weight: bold;
+   font-variant: small-caps;
+   display: block;
+   margin-bottom: 15px;
+   font-style: oblique;
+   text-decoration: underline;
+ }
+ 
+ 
+ .confirm-text {
+  
+  font-size: 1rem;
+  font-family: "Times New Roman";
+  font-style: italic;
+  display: block;
+ }
+ 
+ .btn-box {
+     
+ 
+ margin-left: auto;
+ display: block;
+ margin-top: 15px;
+ margin-bottom: 10px;
+ }
+ 
+ .yes-btn {
+     
+   padding: 15px;
+   padding-bottom: 7px;
+   padding-top: 7px;
+   font-size: 1.2rem;
+   font-family: "Times New Roman";
+   font-weight: bold;
+   background: white;
+   color: black;
+   outline: none;
+   border: 2px solid black;
+   border-radius: 5px;
+   margin-right: 10px;
+ }
+ 
+ .no-btn {
+     
+   padding: 15px;
+   padding-bottom: 7px;
+   padding-top: 7px;
+   font-size: 1.2rem;
+   font-family: "Times New Roman";
+   font-weight: bold;
+   background: black;
+   color: white;
+   outline: none;
+   border: 2px solid black;
+   border-radius: 5px;
+ }
+ 
+ .yes-btn:hover {
+     
+ color: white;
+ background: black;
+ box-shadow: 2px 2px 10px 2px black;
+ }
+ 
+ .no-btn:hover {
+     
+ color: black;
+ background: white;
+ box-shadow: 2px 2px 10px 2px black; 
+ }
+ 
+ #notification-sound {
+     
+  display: none;
+ }
+ 
+ .check-item {
+  
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  border: 2px solid gold;
+  border-radius: 50%;
+  padding: 2px;
+ 
+ }
+ .tick-svg {
+     
+
+  width: 15px;
+  height: 15px;
+  font-weight: 900;
+ }
+ 
+ .items-no {
+     
+  color: grey;
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-top: 7px;
+ }
+ 
+ 
+ #upload-div {
+     
+  position: fixed;
+  z-index: 15;
+  background: rgba(0,0,0,0.7);
+  display: none;
+ 
+  justify-content: center;
+  align-items: flex-start
+overflow: auto;
+ animation-name: showOperationDiv;
+ animation-duration: 0.3s;
+ animation-iteration-count: ease-in-out;
+ width: 100%;
+ height: 100%;
+ }
+ 
+ #upload-content {
+   position: relative;
+  margin-top: 20px;
+  margin-bottom: 20px;
+ background: gold;
+ padding: 10px;
+ display: flex;
+ width: auto;
+ flex-direction: column;
+ border-radius: 10px;
+ overflow: auto;
+
+ }
+ 
+ #upload-head {
+ margin-top: 10px; 
+ font-weight: bold;
+ font-family: "Times New Roman";
+ color: black;
+ font-size: 1.3rem;
+ text-decoration: underline;
+ font-variant: small-caps;
+ text-align: left;
+ padding-left: 10px;
+ }
+ 
+ input[id="folder-name"] {
+     
+   outline: none;
+   border: 2px groove black;
+   border-radius: 5px;
+   width: auto;
+   font-weight: bold;
+   padding: 5px;
+   font-family: "Times New Roman";
+   font-size: 1.1rem;
+ }
+ 
+ #folder-btn {
+  
+ color: white;
+ background: black;
+ padding: 5px;
+ font-size: 0.9rem;
+ font-weight: bold;
+ font-family: "Times New Roman";
+  border-radius: 5px;
+  text-transform: capitalize;
+ }
+ 
+ #or {
+     
+  text-align: center;
+  font-variant: small-caps;
+  font-weight: bold;
+  font-size: 1.2rem;
+  font-family: "Times New Roman";
+ }
+ 
+ #real-file-btn {
+     
+  display: none;
+ }
+ 
+ #fake-file-btn {
+     
+   color: white;
+ background: black;
+ padding: 5px;
+ font-size: 0.9rem;
+ font-weight: bold;
+ font-family: "Times New Roman";
+  border-radius: 5px;
+  text-transform: capitalize;
+ }
+ 
+ #uploaded-files-div {
+ 
+ display: flex;
+ align-items: center;
+ flex-direction: column;
+ 
+ }
+ 
+ .uploaded-files {
+  margin-right: auto;
+  word-wrap: break-word;
+  word-break: break-all;
+  font-family: "Times New Roman";
+ }
+ 
+ .upload-text {
+     
+  font-size: 1.1rem;
+  font-variant: small-caps;
+  font-weight: bold;
+  
+ }
+ 
+ 
+ #files-div {
+ display: flex;
+ margin-top: 25px;
+ align-items: center;
+ }
+ 
+ #files-no {
+     
+  margin-left: auto;
+  font-size: 1.1rem;
+  font-weight: bold;
+  font-style: italic;
+  font-family: "Times New Roman";
+ }
+ 
+ .file-size {
+     
+  font-variant: small-caps;
+  font-size: 0.9rem;
+ }
+ 
+ 
+ #cancel-upload-svg {
+     
+   width: 30px;
+   height: 30px;
+   position: fixed;
+   transition: all 0.3s;
+    z-index: 20;
+ }
+ 
+ 
+  #cancel-upload-svg:hover {
+      
+   background: black; 
+   color: gold;
+   padding: 5px;
+   transform: scale(1.25);
+   border-radius: 50%;
+   
+  }
+
+ #upload-btn {
+   position: fixed;    
+   color: white;
+ background: black;
+ padding: 5px;
+ font-size: 0.9rem;
+ font-weight: bold;
+ font-family: "Times New Roman";
+  border-radius: 5px;
+  text-transform: capitalize;
+   z-index: 18;
+   bottom: 35px;
+ pointer-events: none;
+ opacity: 0.2;
+ }
+ 
+ #upload-btn:hover,  #cancel-upload:hover, #fake-file-btn:hover, #folder-btn:hover {
+     
+     opacity: 0.85;
+ }
+ 
+ #operation-password-div {
+     
+ position: fixed;
+ background: rgba(0,0,0, 0.7);
+ display: none;
+ z-index: 20;
+ width: 100%;
+ height: 100%;
+ align-items: center;
+ justify-content: center;
+ overflow: auto;
+ }
+ 
+ #operation-password-box {
+     
+   background: gold;
+   display: flex;
+   flex-direction: column;
+   border-radius: 10px;
+   padding: 10px;
+   overflow: auto;
+   align-self: flex-start;
+   margin-bottom: 50px;
+ }
+ 
+ #operation-head {
+     
+ color: black;
+ font-variant: small-caps;
+ font-family: "Times New Roman";
+ font-weight: bold;
+  text-decoration: underline;
+  font-size: 1.2rem;
+  margin-top: 10px;
+ }
+ 
+ #operation-text {
+     
+ 
+ font-style: italic;
+ font-size: 0.9rem;
+  color: black;
+ font-weight: 300;
+ 
+ }
+ 
+ #operation-password {
+     
+  outline: none;
+  border: none;
+  color: black;
+  font-family: "Times New Roman";
+  font-size: 1.1rem;
+  border-bottom: 2px solid black;
+  background: transparent;
+ }
+
+ ::-webkit-input-placeholder {
+     
+     color: gray;
+   font-weight: bold;
+   font-variant: small-caps;
+   font-family: "Times New Roman";
+   padding: 5px;
+ }
+ 
+ :-ms-input-placeholder {
+     
+     color: gray;
+   font-weight: bold;
+   font-variant: small-caps;
+   font-family: "Times New Roman";
+   padding: 5px;
+ }
+ 
+ ::placeholder {
+   color: gray;
+   font-weight: bold;
+   font-variant: small-caps;
+   font-family: "Times New Roman";
+   padding: 5px;
+ }
+ 
+ #operation-btn-div {
+     
+   display: flex;
+   justify-content: flex-end;
+   margin-bottom: 5px;
+ }
+ 
+ #operation-btn {
+         
+   color: white;
+ background: black;
+ padding: 5px;
+ font-size: 0.9rem;
+ font-weight: bold;
+ font-family: "Times New Roman";
+  border-radius: 5px;
+  text-transform: capitalize;
+  
+ }
+ 
+ #operation-cancel-btn {
+     
+     color: white;
+ background: black;
+ padding: 5px;
+ font-size: 0.9rem;
+ font-weight: bold;
+ font-family: "Times New Roman";
+  border-radius: 5px;
+  text-transform: capitalize;
+margin-right: 15px;
+ }
+ 
+ #operation-btn:hover, #operation-cancel-btn {
+     
+     opacity: 0.85;
+ }
+ 
+ #upload-form {
+     
+     display: none;
+ }
+ 
+ #select-div {
+     
+   position: fixed;
+   top: 0;
+   left: 0;
+   z-index: 12;
+   display: none;
+   background: white;
+   justify-content: space-around;
+   align-items: center;
+   height: auto;
+   box-shadow: 1px 1px 5px 1px black;
+   border-radius: 10px;
+   width: 100%;
+   border-bottom-left-radius: 0px;
+   border-bottom-right-radius: 0px;
+   padding: 12px;
+ }
+ 
+ #cancel-select-svg {
+   
+ width: 30px;
+  height: 30px;
+ }
+ 
+ 
+ #select-text {
+      margin-right: 0px;
+  font-family: "Times New Roman";
+  font-weight: bold;
+  font-size: 1.3rem;
+  font-variant: small-caps;
+ }
+ #select-all-svg {
+     
+  width: 25px;
+  height: 25px;
+  
+  }
+ 
+ .check-all {
+     
+     
+    background: gold;
+  padding: 5px;
+  border-radius: 5px;
+  transform: scale(1.35);
+
+ }
+ 
+ #cancel-select-svg:hover {
+     
+  background: gold;
+  padding: 5px;
+  border-radius: 50%;
+  transform: scale(1.2);
+ }
+ 
+  #file-ops-div {
+     
+   position: fixed;
+   bottom: 0;
+   left: 0;
+   z-index: 12;
+   display: none;
+   background: white;
+   justify-content: space-around;
+   align-items: center;
+   align-content: center;
+   flex-wrap: nowrap;
+   height: auto;
+   box-shadow: 3px 3px 50px 3px black;
+   border-radius: 10px;
+   width: 100%;
+   border-top-left-radius: 0px;
+   border-top-right-radius: 0px;
+   padding: 12px;
+   overflow: auto;
+ }
+ 
+ #download-files, #delete-files, #more-ops, #compress-files {
+     
+ display: flex;
+ justify-content: center;
+ align-content:  center;
+ flex-direction: column;
+ font-size: 0.9rem;
+ font-weight: bold;
+ }
+ 
+ 
+  #download-files-span, #delete-files-span, #more-ops-span, #compress-files-span {
+     
+ text-align: center;
+ }
+ 
+ 
+ #download-files-svg, #delete-files-svg, #more-ops-svg, #compress-files-svg {
+     
+  width: 25px;
+  height: 25px;
+ }
+ 
+
+#compress-files-svg {
+    
+    width: 30px;
+  height: 30px;
+  vertical-align: -5px;
+}
+
+#download-files:hover, #delete-files:hover, #more-ops:hover, #compress-files:hover {
+     
+   
+ color: goldenrod;
+font-weight: 900;
+
+ }
+ 
+ #download-files:hover #download-files-svg,  #delete-files:hover #delete-files-svg, #compress-files:hover #compress-files-svg {
+     
+   fill: goldenrod;
+ }
+ 
+ 
+ #more-div {
+     
+    position: fixed;
+   z-index: 12;
+   display: none;
+   background: white;
+   height: auto;
+   width: auto;
+   box-shadow: 1px 1px 5px 1px black;
+   border-radius: 5px;
+   border-bottom-left-radius: 0px;
+   border-bottom-right-radius: 0px;
+   padding: 0px;
+   overflow: auto;
+      animation-name: moreDiv;
+ animation-duration: 0.25s;
+ animation-timing-function: ease-in-out;
+ }
+ 
+ #more-ul {
+     
+  padding-top:  0;
+  list-style-type: none;
+ padding-right: 15px;
+  padding-left: 15px;
+     padding-bottom: 15px;
+ }
+ 
+ .more-list {
+     
+   font-family: "Times New Roman";
+   font-size: 1rem;
+   text-transform: capitalize;
+   font-weight: bold;
+   color: black;
+   border: none;
+   outline: none;
+  border-bottom: 2px solid goldenrod;
+ padding: 10px;
+ display: flex;
+ align-items: center;
+
+ }
+ 
+ .more-list:hover {
+     
+   color: goldenrod;
+   
+ }
+ 
+  #more-ul li:nth-child(1) {
+      
+     fill: goldenrod;
+     padding-bottom: 15px;
+  }
+  
+   #more-ul li:nth-child(2) {
+      
+     padding-top: 20px;
+     padding-bottom: 15px;
+  }
+  
+   #more-ul li:nth-child(3) {
+      
+     padding-top: 20px;
+     padding-bottom: 15px;
+  }
+  
+ #rename-svg {
+     
+   width: 25px;
+   height: 25px;
+   margin-right: 20px;
+ }
+ 
+ #share-svg  {
+     
+     width: 20px;
+   height: 20px;
+      margin-right: 20px;
+ }
+ 
+  #details-svg  {
+     
+     width: 25px;
+   height: 25px;
+      margin-right: 20px;
+ }
+ 
+#share-list:hover #share-svg {
+    
+    fill: goldenrod;
+}
+
+
+#rename-list:hover #rename-path1, #rename-list:hover #rename-path2, #rename-list:hover  #rename-path3 {
+    
+    fill: goldenrod; 
+ 
+}
+
+
+ #delete-div {
+     
+  position: fixed;
+  z-index: 15;
+  background: rgba(0,0,0,0.7);
+  display: none;
+ 
+  justify-content: center;
+  align-items: center;
+overflow: auto;
+ animation-name: showOperationDiv;
+ animation-duration: 0.3s;
+ animation-iteration-count: ease-in-out;
+ width: 100%;
+ height: 100%;
+ }
+ 
+ #delete-div-content {
+     
+    background: gold;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    overflow: auto;
+    width: auto;
+    align-self: flex-start;
+    border-radius: 10px;
+    
+   margin-bottom: 50px;
+ }
+ 
+ #delete-div-head {
+  margin-top: 10px; 
+ font-weight: bold;
+ font-family: "Times New Roman";
+ color: black;
+ font-size: 1.3rem;
+ text-decoration: underline;
+ font-variant: small-caps;
+ text-align: left;
+ 
+     
+ }
+ 
+ #delete-div-text {
+     
+   color: black;
+   font-family: "Times New Roman";
+   font-size: 1.1rem;
+   
+ }
+ 
+ #delete-div-btns {
+     
+  margin-left: auto;
+ }
+ 
+ #delete-btn {
+     
+    padding: 15px;
+   padding-bottom: 7px;
+   padding-top: 7px;
+   font-size: 1.2rem;
+   font-family: "Times New Roman";
+   font-weight: bold;
+   background: white;
+   color: black;
+   outline: none;
+   border: 2px solid black;
+   border-radius: 5px;
+   margin-right: 10px;
+   
+ }
+ 
+ #cancel-delete {
+     
+      padding: 15px;
+   padding-bottom: 7px;
+   padding-top: 7px;
+   font-size: 1.2rem;
+   font-family: "Times New Roman";
+   font-weight: bold;
+   background: black;
+   color: white;
+   outline: none;
+   border: 2px solid black;
+   border-radius: 5px;
+   
+ }
+ 
+ #cancel-delete:hover, delete-btn:hover, #compress-btn {
+  
+  opacity: 0.85;
+ }
+ 
+ .notice-msg {
+     
+   font-style: italic;
+   font-size: 0.9rem;
+ }
+ 
+ 
+ 
+ #compress-div {
+     
+  position: fixed;
+  z-index: 15;
+  background: rgba(0,0,0,0.7);
+  display: none;
+ 
+  justify-content: center;
+  align-items: center;
+overflow: auto;
+ animation-name: showOperationDiv;
+ animation-duration: 0.3s;
+ animation-iteration-count: ease-in-out;
+ width: 100%;
+ height: 100%;
+ }
+  
+  
+   
+ #compress-div-content {
+     
+     align-self: flex-start;
+    background: gold;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    overflow: auto;
+    width: auto;
+    border-radius: 10px;
+  
+    position: relative;
+    
+    margin-bottom: 50px;
+ }
+ 
+ #compress-div-head {
+  margin-top: 10px; 
+ font-weight: bold;
+ font-family: "Times New Roman";
+ color: black;
+ font-size: 1.3rem;
+ text-decoration: underline;
+ font-variant: small-caps;
+ text-align: left;
+ 
+     
+ }
+ 
+ #compress-div-text {
+     
+   font-style: italic;
+   font-size: 1.1rem;
+   font-weight: bold;
+ }
+ 
+ #compress-div-select {
+     
+   outline: none;
+   background: black;
+   color: white;
+   padding: 10px;
+   font-family: "Times New Roman";
+   font-size: 1.1rem;
+ }
+ 
+ #compress-option-text {
+     
+  color: black;
+  font-size: bold;
+  font-style: italic;
+  font-size: 0.9rem;
+  
+ }
+ 
+ #compress-download-div {
+     
+   display: flex;
+   align-items: center;
+ }
+ 
+ #compress-download-box {
+     
+   accent-color: black;
+  max-width: 20px;
+   max-height: 20px;
+    min-width: 20px;
+   min-height: 20px;
+   margin-right: 10px;
+ }
+ 
+ #compress-download-text {
+   
+   font-weight: bold;
+   font-variant: small-caps;
+   font-size: 1.1rem;
+ }
+ 
+ 
+ #compress-delete-div {
+     
+   display: flex;
+   align-items: center;
+ }
+ 
+ #compress-delete-box {
+  
+ 
+   accent-color: black;
+   max-width: 20px;
+   max-height: 20px;
+    min-width: 20px;
+   min-height: 20px;
+   margin-right: 10px;
+ }
+ 
+ #compress-delete-text {
+   
+   font-weight: bold;
+   font-variant: small-caps;
+   font-size: 1.1rem;
+ }
+ 
+ 
+ #compress-btn-div {
+     
+   display: flex;
+   justify-content: flex-end;
+ }
+ 
+ #compress-btn {
+ 
+padding: 10px;
+   padding-bottom: 7px;
+   padding-top: 7px;
+   font-size: 1rem;
+   font-family: "Times New Roman";
+   font-weight: bold;
+   background: black;
+   color: white;
+   outline: none;
+   border: 2px solid black;
+   border-radius: 5px;
+   margin-right: 10px;
+   
+   
+ }
+ 
+ #cancel-compress-svg {
+     
+   width: 28px;
+   height: 28px;
+   position: absolute;
+   top: 15px;
+   right: 10px;
+   transition: all 0.3s;
+ }
+ 
+ 
+  #cancel-compress-svg:hover {
+      
+   background: black; 
+   color: gold;
+   padding: 5px;
+   transform: scale(1.25);
+   border-radius: 50%;
+   
+  }
+  
+  #compress-value {
+      
+   border: none;
+   outline: none;
+   border-bottom: 2px solid black;
+   font-family: "Times New Roman";
+   font-size: 1.1rem;
+   padding: 5px;
+   background: transparent;
+   text-decoration: none;
+  }
+  
+  .download-link {
+      
+    display: none;
+  }
+  
+ 
+  
+ #rename-div {
+     
+  position: fixed;
+  z-index: 15;
+  background: rgba(0,0,0,0.7);
+  display: none;
+ 
+  justify-content: center;
+  align-items: flex-start;
+overflow: auto;
+ animation-name: showOperationDiv;
+ animation-duration: 0.3s;
+ animation-iteration-count: ease-in-out;
+ width: 100%;
+ height: 100%;
+ 
+ }
+ 
+ #rename-div-content {
+     
+   position: relative;
+  margin-top: 20px;
+  margin-bottom: 20px;
+ background: gold;
+ padding: 10px;
+ display: flex;
+ flex-direction: column;
+ border-radius: 10px;
+height: 100%;
+overflow: auto;
+
+ }
+ 
+ #cancel-rename-svg {
+     
+   width: 28px;
+   height: 28px;
+   position: fixed;
+   transition: all 0.3s;
+    z-index: 20;
+ }
+ 
+ 
+  #cancel-rename-svg:hover {
+      
+   background: black; 
+   color: gold;
+   padding: 5px;
+   transform: scale(1.25);
+   border-radius: 50%;
+   
+  }
+
+ #rename-div-head {
+     
+  margin-top: 10px; 
+ font-weight: bold;
+ font-family: "Times New Roman";
+ color: black;
+ font-size: 1.3rem;
+ text-decoration: underline;
+ font-variant: small-caps;
+ text-align: left;
+ 
+     
+ }
+ 
+ #rename-file-no, #rename-folder-no {
+     
+   font-weight: bold;
+   font-style: italic;
+   font-size: 1.1rem;
+ }
+ 
+ 
+ #rename-file-div {
+     
+   margin-bottom: 20px;
+   
+   
+ }
+  
+  .rename-file-content, .rename-folder-content {
+      
+   display: flex;
+  
+   justify-content: flex-start;
+   align-items: flex-start;
+
+   margin-bottom: 40px;
+  }
+  
+  .rename-file-index, .rename-folder-index {
+    
+      font-weight: bold;
+      font-size: 1.2rem;
+      margin-right: 15px;
+      
+  }
+  
+  .rename-file-item, .rename-folder-item {
+      
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+  
+  }
+  
+  .old-name-text, .new-name-text, .old-folder-name-text, .new-folder-name-text {
+   
+   font-variant: small-caps;
+   font-weight: bold;
+   font-size: 1.1rem;
+   width: auto;
+   white-space: nowrap;
+   align-self: flex-start;
+   padding-right: 10px;
+   
+  }
+  
+  .old-name, .old-folder-name {
+ 
+  
+  font-family: "Times New Roman";
+  font-size: 1rem;
+ align-self: flex-start;
+ 
+  }
+  
+   .new-name {
+    
+  border: none;  
+  outline: none;
+  border-bottom: 2px solid black;
+  background: transparent;
+  font-family: "Times New Roman";
+  font-size: 1rem;
+  
+   align-self: flex-start;
+  width: 65%;
+  max-width: 500px;
+  }
+  
+  
+  .new-folder-name {
+    
+  border: none;  
+  outline: none;
+  border-bottom: 2px solid black;
+  background: transparent;
+  font-family: "Times New Roman";
+  font-size: 1rem;
+  
+   align-self: flex-start;
+  width: 100%;
+  max-width: 500px;
+  
+  }
+  
+   .new-name-ext {
+    
+  border: none;  
+  outline: none;
+  border-bottom: 2px solid black;
+  background: transparent;
+  font-family: "Times New Roman";
+  font-size: 1rem;
+
+ width: 35%;
+   align-self: flex-start;
+   max-width: 100px;
+  }
+  
+  .new-name-dot {
+    
+  align-self: flex-start;  
+  font-weight: bold;
+  font-size: 2rem;
+  transform: translateY(-5px);
+  }
+ 
+  .old-name-div, .new-name-div, .old-folder-name-div, .new-folder-name-div {
+      
+   display: flex;
+   align-items: center;
+   word-break: break-all;
+   
+  }
+  
+  .new-folder-name-div {
+      
+      margin-bottom: 14px;
+  }
+  
+  
+ .rename-btn {
+     
+   position: fixed;    
+   color: white;
+ background: black;
+ padding: 5px;
+ font-size: 0.9rem;
+ font-weight: bold;
+ font-family: "Times New Roman";
+  border-radius: 5px;
+  text-transform: capitalize;
+   z-index: 18;
+  
+bottom: 30px;
+ 
+ }
+ 
+ .add-name-div, .add-folder-name-div {
+   
+   align-self: center;
+   margin-right: auto;
+   margin-left: auto;
+ }
+ 
+ 
+ .add-name-btn, .add-folder-name-btn {
+     
+     color: black;
+ background: white;
+ padding: 5px;
+ font-size: 0.9rem;
+ font-weight: bold;
+ font-family: "Times New Roman";
+  border-radius: 5px;
+  text-transform: capitalize;
+  
+ }
+ 
+ .add-name-btn:hover, .add-folder-name-btn:hover {
+     
+   box-shadow: 2px 2px 5px 2px black;
+ }
+ 
+ #rename-animation-div {
+     
+   align-self: center;
+   margin-right: auto;
+   margin-left: auto;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   font-size: 1.3rem;
+   font-variant: small-caps;
+   font-weight: bold;
+ }
+ 
+ .disable-rename-btn {
+     
+     pointer-events: none;
+     opacity: 0.2;
+ }
+ 
+#rename-file-arrow, #rename-folder-arrow {
+ font-weight: bold;
+   font-style: italic;
+   font-size: 1.1rem;
+   display: none;
+    
+}
+ 
+ 
+ #details-div {
+     
+  position: fixed;
+  z-index: 15;
+  background: rgba(0,0,0,0.7);
+  display: none;
+ 
+  justify-content: center;
+  align-items: flex-start;
+overflow: auto;
+ animation-name: showOperationDiv;
+ animation-duration: 0.3s;
+ animation-iteration-count: ease-in-out;
+ width: 100%;
+ height: 100%;
+ 
+ }
+ 
+ 
+ #details-div-content {
+     
+   position: relative;
+  margin-top: 20px;
+  margin-bottom: 20px;
+ background: gold;
+ padding: 10px;
+ display: flex;
+ flex-direction: column;
+ border-radius: 10px;
+
+overflow: auto;
+
+ }
+ 
+ #cancel-details-svg {
+     
+   width: 28px;
+   height: 28px;
+   position: absolute;
+   top: 15px;
+   right: 10px;
+   transition: all 0.3s;
+ }
+ 
+ 
+  #cancel-details-svg:hover {
+      
+   background: black; 
+   color: gold;
+   padding: 5px;
+   transform: scale(1.25);
+   border-radius: 50%;
+   
+  }
+
+ #details-div-head {
+     
+  margin-top: 10px; 
+ font-weight: bold;
+ font-family: "Times New Roman";
+ color: black;
+ font-size: 1.3rem;
+ text-decoration: underline;
+ font-variant: small-caps;
+ text-align: left;
+ 
+     
+ }
+ 
+ 
+ #details-loading-div {
+     
+   align-self: center;
+   margin-right: auto;
+   margin-left: auto;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   font-size: 1.3rem;
+   font-variant: small-caps;
+   font-weight: bold;
+   
+ }
+ 
+ #details-no-box {
+     
+   display: none;
+   align-items: flex-start;  
+   flex-direction: column;
+ }
+ 
+ #details-no-div {
+     
+   font-size: 1.3rem;
+   font-weight: 900;
+   font-family: "Times New Roman";
+   font-variant: small-caps;
+   font-style: oblique;
+   margin-left: 10px;
+  color: white;
+  text-shadow: 1px 1px 2px black;
+   margin-bottom: 20px;
+ }
+ 
+ #details-item-div {
+   
+   display: flex;
+   align-items: center;
+   flex-direction: column;
+ word-break: break-all;
+
+ }
+ 
+ .details-item-name-div, .details-item-size-div, .details-item-read-div, .details-item-write-div, .details-item-last-modified-div, .details-item-length-div{
+   
+   display: flex;
+   align-items: flex-start;
+   margin-right: auto;
+   margin-left: 5px;
+ }
+ 
+ .details-item-name-text, .details-item-size-text, .details-item-read-text, .details-item-write-text,  .details-item-last-modified-text, .details-item-length-text {
+     
+   font-weight: bold;
+   font-size: 1.15rem;
+   font-variant: small-caps;
+  white-space: nowrap;
+   transform:  translateY(-2px);
+ 
+ }
+ 
+ .details-item-last-modified-time {
+     
+   transform:  translateY(-3px);
+   word-break: keep-all;
+ }
+ 
+ #details-item-head  {
+   
+   text-decoration: underline;
+   font-weight: bold;
+   font-family: "Times New Roman";
+   font-size: 1.2rem;
+    color: white;
+  text-shadow: 1px 1px 2px black;
+     
+ }
+ 
+ #details-select-div {
+     
+  
+   display: flex;
+   align-items: flex-start;
+  margin-left: 10px;
+ width: 100%;
+ }
+ 
+ #details-item-select {
+  
+    background: transparent;
+    outline: none;
+    color: white;
+    text-shadow: 1px 1px 2px black;
+    font-family: "Times New Roman";
+    border-radius: 5px;
+    padding: 2px;
+    font-size: 1.2rem;
+    font-weight: 900;
+    font-style: oblique;
+   margin-left: 10px;
+  margin-right: 10px;
+ }
+ 
+ #details-items-change {
+     
+   
+    color: white;
+    text-shadow: 1px 1px 2px black;
+    font-family: "Times New Roman";
+     font-size: 1.1rem;
+    font-weight: 900;
+    font-style: oblique;
+     text-transform: capitalize;
+    
+ }
+ 
+ #details-btn-div {
+   
+   display: none;
+   align-items: center;
+ }
+ 
+ #details-item-next-btn {
+  
+  margin-left: auto;
+      background: white;
+   color: black; 
+   padding: 10px;
+   font-size: 1.2rem;
+   font-family: "Times New Roman";
+   font-weight: bold;
+   outline: none;
+   border-radius: 5px;
+   box-shadow: 1px 1px 10px 1px black;
+ }
+ 
+ #details-item-previous-btn {
+     
+   margin-right: auto;  
+   background: white;
+   color: black;
+   padding: 10px;
+   font-size: 1.2rem;
+   font-family: "Times New Roman";
+   font-weight: bold;
+   outline: none;
+   border-radius: 5px;
+   box-shadow: 1px 1px 10px 1px black;
+ }
+ 
+ 
+ #details-item-previous-btn:hover, #details-item-next-btn:hover {
+   
+   box-shadow: inset 3px 3px 3px 1px black;
+ 
+ }
+ 
+ 
+ .details-no-text  {
+     
+  font-variant: none;
+  font-weight: 500;
+  font-size: 1.1rem;
+ }
+ 
+ .rename-arrow-svg {
+     
+   width: 25px;
+   height: 25px;
+   vertical-align: -6px;
+   
+ }
+ 
+ .rename-arrow-svg:hover, .invert-rename-svg:hover {
+     
+ fill: white;
+ 
+   
+ }
+ 
+ .invert-rename-svg {
+     
+   width: 25px;
+   height: 25px;
+   vertical-align: -6px;
+   
+   transform: scaleY(-1);
+ }
+ 
+ 
+ 
+ #request-div {
+     
+  position: fixed;
+  z-index: 35;
+  background: rgba(0,0,0,0.7);
+  display: none;
+ 
+  justify-content: center;
+ /* align-items: flex-start;*/
+overflow: auto;
+ animation-name: showOperationDiv;
+ animation-duration: 0.3s;
+ animation-iteration-count: ease-in-out;
+ width: 100%;
+ height: 100%;
+ 
+ }
+ 
+ #request-div-content {
+     
+   position: relative;
+  margin-top: 20px;
+  margin-bottom: 20px;
+ background: gold;
+ padding: 10px;
+ display: flex;
+ width: auto;
+ flex-direction: column;
+ border-radius: 10px;
+ overflow: auto;
+ 
+ }
+ 
+#request-icon-box {
+  
+  z-index: 10;
+  display: none;
+  position: fixed;
+  justify-content: center;
+  align-items: center;
+  background: gold;
+  border-radius: 50%;
+  padding: 10px;
+  right: 35px;
+  top: 115px;
+}
+
+#request-icon-box:hover {
+    
+    box-shadow: 1px 1px 5px 1px black;
+}
+
+#request-icon {
+    
+    width: 30px;
+    height: 30px;
+}
+
+ #request-no  {
+  
+  position: absolute;
+  top: -8px;
+  right: 0px;
+  font-weight: bold;
+  font-size: 1.3rem;
+  font-style: italic;
+  font-family: "Times New Roman";
+   z-index: 12;
+ }
+ 
+ 
+ #close-request-svg {
+     
+   width: 28px;
+   height: 28px;
+   position: fixed;
+   transition: all 0.3s; 
+   z-index: 40;
+ }
+ 
+ 
+  #close-request-svg:hover {
+      
+   background: black; 
+   color: gold;
+   padding: 5px;
+   transform: scale(1.25);
+   border-radius: 50%;
+   
+  }
+  
+  #request-div-head  {
+      
+    margin-top: 10px; 
+ font-weight: bold;
+ font-family: "Times New Roman";
+ color: black;
+ font-size: 1.3rem;
+ text-decoration: underline;
+ font-variant: small-caps;
+ text-align: left;
+ 
+      
+  }
+  
+  #request-div-text {
+      
+      
+ font-family: "Times New Roman";
+ color: black;
+ font-size: 1rem;
+ font-style: italic;
+ 
+  }
+  
+  .request-details {
+      
+    display: flex;
+    align-items: flex-start;
+    
+  }
+  
+  .request-details-box  {
+      
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .details-device-div, .details-browser-div  {
+      
+    display: flex;  
+    margin-bottom: 5px;
+    word-break: break-all;
+    margin-right: 5px;
+  }
+  
+  .request-btn-box  {
+    
+    display: flex;  
+    align-items: center;
+  margin-left: auto;
+  margin-right: 5px;
+  
+  }
+  
+  .request-details-no {
+      
+     font-size: 1.3rem;
+     font-family: "Times New Roman";
+     font-weight: bold;
+    margin-right: 18px;
+    transform: translateY(-2px);
+    white-space: nowrap;
+  }
+  
+  .details-device-text, .details-browser-text  {
+      
+ font-variant: small-caps;
+ font-size: 1.1rem;
+ font-family: "Times New Roman";
+ font-weight: bold;
+ margin-right: 10px;
+ transform: translateY(-2px);
+ white-space: nowrap;
+  }
+  
+  .request-confirm-btn {
+      
+    padding: 5px;
+   font-size: 1rem;
+   font-family: "Times New Roman";
+   font-weight: bold;
+   background: white;
+   color: black;
+   outline: none;
+   border-radius: 5px;
+   margin-right: 15px;
+   
+  }
+  
+   .request-decline-btn {
+      
+    padding: 5px;
+   font-size: 1rem;
+   font-family: "Times New Roman";
+   font-weight: bold;
+   background: black;
+   color: white;
+   outline: none;
+   border-radius: 5px;
+   margin-right: 15px;
+   
+  }
+  
+  .request-confirm-btn:hover, .request-decline-btn:hover {
+      
+    box-shadow:  1px 1px 10px 1px black;
+    
+  } 
+  
+  #request-all-btn-div {
+      z-index: 40;
+       position: fixed;
+      bottom: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+     
+  }
+  
+ .confirm-all-btn {
+      
+    padding: 5px;
+   font-size: 1rem;
+   font-family: "Times New Roman";
+   font-weight: bold;
+   background: white;
+   color: black;
+   outline: none;
+   border-radius: 5px;
+   margin-right: 20px;
+   
+  }
+  
+   .decline-all-btn {
+       
+    padding: 5px;
+   font-size: 1rem;
+   font-family: "Times New Roman";
+   font-weight: bold;
+   background: black;
+   color: white;
+   outline: none;
+   border-radius: 5px;
+   margin-right: 10px;
+   
+  }
+  
+  .confirm-all-btn:hover, .decline-all-btn:hover {
+      
+    box-shadow:  1px 1px 10px 1px black;
+    
+  } 
+  
+   #upload-animation-div{
+     
+   align-self: center;
+   margin-right: auto;
+   margin-left: auto;
+   display: none;
+   justify-content: center;
+   align-items: center;
+   font-size: 1.3rem;
+   font-variant: small-caps;
+   font-weight: bold;
+   
+ }
+
+ /*
+ .rename-animation-svg {
+     
+     width: 8px;
+     height: 8px;
+     fill: black;
+     font-weight: bold;
+     background: black;
+     border-radius: 50%;
+     margin: 4px;
+ 
+ }
+ 
+   
+ #rename-animation-div svg:nth-child(1) {
+  
+  transform: translateY(40px) translateX(63px); 
+  
+    animation-name: showRenameItems;
+ animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-delay: 0.5s;
+    
+    animation-timing-function: ease-in-out;
+ }
+ 
+ 
+ #rename-animation-div svg:nth-child(2) {
+    
+   
+  transform: translateY(35px) translateX(30px); 
+  
+    animation-name: showRenameItems;
+ animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-delay: 0.625s;
+    
+    animation-timing-function: ease-in-out;
+ }
+ 
+ 
+ #rename-animation-div svg:nth-child(3) {
+   
+  transform: translateY(20px) translateX(10px);
+  
+    animation-name: showRenameItems;
+ animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-delay: 0.75s;
+     
+    animation-timing-function: ease-in-out;
+ }
+ 
+ #rename-animation-div svg:nth-child(4) {
+   
+  transform: translateY(5px) translateX(1px); 
+  
+    animation-name: showRenameItems;
+ animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-delay: 0.875s;
+    
+    animation-timing-function: ease-in-out;
+ }
+ 
+ #rename-animation-div svg:nth-child(5) {
+  
+    animation-name: showRenameItems;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+     
+    animation-timing-function: ease-in-out;
+ }
+ 
+ 
+ #rename-animation-div svg:nth-child(6) {
+  
+  
+  transform: translateY(6px) translateX(-1px); 
+
+     
+    animation-name: showRenameItems;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-delay: 0.125s;
+     
+    animation-timing-function: ease-in-out;
+ }
+ 
+  
+ #rename-animation-div svg:nth-child(7) {
+     
+  
+  transform: translateY(20px) translateX(-10px); 
+  
+    animation-name: showRenameItems;
+ animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-delay: 0.25s;
+      
+    animation-timing-function: ease-in-out;
+ }
+ 
+   
+ #rename-animation-div svg:nth-child(8) {
+  
+  
+  transform: translateY(35px) translateX(-32px); 
+  
+    animation-name: showRenameItems;
+ animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-delay: 0.375s;
+     
+    animation-timing-function: ease-in-out;
+ }
+ 
+ */
+ 
+ @keyframes showRenameItems {
+     
+  from {
+    
+ 
+   background: black;
+   
+  } to {
+      background: white;
+  
+  }
+     
+ }
+ 
+ 
+  
+ @keyframes showConfig {
+     
+   from {
+    bottom: 20px;
+    display: none;
+   } to {
+     bottom: 80px;
+     display: flex;
+    
+   }
+ }
+ 
+ 
+ @keyframes showUpload {
+     
+   from {
+       
+    bottom: 80px;
+    display: none;
+   } to {
+     bottom: 140px;
+     display: flex;
+   }
+ }
+ 
+ 
+@keyframes showOperationDiv {
+    
+  from {
+      
+  transform: scale(0);
+  } to {
+      
+ transform: scale (1);
+  }
+  
+  
+}
+
+@keyframes moreDiv {
+    
+  from {
+      
+  transform: scaleY(0);
+  } to {
+      
+ transform: scaleY(1);
+  }
+  
+  
+}
+ 
+  </style>
+  
+  </head>
+  
+  <body data-owner="{{%OWNER%}}" onload="confirmBoxSize()" onresize="confirmBoxSize()" onpageshow="unCheckAll()" onpagehide="detectOperation()">
+   
+ <div id="empty-div">
+     
+     
+ </div>
+ 
+ <span id="request-icon-box" title="Confirm clients requests." onclick="showRequestDiv()">
+   
+   <span id="request-no"></span>  
+     
+     <svg id="request-icon"  fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+         
+  <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+</svg>
+
+     
+ </span>
+ 
+ 
+ <div id="request-div">
+     
+  <div id="request-div-content">
+    
+  <div id="request-all-btn-div" >
+      
+ <button class="confirm-all-btn" onclick="allowAllAccess()">
+    Confirm All
+ </button>
+ 
+  <button class="decline-all-btn" onclick="denyAllAccess()">
+    Decline All
+ </button>
+ 
+  </div>    
+  
+  <span id="close-request" title="Close"> 
+  
+  <svg onclick="closeRequest()" id="close-request-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <line x1="6" y1="18" x2="18" y2="6" />
+  <line x1="6" y1="6" x2="18" y2="18" />
+</svg>
+
+ </span>
+ 
+ <span id="request-div-head">
+   
+   Confirm Connection  
+     
+ </span>    
+      <br>
+      
+ <span id="request-div-text">
+   
+  Click the 'Confirm' or 'Decline' buttons to allow or deny access to your server, respectively. Clicking 'Confirm' gives all browsers on the same device,  access to your server.
+        
+    </span>
+    
+    <br><br>
+    
+    
+  <div id="request-div-details">
+
+    <!--  
+ <div class="request-details">
+      
+   <div class="request-details-no">
+      
+      (1) 
+       
+   </div> 
+   
+   
+   <div class="request-details-box">
+   
+ <div class="details-device-div">
+     
+  <span class="details-device-text"> Device Name: </span>
+  <span class="details-device-name"> Resbsszbznxnnnddxhxhxhxhn </span>
+     
+ </div>
+ 
+  <div class="details-browser-div">
+      
+           
+  <span class="details-browser-text"> Browser Name:  </span>
+  <span class="details-browser-name"> Chrome </span>
+     
+  </div>
+    
+  <br>
+    <div class="request-btn-box">
+     
+   <button class="request-confirm-btn"> Confirm </button>  
+   <button class="request-decline-btn"> Decline </button>
+       
+   </div>
+       
+   </div>
+   
+
+          
+     </div>
+     
+   -->
+      
+  </div>
+  
+    <br> <br>
+  </div>
+     
+ </div>
+      
+  <div id="select-div">
+      
+  <div id="cancel-select" title="Cancel">
+      
+  <svg onclick="closeFileOps()" id="cancel-select-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <line x1="6" y1="18" x2="18" y2="6" />
+  <line x1="6" y1="6" x2="18" y2="18" />
+</svg>
+
+</div>
+  
+  <div id="select-text">
+      <span id="select-no">  </span>
+      <span id="select-item"> items </span>
+      selected</div>
+  
+  <div id="select-all" title="Select All">  
+<svg id="select-all-svg" onclick="checkAll()"  version="1.1"  x="0px" y="0px" viewBox="0 0 122.88 120.79"  xml:space="preserve"><g><path d="M31.4,21.63h60.68V7.68c0-0.08-0.02-0.16-0.04-0.22c-0.03-0.07-0.08-0.14-0.13-0.19l-0.01-0.01 c-0.05-0.06-0.12-0.1-0.19-0.13c-0.07-0.03-0.15-0.04-0.23-0.04H7.68c-0.08,0-0.16,0.02-0.22,0.04C7.39,7.15,7.32,7.2,7.25,7.26 L7.23,7.28C7.19,7.33,7.15,7.39,7.12,7.46C7.09,7.53,7.08,7.6,7.08,7.68v83.8c0,0.08,0.02,0.16,0.05,0.22l0.01,0.03 c0.03,0.06,0.07,0.13,0.12,0.18c0.06,0.06,0.13,0.1,0.2,0.13l0.02,0.01c0.06,0.02,0.13,0.04,0.2,0.04h16.04V29.31 c0-1.03,0.21-2.03,0.58-2.93c0.39-0.94,0.96-1.79,1.67-2.5l0.04-0.04c0.7-0.69,1.54-1.25,2.46-1.63 C29.38,21.84,30.37,21.63,31.4,21.63L31.4,21.63z M51.99,75.95c-0.95-0.86-1.47-2.03-1.53-3.23c-0.06-1.19,0.34-2.4,1.2-3.35 c0.86-0.95,2.04-1.47,3.23-1.53c1.18-0.06,2.4,0.34,3.35,1.2l9.09,8.25l20.78-21.88c0.89-0.93,2.07-1.42,3.27-1.45 c1.19-0.03,2.4,0.4,3.33,1.28c0.93,0.89,1.42,2.07,1.45,3.27c0.03,1.19-0.4,2.4-1.28,3.33L69.84,88.19L69.59,88 c-0.58,0.28-1.21,0.43-1.85,0.46c-1.17,0.04-2.36-0.35-3.29-1.2L51.99,75.95L51.99,75.95z M99.15,21.63h16.04 c1.03,0,2.03,0.21,2.93,0.59c0.94,0.39,1.79,0.96,2.5,1.67l0.04,0.04c0.69,0.7,1.25,1.53,1.63,2.45c0.38,0.91,0.58,1.9,0.58,2.94 v83.8c0,1.04-0.21,2.03-0.58,2.93c-0.39,0.94-0.96,1.79-1.67,2.5c-0.71,0.71-1.55,1.28-2.5,1.67c-0.91,0.38-1.9,0.59-2.93,0.59 H31.4c-1.03,0-2.02-0.21-2.93-0.58c-0.94-0.39-1.79-0.96-2.5-1.67c-0.71-0.71-1.28-1.56-1.67-2.5c-0.38-0.91-0.58-1.9-0.58-2.93 V99.16H7.68c-1.03,0-2.03-0.21-2.93-0.59c-0.94-0.39-1.79-0.96-2.5-1.67c-0.71-0.71-1.28-1.56-1.67-2.5C0.21,93.5,0,92.51,0,91.48 V7.68c0-1.04,0.21-2.03,0.58-2.93c0.39-0.94,0.96-1.79,1.67-2.5c0.71-0.71,1.55-1.28,2.5-1.67C5.66,0.21,6.65,0,7.68,0h83.79 c1.04,0,2.03,0.21,2.93,0.58c0.94,0.39,1.79,0.96,2.5,1.67c1.4,1.4,2.26,3.31,2.26,5.43V21.63L99.15,21.63z M115.2,28.7H31.4 c-0.08,0-0.15,0.02-0.22,0.04c-0.08,0.03-0.15,0.08-0.2,0.14l-0.01,0.01c-0.06,0.05-0.1,0.12-0.13,0.19 c-0.03,0.07-0.04,0.14-0.04,0.22v83.8c0,0.08,0.02,0.16,0.04,0.22c0.03,0.07,0.08,0.14,0.14,0.2l0.02,0.02 c0.05,0.05,0.12,0.09,0.18,0.11c0.07,0.03,0.14,0.04,0.22,0.04h83.79c0.08,0,0.16-0.02,0.22-0.04l0.02-0.01 c0.07-0.03,0.13-0.07,0.18-0.13c0.05-0.06,0.1-0.12,0.13-0.19l0.01-0.02c0.02-0.06,0.03-0.13,0.03-0.21v-83.8 c0-0.08-0.02-0.15-0.04-0.22l-0.01-0.02c-0.03-0.06-0.07-0.12-0.12-0.17c-0.06-0.06-0.13-0.11-0.2-0.14 C115.35,28.72,115.28,28.7,115.2,28.7L115.2,28.7z"/></g></svg>
+
+        </div>
+    
+  </div>
+  
+  
+ <div id="more-div">
+     
+   <ul id="more-ul">
+   
+   <li class="more-list" id="rename-list" onclick="showRenameDiv()"> 
+   <span>
+
+<svg id="rename-svg" viewBox="0 0 28 28" >
+<path id="rename-path1" d="M11.75 2C11.3358 2 11 2.33579 11 2.75C11 3.16421 11.3358 3.5 11.75 3.5H13.25V24.5H11.75C11.3358 24.5 11 24.8358 11 25.25C11 25.6642 11.3358 26 11.75 26H16.25C16.6642 26 17 25.6642 17 25.25C17 24.8358 16.6642 24.5 16.25 24.5H14.75V3.5H16.25C16.6642 3.5 17 3.16421 17 2.75C17 2.33579 16.6642 2 16.25 2H11.75Z" fill="#212121"/>
+<path id="rename-path2" d="M6.25 6.01959H12.25V22.0196H6.25C4.45507 22.0196 3 20.5645 3 18.7696V9.26959C3 7.47467 4.45507 6.01959 6.25 6.01959Z" fill="#212121"/>
+<path id="rename-path3" d="M21.75 22.0196H15.75V6.01959H21.75C23.5449 6.01959 25 7.47467 25 9.26959V18.7696C25 20.5645 23.5449 22.0196 21.75 22.0196Z" fill="#212121"/>
+</svg> 
+   </span>
+   <span> Rename </span>
+   
+   </li>
+   
+    <li class="more-list" id="details-list" onclick="showDetailsDiv()">
+
+<span>
+    
+<svg id="details-svg"  viewBox="0 0 24 24" >
+
+
+<title/>
+
+<g id="Complete">
+
+<g id="info-circle">
+
+<g>
+
+<circle id="details-circle" cx="12" cy="12" data-name="--Circle" fill="none"  r="10" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+
+<line id="details-path1" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" x1="12" x2="12" y1="12" y2="16"/>
+
+<line id="details-path2" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" x1="12" x2="12" y1="8" y2="8"/>
+
+</g>
+
+</g>
+
+</g>
+
+</svg>
+</span>
+
+ <span> Details </span>
+ 
+ 
+   </li>
+   
+   
+   <li class="more-list" id="share-list" onclick="showShareDiv()">
+       
+    <span>
+        
+     
+<svg id="share-svg" fill="#000000" viewBox="0 0 32 32" version="1.1" >
+
+<title>share</title>
+<path d="M0 25.472q0 2.368 1.664 4.032t4.032 1.664h18.944q2.336 0 4-1.664t1.664-4.032v-8.192l-3.776 3.168v5.024q0 0.8-0.544 1.344t-1.344 0.576h-18.944q-0.8 0-1.344-0.576t-0.544-1.344v-18.944q0-0.768 0.544-1.344t1.344-0.544h9.472v-3.776h-9.472q-2.368 0-4.032 1.664t-1.664 4v18.944zM5.696 19.808q0 2.752 1.088 5.28 0.512-2.944 2.24-5.344t4.288-3.872 5.632-1.664v5.6l11.36-9.472-11.36-9.472v5.664q-2.688 0-5.152 1.056t-4.224 2.848-2.848 4.224-1.024 5.152zM32 22.080v0 0 0z"></path>
+</svg>
+        
+    </span>
+    
+   <span> &nbsp;Share </span>
+       
+    </li>
+   
+   </ul>
+     
+ </div>
+  
+  
+ <div id="file-ops-div" >
+     
+  <div id="download-files" onclick="showDownloadDiv()">
+   
+   <span id="download-files-span">
+   
+
+
+<svg id="download-files-svg" fill="#000000" version="1.1" viewBox="0 0 503.996 503.996" xml:space="preserve">
+
+<g>
+	<g>
+		<path d="M346.008,164.406c-0.644-1.368-2.02-2.264-3.532-2.264h-33.824V72.83c0-2.16,0.396-4.46-1.764-4.46h-101.48
+			c-2.156,0-6.148,2.3-6.148,4.46v89.308h-28.948c-1.508,0-2.88,0.9-3.528,2.264c-0.648,1.36-0.452,2.992,0.5,4.16l86.084,105.496
+			c0.74,0.912,1.852,1.44,3.028,1.44c1.172,0,2.28-0.528,3.028-1.432l86.084-105.504
+			C346.46,167.398,346.652,165.762,346.008,164.406z"/>
+	</g>
+</g>
+<g>
+	<g>
+		<path d="M497.508,305.518c0,0,0.5-0.004,0.496-0.008l-65.024-63.72c-8.92-8.516-19.04-13.236-28.944-13.236h-85.62
+			c-4.316,0-7.812,3.5-7.812,7.812c0,4.316,3.496,7.816,7.812,7.816h85.616c7.92,0,14.932,5.432,18.348,8.692l47.276,46.004h-147.32
+			c-4.3,0-7.788,3.64-7.812,7.944c-0.132,32.164-26.412,58.416-58.572,58.416c-32.16,0-58.44-26.292-58.576-58.46
+			c-0.02-4.296-3.516-7.904-7.812-7.904H38.468l47.228-45.948c3.468-3.312,10.484-8.748,18.408-8.748h85.748
+			c4.308,0,7.812-3.5,7.812-7.816c0-4.312-3.504-7.812-7.812-7.812H104.1c-9.908,0-20.276,4.72-29.256,13.292L9.78,304.374
+			c-5.348,4.3-9.78,10.9-9.78,18.276v89.86c0,12.924,12.524,23.116,25.448,23.116H482.56c12.924,0,21.436-10.192,21.436-23.116
+			v-89.86C504,315.886,502.108,309.798,497.508,305.518z"/>
+	</g>
+</g>
+</svg>
+
+   </span>
+   
+   <span> Download </span>
+      
+  </div>
+  
+  <div id="compress-files" onclick="showCompressDiv()">
+     
+     <span id="compress-files-span">
+         
+ <svg id="compress-files-svg" viewBox="0 0 500 580" >
+     <path d="M456,296a8.00039,8.00039,0,0,1-8,8h-6.02686l13.83643,62.26465A7.9737,7.9737,0,0,1,456,368v8a40,40,0,0,1-80,0v-8a7.9737,7.9737,0,0,1,.19043-1.73535L390.02686,304H384a8.00039,8.00039,0,0,1-8-8V264H352v16H336V264H312v16H296V264H272v16H256V264H232v16H216V264H192v16H176V264H152v16H136V264h-8a48.055,48.055,0,0,0-48,48V448H456a24.0275,24.0275,0,0,0,24-24V264H456Z"/><path d="M392,376a24,24,0,0,0,48,0v-7.12207L425.583,304H406.417L392,368.87793Zm24-8a8,8,0,1,1-8,8A7.99977,7.99977,0,0,1,416,368Z"/><polygon points="440 288 440 264 392 264 392 288 400 288 432 288 440 288"/><path d="M85.73535,264H80a63.84971,63.84971,0,0,1-48-21.73535V424a24.0275,24.0275,0,0,0,24,24h8V312A63.84932,63.84932,0,0,1,85.73535,264Z"/><path d="M456,64H384.86328a24.00746,24.00746,0,0,0-12.34766,3.41992L347.7168,82.2998A40.01715,40.01715,0,0,1,327.13672,88H56a24.0275,24.0275,0,0,0-24,24v24.022A39.79015,39.79015,0,0,1,56,128H332.77539a40.14547,40.14547,0,0,1,24.98731,8.76465l22.46972,17.97656A24.09017,24.09017,0,0,0,395.22461,160H456a39.7896,39.7896,0,0,1,24,8.022V88A24.0275,24.0275,0,0,0,456,64Z"/><path d="M456,176H395.22461a40.14547,40.14547,0,0,1-24.98731-8.76465l-22.46972-17.97656A24.09017,24.09017,0,0,0,332.77539,144H56a24.0275,24.0275,0,0,0-24,24v32a48.055,48.055,0,0,0,48,48h56V232h16v16h24V232h16v16h24V232h16v16h24V232h16v16h24V232h16v16h24V232h16v16H480V200A24.0275,24.0275,0,0,0,456,176Z"/></svg>
+     
+     </span>
+     <span style="fle"> Compress </span>
+     
+  </div>
+  
+  <div id="delete-files" onclick="showDeleteDiv()">
+    
+  <span id="delete-files-span">
+  <svg id="delete-files-svg" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 30 30" width="30px" height="30px"><path d="M 13 3 A 1.0001 1.0001 0 0 0 11.986328 4 L 6 4 A 1.0001 1.0001 0 1 0 6 6 L 24 6 A 1.0001 1.0001 0 1 0 24 4 L 18.013672 4 A 1.0001 1.0001 0 0 0 17 3 L 13 3 z M 6 8 L 6 24 C 6 25.105 6.895 26 8 26 L 22 26 C 23.105 26 24 25.105 24 24 L 24 8 L 6 8 z"/></svg>
+  </span>
+  <span> Delete </span>
+      
+  </div>
+     
+  <div id="more-ops" onclick="showMoreOptions()">
+      
+    <span id="more-ops-span">
+       
+
+<svg id="more-ops-svg" viewBox="0 0 24 24" fill="none" >
+
+<path id="more-path1" opacity="1" d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" fill="#000000"/>
+<path d="M8 12H8.01" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12 12H12.01" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M16 12H16.01" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="more-path2" d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#000000" stroke-width="2"/>
+</svg>
+    </span>
+    
+    <span> More </span>
+  </div>
+  
+ </div>
+   
+   <div id="operation-password-div">
+    <div id="operation-password-box">
+        
+  <div id="operation-head"> Password Required </div>
+  <br>
+  
+  <div id="operation-text"> Password is required before you <span id="current-operation">perform file operations.</span> </div>
+  <br>
+  <br>
+  
+  <input type="password" id="operation-password" placeholder="Enter Password"  onkeyup="submitPassword(event)">
+  <br><br>
+  <div id="operation-btn-div">
+        <button id="operation-cancel-btn" onclick="cancelOperationPassword()"> Cancel </button>
+        
+  <button id="operation-btn" onclick="checkOperationPassword()"> Done </button>
+  </div>
+  
+  
+  </div>
+   </div>
+   
+ <!-- Items details Div -->
+ 
+  <div id="details-div">
+      
+   <div id="details-div-content">
+       
+  <span id="cancel-details" title="Close"> 
+  
+  <svg onclick="cancelDetails()" id="cancel-details-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <line x1="6" y1="18" x2="18" y2="6" />
+  <line x1="6" y1="6" x2="18" y2="18" />
+</svg>
+
+ </span>
+ 
+   
+   <div id="details-div-head">
+       
+      File Entries Details 
+
+       </div>
+       
+       
+       <br><br>
+       
+ <span class="notice-msg">NB: Do not exit the page till you see the details. You can click on the "X" symbol, to cancel the operation.
+ </span>
+   <br><br>
+  
+   <div id="details-loading-div">
+       
+        Loading.....
+ 
+   </div>
+   
+   <div id="details-no-box">
+   
+   <div id="details-no-div">
+       
+    <span id="details-current-no">  </span>
+    <span class="details-no-text">&nbsp;out of&nbsp;</span>
+    <span id="details-total-no">  </span>
+    <span class="details-no-text" id="details-items-text">  </span>
+       
+   </div>
+   
+ <div id="details-select-div">
+   
+  <span id="details-items-change"> Go To: </span> 
+  
+  <select id="details-item-select">
+  
+
+  
+   </select>
+   
+   </div>
+   
+   </div>
+   
+   
+   <br>
+   <div id="details-item-div">
+       
+   
+  
+   </div>
+   
+   <br>
+   
+   <div id="details-btn-div">
+   
+   <button id="details-item-previous-btn"  onclick="previousElemDetails()"> &#8810;   </button> 
+   
+  <button id="details-item-next-btn" onclick="nextElemDetails()">  &#8811; </button> 
+   </div>
+   
+   <br><br>
+       
+   </div>
+      
+  </div>
+   
+ <div id="rename-div">
+     
+  <div id="rename-div-content">
+  
+ <button class="rename-btn" onclick="renameEntry()"> Rename </button>
+  
+     <span id="cancel-rename" title="Close">
+      
+  <svg onclick="cancelRename()" id="cancel-rename-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <line x1="6" y1="18" x2="18" y2="6" />
+  <line x1="6" y1="6" x2="18" y2="18" />
+</svg>
+
+</span>
+  
+   
+   <div id="rename-div-head">
+       
+      Rename Items
+
+       </div>
+       <br><br>
+       
+ <span class="notice-msg">NB: When renaming the selected items, should you leave the page or refresh it, you will not receive a notification upon completion. You can click on the "X" symbol, to close the box.
+ </span>
+   <br><br>
+   
+   <div id="rename-animation-div">
+    
+    Loading.....
+    
+   <!--    
+
+<svg class="rename-animation-svg" version="1.1" 
+
+	 viewBox="0 0 29.107 29.107" xml:space="preserve">
+    
+<g>
+	<g id="c149_moon">
+		<path id="_x3C_Compound_Path_x3E__7_" d="M14.558,2.079c6.877,0,12.471,5.597,12.471,12.473c0,6.877-5.594,12.476-12.471,12.476
+			c-6.879,0-12.478-5.599-12.478-12.476C2.08,7.676,7.679,2.079,14.558,2.079 M14.558,0C6.563,0,0,6.562,0,14.552
+			c0,7.995,6.563,14.555,14.558,14.555s14.549-6.56,14.549-14.555C29.106,6.562,22.552,0,14.558,0L14.558,0z"/>
+	</g>
+	<g id="Capa_1_226_">
+	</g>
+</g>
+</svg>
+     
+
+<svg class="rename-animation-svg" version="1.1" 
+
+	 viewBox="0 0 29.107 29.107" xml:space="preserve">
+    
+<g>
+	<g id="c149_moon">
+		<path id="_x3C_Compound_Path_x3E__7_" d="M14.558,2.079c6.877,0,12.471,5.597,12.471,12.473c0,6.877-5.594,12.476-12.471,12.476
+			c-6.879,0-12.478-5.599-12.478-12.476C2.08,7.676,7.679,2.079,14.558,2.079 M14.558,0C6.563,0,0,6.562,0,14.552
+			c0,7.995,6.563,14.555,14.558,14.555s14.549-6.56,14.549-14.555C29.106,6.562,22.552,0,14.558,0L14.558,0z"/>
+	</g>
+	<g id="Capa_1_226_">
+	</g>
+</g>
+</svg>
+     
+ 
+<svg class="rename-animation-svg" version="1.1" 
+
+	 viewBox="0 0 29.107 29.107" xml:space="preserve">
+    
+<g>
+	<g id="c149_moon">
+		<path id="_x3C_Compound_Path_x3E__7_" d="M14.558,2.079c6.877,0,12.471,5.597,12.471,12.473c0,6.877-5.594,12.476-12.471,12.476
+			c-6.879,0-12.478-5.599-12.478-12.476C2.08,7.676,7.679,2.079,14.558,2.079 M14.558,0C6.563,0,0,6.562,0,14.552
+			c0,7.995,6.563,14.555,14.558,14.555s14.549-6.56,14.549-14.555C29.106,6.562,22.552,0,14.558,0L14.558,0z"/>
+	</g>
+	<g id="Capa_1_226_">
+	</g>
+</g>
+</svg>
+     
+
+<svg class="rename-animation-svg" version="1.1" 
+
+	 viewBox="0 0 29.107 29.107" xml:space="preserve">
+    
+<g>
+	<g id="c149_moon">
+		<path id="_x3C_Compound_Path_x3E__7_" d="M14.558,2.079c6.877,0,12.471,5.597,12.471,12.473c0,6.877-5.594,12.476-12.471,12.476
+			c-6.879,0-12.478-5.599-12.478-12.476C2.08,7.676,7.679,2.079,14.558,2.079 M14.558,0C6.563,0,0,6.562,0,14.552
+			c0,7.995,6.563,14.555,14.558,14.555s14.549-6.56,14.549-14.555C29.106,6.562,22.552,0,14.558,0L14.558,0z"/>
+	</g>
+	<g id="Capa_1_226_">
+	</g>
+</g>
+</svg>
+     
+
+<svg class="rename-animation-svg" version="1.1" 
+
+	 viewBox="0 0 29.107 29.107" xml:space="preserve">
+    
+<g>
+	<g id="c149_moon">
+		<path id="_x3C_Compound_Path_x3E__7_" d="M14.558,2.079c6.877,0,12.471,5.597,12.471,12.473c0,6.877-5.594,12.476-12.471,12.476
+			c-6.879,0-12.478-5.599-12.478-12.476C2.08,7.676,7.679,2.079,14.558,2.079 M14.558,0C6.563,0,0,6.562,0,14.552
+			c0,7.995,6.563,14.555,14.558,14.555s14.549-6.56,14.549-14.555C29.106,6.562,22.552,0,14.558,0L14.558,0z"/>
+	</g>
+	<g id="Capa_1_226_">
+	</g>
+</g>
+</svg>
+     
+ 
+<svg class="rename-animation-svg" version="1.1" 
+
+	 viewBox="0 0 29.107 29.107" xml:space="preserve">
+    
+<g>
+	<g id="c149_moon">
+		<path id="_x3C_Compound_Path_x3E__7_" d="M14.558,2.079c6.877,0,12.471,5.597,12.471,12.473c0,6.877-5.594,12.476-12.471,12.476
+			c-6.879,0-12.478-5.599-12.478-12.476C2.08,7.676,7.679,2.079,14.558,2.079 M14.558,0C6.563,0,0,6.562,0,14.552
+			c0,7.995,6.563,14.555,14.558,14.555s14.549-6.56,14.549-14.555C29.106,6.562,22.552,0,14.558,0L14.558,0z"/>
+	</g>
+	<g id="Capa_1_226_">
+	</g>
+</g>
+</svg>
+     
+
+<svg class="rename-animation-svg" version="1.1" 
+
+	 viewBox="0 0 29.107 29.107" xml:space="preserve">
+    
+<g>
+	<g id="c149_moon">
+		<path id="_x3C_Compound_Path_x3E__7_" d="M14.558,2.079c6.877,0,12.471,5.597,12.471,12.473c0,6.877-5.594,12.476-12.471,12.476
+			c-6.879,0-12.478-5.599-12.478-12.476C2.08,7.676,7.679,2.079,14.558,2.079 M14.558,0C6.563,0,0,6.562,0,14.552
+			c0,7.995,6.563,14.555,14.558,14.555s14.549-6.56,14.549-14.555C29.106,6.562,22.552,0,14.558,0L14.558,0z"/>
+	</g>
+	<g id="Capa_1_226_">
+	</g>
+</g>
+</svg>
+     
+
+<svg class="rename-animation-svg" version="1.1" 
+
+	 viewBox="0 0 29.107 29.107" xml:space="preserve">
+    
+<g>
+	<g id="c149_moon">
+		<path id="_x3C_Compound_Path_x3E__7_" d="M14.558,2.079c6.877,0,12.471,5.597,12.471,12.473c0,6.877-5.594,12.476-12.471,12.476
+			c-6.879,0-12.478-5.599-12.478-12.476C2.08,7.676,7.679,2.079,14.558,2.079 M14.558,0C6.563,0,0,6.562,0,14.552
+			c0,7.995,6.563,14.555,14.558,14.555s14.549-6.56,14.549-14.555C29.106,6.562,22.552,0,14.558,0L14.558,0z"/>
+	</g>
+	<g id="Capa_1_226_">
+	</g>
+</g>
+</svg>
+     
+              
+   -->             
+
+   </div>
+   
+ <div id="rename-folder-arrow">
+    
+       
+  <span class = "rename-arrow" title="Show All"> 
+  
+<svg class="invert-rename-svg" id="rename-folder-invert-svg" data-invert="false" fill="#000000" version="1.1" 
+	 viewBox="0 0 386.257 386.257" xml:space="preserve">
+<polygon points="0,96.879 193.129,289.379 386.257,96.879 "/>
+</svg>
+
+  </span>&nbsp;No. of folder(s): <span id="rename-arrow-folder-length"></span>
+       <br><br>
+   </div>
+   
+     
+ 
+   
+    <div id="rename-folder-div">
+        
+        
+    </div>
+    
+    
+    
+      <div id="rename-file-arrow">
+    
+       
+  <span class = "rename-arrow" title="Show All"> 
+  
+<svg class="invert-rename-svg" id="rename-file-invert-svg" data-invert="false" fill="#000000" version="1.1" 
+	 viewBox="0 0 386.257 386.257" xml:space="preserve">
+<polygon points="0,96.879 193.129,289.379 386.257,96.879 "/>
+</svg>
+
+  </span>&nbsp;No. of file(s): <span id="rename-arrow-file-length"></span>
+        <br><br>
+   </div>
+   
+     
+  <div id="rename-file-div">
+      
+  </div>
+  
+  
+  
+  
+  </div>
+     
+ </div>
+ 
+ <!-- Compress files div  -->
+ 
+ <div id="compress-div">
+    
+   <div id="compress-div-content">
+   
+     <span id="cancel-compress" title="Close">
+      
+  <svg onclick="cancelCompress()" id="cancel-compress-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <line x1="6" y1="18" x2="18" y2="6" />
+  <line x1="6" y1="6" x2="18" y2="18" />
+</svg>
+
+</span>
+
+   
+   <div id="compress-div-head">
+       
+      Compress Items
+
+       </div>
+       <br>
+       
+ <span class="notice-msg">NB: When compressing the selected items, should you leave the page or refresh it, you will not receive a notification upon completion. You can click on the "X" symbol, to close the box.</span>
+   <br>
+   <br>
+       
+  <div id="compress-div-text">
+      
+   Choose compress option:
+  </div>
+  <br>
+  <div>
+  <select id="compress-div-select">
+      
+  <option selected> Compress all into one </option>
+  <option> Compress each separately </option>   
+  
+   
+   </select>
+   </div>
+   
+   
+  <div id="compress-name">
+      <br>
+  <input type="text" id="compress-value" placeholder="Name of compressed file">
+  
+      
+  </div>
+  
+   <br>
+   
+ <div id="compress-option-text">
+ This option creates a compressed file containing all selected item(s).
+ </div>
+  <br>
+  
+  <div id="compress-download-div">
+      
+   <input type="checkbox" id="compress-download-box" >
+   
+   <span id="compress-download-text"> Download compressed file. </span>
+   
+   </div>
+   <br>
+   
+  <div id="compress-delete-div">
+      
+   <input type="checkbox" id="compress-delete-box" >
+   
+   <span id="compress-delete-text"> Delete selected item(s) after compressing. </span>
+   
+   </div>
+   <br>
+   
+   <br>
+   <div id="compress-btn-div">
+       
+      <button id="compress-btn" onclick="compressEntry()">
+          
+      Compress 
+      
+       </button>
+   </div>
+   
+  <div>
+      
+ </div>
+  
+    
+  </div>
+     
+ </div>
+  
+  <!-- Delete Files Div -->
+   
+  <div id="delete-div">
+      
+   <div id="delete-div-content">
+   
+   <div id="delete-div-head">
+       
+     Delete Items
+   </div>
+   <br>
+   
+   <div id="delete-div-text">
+       
+    Are you sure you want to delete these item(s).
+   </div><br>
+   <span class="notice-msg">NB:
+   
+   When deleting the selected items, should you leave the page or refresh it, you will not receive a notification upon completion.
+ 
+   </span>
+   <br><br>
+   
+   <div id="delete-div-btns">
+      
+    <button id="delete-btn" onclick="deleteEntry()"> Yes </button>
+   
+   <button id="cancel-delete" onclick="closeDelete()"> No </button>
+   </div>
+       
+   </div>
+      
+  </div>
+   
+  <!-- Upload Files Div -->
+  
+  <div id="upload-div">
+    
+   <div id="upload-content">
+ 
+ 
+ <button id='upload-btn' form="upload-form" type="submit"> Upload </button>
+ 
+    <span id="cancel-upload" title="Close">
+      
+  <svg onclick="closeUpload()" id="cancel-upload-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <line x1="6" y1="18" x2="18" y2="6" />
+  <line x1="6" y1="6" x2="18" y2="18" />
+</svg>
+
+</span>
+
+    <div id="upload-head"> Upload Files </div>
+    <br>
+    
+   <span class="notice-msg">NB: When creating a new folder or uploading files, should you leave the page or refresh it, you will not receive a notification upon completion. You can click on the "X" symbol, to close the box. </span>
+   <br>
+    <div id="folder-div">
+        
+  <input type="text" name="folder-name" id="folder-name" placeholder="Enter Folder Name">
+  
+  <br><br>
+  
+  <button id="folder-btn" onclick="createDirectory()"> Create new folder </button>
+    </div>
+    <br><br>
+    <span id="or"> OR </span>
+    
+  <div id="files-div">
+      
+   <form id="upload-form" method="POST" enctype="multipart/form-data" action="{{%%FILEOPERATIONURL%%}}"></form>
+    
+    <input form="upload-form" type="file" name="uploaded-files" id="real-file-btn" onchange="showFiles()" multiple>
+    <button id="fake-file-btn" onclick="chooseFile()">  Choose File(s) </button>
+    <span id="files-no"> No. of files: <span id="file-no">0 </span></span>
+   </div>
+   
+   
+  <br>
+ 
+ <div id="upload-animation-div">
+    <br>
+    Loading.....
+    
+    </div>
+
+  <div id="uploaded-files-div">
+      
+      
+   </div>
+
+
+   </div>
+     
+  </div>
+  
+  <!-- Confiram message -->
+  
+ 
+<div class="confirm-message-box">
+    
+   <div class="confirm-box">
+    
+    <span class="confirm-head-text"> Confirm Connection </span>
+    
+   
+    <span class="Confirm-text"> 
+    
+      </span>
+      
+  <span class="btn-box">
+      
+       <button class="yes-btn" onclick="allowAccess(event)" data-ip=""> Yes </button> 
+  
+  <button class="no-btn" onclick="denyAccess(event)" data-ip=""> No </button> </span>
+  
+  
+   </div>
+    
+ </div>
+  
+ <!-- Owner's upload box -->
+ 
+   <span id="upload-box" title="Upload Files" onclick="showUploadDiv()">
+ <svg id="upload-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+</svg>
+
+       
+   </span>
+   
+   <!-- client upload box -->
+    <span id="client-upload-box" title="Upload Files" onclick="showUploadDiv()">
+ <svg id="client-upload-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+</svg>
+
+       
+   </span>
+   
+   
+ <a href="{{%URL%}}" id="config-url">
+     <span id="config-box" title="Configuration File">
+        
+  <svg id="config-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" />
+  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+</svg>
+
+        
+    </span></a>
+    
+  <span id="menu-box">
+           
+
+<svg id="menu-icon"  viewBox="0 0 24 24" >
+
+
+<title/>
+
+<g id="Complete">
+
+<g id="align-left">
+
+<g>
+
+<polygon fill="#ffffff" points="12.9 18 4.1 18 4.1 18 12.9 18 12.9 18" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+
+<polygon fill="#ffffff" points="20 14 4 14 4 14 20 14 20 14" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+
+<polygon fill="#ffffff" points="12.9 10 4.1 10 4.1 10 12.9 10 12.9 10" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+
+<polygon fill="#ffffff" points="20 6 4 6 4 6 20 6 20 6" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+
+</g>
+
+</g>
+
+</g>
+
+</svg>
+       
+       </span>
+      
+   <div id="head">
+       
+   <div id="head-text">
+        {{%SERVERNAME%}} File Server</div>
+   <br>
+   <div id="links">
+ <a href={{%HOME%}}>Home</a>
+ 
+
+ 
+{{%LINKS%}}
+
+ 
+ </div>
+       
+   </div>
+  <br>
+  
+  <div id="filesContainer" >
+   
+  {{%Files%}}
+  
+  </div>
+
+ <audio id="notification-sound">
+     
+ <source src="{{%URLPREFIX%}}/notification.mp3" type="audio/mpeg">
+  </audio>
+  
+  <script>
+  
+let unloadPage = false;
+
+let renameFileArray = [];
+
+let renameFolderArray = [];
+
+let currentTimestamp = 0;
+
+let renameIndex = 0;
+
+let detailsArray = [];
+
+let detailsContent = [];
+
+let detailsRequestNo = 0;
+    
+let count = 0;
+
+let globalLength = 0;
+
+let moreOptionsCount = 0;
+
+let currentOperation = "";
+
+let filesList = [];
+
+let oldWidth = parseFloat(document.documentElement.offsetWidth);
+
+
+let allEntries = Array.from(document.querySelectorAll(".entries"));
+
+let checkEntries =  Array.from(document.querySelectorAll(".check-item"));
+
+ let configData = {};
+ 
+ // when the page unloads
+
+function detectOperation()  {
+   
+   unloadPage = true; 
+   
+}
+
+// touch events
+
+allEntries.forEach((el, index) => {
+  
+   
+  el.addEventListener("touchstart", e => {
+  
+ let timeoutId =  setTimeout(() => {
+     
+   
+let disp = getComputedStyle(document.querySelector('#select-div')).getPropertyValue("display").toString().toLowerCase();
+
+if(disp == "flex") {
+    
+    
+    
+}  else {
+      
+ document.querySelector('#select-div').style.display = "flex";
+   
+ let elemChecked = checkEntries[index].getAttribute("data-checked");
+  
+  if(elemChecked.toString() == "false") {
+      
+  checkEntries[index].setAttribute("data-checked", true);
+   
+ checkEntries[index].style.background = "gold";
+ 
+  }
+  
+  try {
+      
+      navigator.vibrate(100);
+      
+  } catch (err) {
+      
+  }
+  
+document.querySelector("body").dispatchEvent(new Event("checkitem"));
+
+}
+
+  }, 500);
+  
+  el.addEventListener("touchmove", () => {
+    
+  clearTimeout (timeoutId);  
+      
+  })
+    
+   el.addEventListener("touchend", () => {
+    
+  clearTimeout (timeoutId);  
+      
+  })
+})
+ 
+})
+
+
+
+let fileEntries =  Array.from(document.querySelectorAll(".specific-name"));
+
+ 
+allEntries.forEach((el, index, array) => {
+    
+el.addEventListener("click", e => {
+    
+let disp = getComputedStyle(document.querySelector('#select-div')).getPropertyValue("display").toString().toLowerCase();
+
+ if(disp == "flex") {
+     
+let elemChecked = checkEntries[index].getAttribute("data-checked");
+      
+     e.preventDefault();
+     
+  
+  if(elemChecked.toString() == "false") {
+      
+   checkEntries[index].setAttribute("data-checked", true);
+   
+ checkEntries[index].style.background = "gold";
+ 
+document.querySelector("body").dispatchEvent(new Event("checkitem"));
+  } else {
+      
+   checkEntries[index].setAttribute("data-checked", false);
+   
+   checkEntries[index].style.background = "white";
+   
+   document.querySelector("body").dispatchEvent(new Event("checkitem"));
+  }
+ }
+  
+})
+
+});
+
+
+// For the more options
+
+document.querySelector("#more-ops").addEventListener("mouseover", () => {
+    
+  document.querySelector("#more-path1").style.fill = "#DAA520";
+  
+   document.querySelector("#more-path2").setAttribute("stroke", "#DAA520");
+  
+})
+
+document.querySelector("#more-ops").addEventListener("mouseout", () => {
+    
+  document.querySelector("#more-path1").style.fill = "#000000";
+  
+   document.querySelector("#more-path2").setAttribute("stroke", "#000000");
+  
+ })
+
+// For the details list
+
+
+document.querySelector("#details-list").addEventListener("mouseover", () =>  {
+    
+  document.querySelector("#details-circle").setAttribute("stroke", "#DAA520");
+  
+  document.querySelector("#details-path1").setAttribute("stroke", "#DAA520");
+  
+  document.querySelector("#details-path2").setAttribute("stroke", "#DAA520");
+  
+})
+
+
+document.querySelector("#details-list").addEventListener("mouseout", () =>  {
+    
+  document.querySelector("#details-circle").setAttribute("stroke", "#000000");
+  
+  document.querySelector("#details-path1").setAttribute("stroke", "#000000");
+  
+  document.querySelector("#details-path2").setAttribute("stroke", "#000000");
+  
+})
+
+
+
+let uploadForm = document.querySelector("#upload-form");
+  
+  uploadForm.addEventListener("submit", e => {
+      
+     e.preventDefault();
+      
+   new FormData(uploadForm);
+      
+  });
+  
+
+uploadForm.addEventListener("formdata", async (e) => {
+    
+const data = e.formData;
+
+   
+ let request = new Request("{{%%FILEOPERATIONURL%%}}/upload", {
+   
+   method: "POST",
+   mode: "cors",
+   headers: {
+       
+  location: location.href
+  
+   },
+   body: data 
+   
+ })
+  
+   document.querySelector("#upload-btn").style.pointerEvents = "none";
+ 
+  document.querySelector("#upload-btn").style.opacity = 0.2;
+ 
+  try {
+      
+   let response = await fetch(request);
+   
+   let data = "";
+   
+   if (response.status == 400) {
+       
+       
+   data = await response.text();
+   
+   alert (data);
+   
+   document.querySelector("#upload-btn").style.pointerEvents = "all";
+ 
+  document.querySelector("#upload-btn").style.opacity = 1;
+
+   
+   return;
+   
+   } else if (response.status == 403) {
+  
+         
+   data = await response.text();
+   
+   alert (data);
+   
+    document.querySelector("#upload-btn").style.pointerEvents = "all";
+ 
+  document.querySelector("#upload-btn").style.opacity = 1;
+
+
+   
+   return;
+       
+   } else if (response.status == 500) {
+       
+             
+   data = await response.text();
+   
+   alert (data);
+   
+    document.querySelector("#upload-btn").style.pointerEvents = "all";
+ 
+  document.querySelector("#upload-btn").style.opacity = 1;
+
+
+   
+   return;
+
+   } else if (response.status == 201) {
+       
+            
+   data = await response.text();
+   
+   alert (data);
+   
+    document.querySelector("#upload-btn").style.pointerEvents = "all";
+ 
+  document.querySelector("#upload-btn").style.opacity = 1;
+
+
+   
+   return;
+
+   } else {
+       
+   
+   alert ("An unknown error occurred.");
+   
+    document.querySelector("#upload-btn").style.pointerEvents = "all";
+ 
+  document.querySelector("#upload-btn").style.opacity = 1;
+
+
+   
+   return;
+
+   }
+       
+  } catch (err) {
+      
+ if(unloadPage) {
+     
+     return;
+ }   
+    alert ("An unknown error occurred.");
+    
+     document.querySelector("#upload-btn").style.pointerEvents = "all";
+ 
+  document.querySelector("#upload-btn").style.opacity = 1;
+
+
+   
+   return;  
+      
+  }
+ 
+
+    
+   
+});
+ 
+ 
+ // For the items selection
+ 
+ document.querySelector("body").addEventListener("checkitem", e => {
+     
+let checkedLength = 0;
+
+let itemText = '';
+
+ let checkItems =  Array.from(document.querySelectorAll(".check-item"));
+ 
+let fileEntries =  Array.from(document.querySelectorAll(".specific-name"));
+
+let checkElems = [];
+ 
+ for(let i = 0; i < checkItems.length; i++) {
+       
+let checked = checkItems[i].getAttribute("data-checked").toString() == "true";
+       
+     if(checked) {
+         
+     checkedLength += 1;
+     
+ checkElems.push(fileEntries[i])
+   
+
+     }
+     
+   };
+   
+ itemText = checkedLength == 1 ? "item" : "items";
+ 
+ globalLength = checkedLength;
+ 
+ if (checkedLength == checkItems.length) {
+     
+  document.querySelector("#select-all-svg").classList.add("check-all");
+ } 
+ 
+ if (checkedLength != checkItems.length) {
+     
+     document.querySelector("#select-all-svg").classList.remove("check-all");
+ }
+ 
+ document.querySelector("#select-no").innerHTML = ` ${checkedLength} `;
+ 
+ document.querySelector("#select-item").innerHTML = ` ${itemText} `;
+ 
+ document.querySelector("#select-div").style.display = "flex";
+     
+  
+ document.querySelector("#file-ops-div").style.display = "flex";
+ 
+ ///////////////////////////
+ 
+ let folderChecked = checkElems.find(el => el.classList.contains("folder-entry"));
+ 
+   if(folderChecked || (checkedLength == 0)) {
+      
+ document.querySelector("#download-files").style.pointerEvents = "none";
+ 
+ document.querySelector("#download-files").style.opacity = 0.2;
+  
+  } else {
+      
+       
+ document.querySelector("#download-files").style.pointerEvents = "all";
+ 
+ document.querySelector("#download-files").style.opacity = 1;
+    
+  }
+  
+  
+  
+  if(checkedLength == 0) {
+      
+   document.querySelector("#compress-files").style.pointerEvents = "none";
+ 
+ document.querySelector("#compress-files").style.opacity = 0.2;
+  
+  document.querySelector("#delete-files").style.pointerEvents = "none";
+ 
+ document.querySelector("#delete-files").style.opacity = 0.2;
+  
+document.querySelector("#rename-list").style.pointerEvents = "none";
+ 
+ document.querySelector("#rename-list").style.opacity = 0.2;
+    
+document.querySelector("#details-list").style.pointerEvents = "none";
+ 
+ document.querySelector("#details-list").style.opacity = 0.2;
+ 
+  } else {
+      
+  document.querySelector("#compress-files").style.pointerEvents = "all";
+ 
+ document.querySelector("#compress-files").style.opacity = 1;
+  
+  document.querySelector("#delete-files").style.pointerEvents = "all";
+ 
+ document.querySelector("#delete-files").style.opacity = 1;
+       
+document.querySelector("#rename-list").style.pointerEvents = "all";
+ 
+ document.querySelector("#rename-list").style.opacity = 1;
+    
+document.querySelector("#details-list").style.pointerEvents = "all";
+ 
+ document.querySelector("#details-list").style.opacity = 1;
+
+ 
+  }
+  
+  
+  
+  if(folderChecked || (checkedLength == 0)) {
+      
+      
+ document.querySelector("#share-list").style.pointerEvents = "none";
+ 
+ document.querySelector("#share-list").style.opacity = 0.2;
+   
+      
+  } else {
+      
+ document.querySelector("#share-list").style.pointerEvents = "all";
+ 
+ document.querySelector("#share-list").style.opacity = 1;
+   
+
+      
+  }
+
+  
+ });
+ 
+ // For increasing the body's height
+
+
+  document.querySelector("body").addEventListener("checkitem", e => {
+
+count += 1;
+
+  if(count == 1) {
+      
+  
+let documentHeight = parseFloat(document.documentElement.offsetHeight);
+
+
+let fileOpsHeight = parseFloat(document.querySelector('#file-ops-div').offsetHeight);
+
+let totalHeight = fileOpsHeight + documentHeight;
+
+document.querySelector("body").style.height = `${totalHeight}px`;
+
+
+} else {
+    
+  return;
+}
+
+})
+
+
+// Hides the more div
+
+
+  document.querySelector("#empty-div").onclick = (e) => {
+      
+   
+   e.currentTarget.style.display = "none";
+     document.querySelector("#more-div").style.display = "none"; 
+     
+   
+  }
+  
+
+// function for submitting password when Enter key is pressed
+
+function submitPassword(e)  {
+    
+ let code = e.which || e.keyCode;
+ 
+ if(parseInt(code) == 13) {
+     
+  checkOperationPassword();
+     
+ }
+ 
+}
+
+ // function to show more file operations
+
+ 
+ function showMoreOptions() {
+     
+     
+ let disp = getComputedStyle(document.querySelector('#more-div')).getPropertyValue("display").toString().toLowerCase();
+ 
+  if( disp == "none") {
+   
+  document.querySelector("#more-div").style.display = "block";
+     
+     
+document.querySelector('#empty-div').style.display = "block";   
+
+  } else {
+      
+        
+  document.querySelector("#more-div").style.display = "none";
+     
+     
+document.querySelector('#empty-div').style.display = "none";    
+  }
+
+ }
+ 
+ 
+ // Function to check all file items
+ 
+ function checkAll() {
+     
+ let checkItems =    Array.from(document.querySelectorAll(".check-item"));
+ 
+ let checkedLength = 0;
+ 
+ let isAll;
+ 
+for (let i = 0; i < checkItems.length; i++) {
+    
+  if(checkItems[i].getAttribute("data-checked").toString() == "false") {
+    
+    isAll = false;
+   break;
+   
+  } else if (checkItems[i].getAttribute("data-checked").toString() == "true") {
+      
+ checkedLength += 1;
+  isAll = checkedLength == checkItems.length ? true : false;
+
+  }
+    
+}
+
+
+if(isAll) {
+    
+   for(let i = 0; i < checkItems.length; i++) {
+   
+   checkItems[i].setAttribute("data-checked", false);
+   
+   checkItems[i].style.background = "white";
+
+}
+
+} else {
+    
+  
+   for(let i = 0; i < checkItems.length; i++) {
+   
+   checkItems[i].setAttribute("data-checked", true);
+   
+   checkItems[i].style.background = "gold";
+
+}
+
+}
+
+ 
+document.querySelector("body").dispatchEvent(new Event("checkitem"));
+  }
+ 
+ 
+ // Function for Cancelthe file operations 
+ 
+ function closeFileOps() {
+     
+     
+  document.querySelector("#more-div").style.display = "none";
+     
+  document.querySelector("#empty-div").style.display = "none";
+  
+let documentHeight = parseFloat(document.documentElement.offsetHeight);
+
+
+  
+let fileOpsHeight = parseFloat(document.querySelector('#file-ops-div').offsetHeight);
+     
+ let checkItems =  Array.from(document.querySelectorAll(".check-item"));
+ 
+ for (let i = 0; i < checkItems.length; i++) {
+ 
+ checkItems[i].setAttribute("data-checked", false);
+ 
+   checkItems[i].style.background = "white";
+ }
+ 
+  document.querySelector("#select-div").style.display = "none";
+  
+  document.querySelector("#file-ops-div").style.display = "none";
+
+let totalHeight = documentHeight - fileOpsHeight;
+
+document.querySelector("body").style.height = `${totalHeight}px`;
+
+count = 0;
+
+  
+ }
+ 
+ 
+  
+ (async () => {
+     
+     try {
+       
+  let res = await fetch ("{{DETAILSURL}}/");  
+  
+  if(res.status != 200) {
+      
+  throw new Error ();
+  
+  }
+  
+  let data = await res.json();
+  
+  configData = data;
+
+ let realOwner = document.querySelector("body").getAttribute("data-owner").toString();
+ 
+ if(realOwner == "true") {
+   
+   
+ let owner = configData.data.owner;
+ 
+ if(owner.toString() == "true") {
+
+   confirmClient();
+   
+ } else {
+     
+   
+ }
+   
+ }     
+
+
+ if(realOwner == "false") {
+   
+   
+ let owner = configData.data.owner;
+ 
+ if(owner.toString() == "false") {
+
+   changeAccess();
+   
+ } else {
+     
+   
+ }
+   
+ }     
+
+
+   } catch(err) {
+       
+    configData = {};
+    
+    
+ let realOwner = document.querySelector("body").getAttribute("data-owner").toString();
+  
+ if(realOwner == "true") {
+     
+ 
+  confirmClient();
+  
+ }
+ 
+  if(realOwner == "false") {
+ 
+  changeAccess();
+  
+}
+   }
+      
+  
+     
+ })();
+      
+ 
+   
+  function showUploadDiv() {
+      
+document.querySelector("#more-div").style.display = "none";
+
+
+ let allowFileOperation;
+ 
+ let fileOperationsPassword;
+ 
+ 
+      
+   try {
+   
+   allowFileOperation = configData.data.allowFileOperation;
+ 
+    
+   } catch (err) {
+       
+       
+ allowFileOperation = true;
+       
+   }
+   
+   try {
+   
+   fileOperationsPassword = configData.data.fileOperationsPassword;
+       
+       
+   } catch (err) {
+     
+   fetch("{{DETAILSURL}}")
+    .then(res => res.json())
+    .then(data => {
+   
+  fileOperationsPassword  = JSON.parse(data).data.fileOperationsPassword; 
+     
+    }).catch(err => {
+        
+     alert ("You can't upload files because an unknown error occurred.")
+     
+     return;
+    })
+       
+   }
+     
+   
+ 
+    if(allowFileOperation) {
+        
+     
+   if(fileOperationsPassword) {   
+ 
+ document.querySelector("#current-operation").innerHTML = "upload files.";
+ 
+ document.querySelector("#operation-password").value = "";
+ 
+ document.querySelector("#operation-password-div").style.display = "flex";
+
+ currentOperation = "upload";
+
+   } else {
+       
+        document.querySelector("#current-operation").innerHTML = "upload files.";
+        
+    document.querySelector("#upload-div").style.display = "flex"; 
+    
+     currentOperation = "upload";
+   }
+   
+   
+    } else {
+        
+   alert (`You are not allowed to upload files.`);
+   return;
+    }
+    
+    
+  }
+  
+  
+  // For showing the delete div
+  
+function showDeleteDiv() {
+    
+document.querySelector("#more-div").style.display = "none";
+
+
+ let allowFileOperation;
+ 
+ let fileOperationsPassword;
+ 
+      
+   try {
+   
+   allowFileOperation = configData.data.allowFileOperation;
+ 
+    
+   } catch (err) {
+       
+       
+ allowFileOperation = true;
+       
+   }
+   
+   try {
+   
+   fileOperationsPassword = configData.data.fileOperationsPassword;
+       
+       
+   } catch (err) {
+     
+   fetch("{{DETAILSURL}}")
+    .then(res => res.json())
+    .then(data => {
+   
+  fileOperationsPassword  = JSON.parse(data).data.fileOperationsPassword; 
+     
+    }).catch(err => {
+        
+     alert ("You can't delete the selected item(s) because an unknown error occurred.")
+     
+     return;
+    })
+       
+   }
+     
+     
+       if(allowFileOperation) {
+        
+     
+   if(fileOperationsPassword) {   
+ 
+ document.querySelector("#current-operation").innerHTML = "delete item(s).";
+ 
+ document.querySelector("#operation-password").value = "";
+ 
+ document.querySelector("#operation-password-div").style.display = "flex";
+
+ currentOperation = "delete";
+
+   } else {
+       
+       document.querySelector("#delete-div").style.display = "flex";
+       
+     currentOperation = "delete";
+     
+     
+   }
+   
+   
+    } else {
+        
+   alert (`You are not allowed to delete item(s).`);
+   return;
+    }
+    
+  
+  
+  }
+   
+ // function for showing download div
+
+function showDownloadDiv() {
+    
+  document.querySelector("#more-div").style.display = "none";
+
+
+ let allowFileOperation;
+ 
+ let fileOperationsPassword;
+ 
+      
+   try {
+   
+   allowFileOperation = configData.data.allowFileOperation;
+ 
+    
+   } catch (err) {
+       
+       
+ allowFileOperation = true;
+       
+   }
+   
+   try {
+   
+   fileOperationsPassword = configData.data.fileOperationsPassword;
+       
+       
+   } catch (err) {
+     
+   fetch("{{DETAILSURL}}")
+    .then(res => res.json())
+    .then(data => {
+   
+  fileOperationsPassword  = JSON.parse(data).data.fileOperationsPassword; 
+     
+    }).catch(err => {
+        
+     alert ("You can't download the selected item(s) because an unknown error occurred.")
+     
+     return;
+    })
+       
+   }
+     
+     
+       if(allowFileOperation) {
+        
+     
+   if(fileOperationsPassword) {   
+ 
+ document.querySelector("#current-operation").innerHTML = "download item(s).";
+ 
+ document.querySelector("#operation-password").value = "";
+ 
+ document.querySelector("#operation-password-div").style.display = "flex";
+
+ currentOperation = "download";
+
+   } else {
+       
+     currentOperation = "download";
+     
+   
+     checkDownloadItems();
+   }
+   
+   
+    } else {
+        
+   alert (`You are not allowed to download item(s).`);
+   return;
+    }
+    
+  
+  
+}
+
+
+// function for showing compress div
+
+
+function showCompressDiv() {
+    
+  document.querySelector("#more-div").style.display = "none";
+
+
+ let allowFileOperation;
+ 
+ let fileOperationsPassword;
+ 
+      
+   try {
+   
+   allowFileOperation = configData.data.allowFileOperation;
+ 
+    
+   } catch (err) {
+       
+       
+ allowFileOperation = true;
+       
+   }
+   
+   try {
+   
+   fileOperationsPassword = configData.data.fileOperationsPassword;
+       
+       
+   } catch (err) {
+     
+   fetch("{{DETAILSURL}}")
+    .then(res => res.json())
+    .then(data => {
+   
+  fileOperationsPassword  = JSON.parse(data).data.fileOperationsPassword; 
+     
+    }).catch(err => {
+        
+     alert ("You can't compress the selected item(s) because an unknown error occurred.")
+     
+     return;
+    })
+       
+   }
+     
+     
+       if(allowFileOperation) {
+        
+     
+   if(fileOperationsPassword) {   
+ 
+ document.querySelector("#current-operation").innerHTML = "compress item(s).";
+ 
+ document.querySelector("#operation-password").value = "";
+ 
+ document.querySelector("#operation-password-div").style.display = "flex";
+
+ currentOperation = "compress";
+
+   } else {
+       
+     currentOperation = "compress";
+     
+           
+ document.querySelector("#compress-div").style.display = "flex";
+ 
+    
+   }
+   
+   
+    } else {
+        
+   alert (`You are not allowed to compress item(s).`);
+   return;
+    }
+    
+  
+  
+}
+
+
+
+// function for closing rename div
+
+function cancelRename() {
+    
+  document.querySelector("#rename-div").style.display = "none";
+  
+  document.querySelector("#empty-div").style.display = "none";
+  
+document.querySelector("#rename-animation-div").style.display = "flex";
+
+
+document.querySelector("#rename-folder-div").style.display = "none";
+
+
+document.querySelector("#rename-file-div").style.display = "none";
+
+}
+
+
+// function for closing details div
+
+function cancelDetails() {
+
+ detailsArray.push(currentTimestamp);
+
+detailsRequestNo  = 0;
+
+  document.querySelector("#details-div").style.display = "none";
+  
+  document.querySelector("#empty-div").style.display = "none";
+  
+  document.querySelector("#details-item-div").style.display = "none";
+  
+  
+ document.querySelector("#details-loading-div").style.display = "flex";
+ 
+ 
+ document.querySelector("#details-no-box").style.display = "none";
+ 
+ document.querySelector("#details-btn-div").style.display = "none";
+  
+}
+
+
+// function for showing Rename div
+
+function showRenameDiv() {
+    
+    
+  document.querySelector("#more-div").style.display = "none";
+
+ let allowFileOperation;
+ 
+ let fileOperationsPassword;
+ 
+      
+   try {
+   
+   allowFileOperation = configData.data.allowFileOperation;
+ 
+    
+   } catch (err) {
+       
+       
+ allowFileOperation = true;
+       
+   }
+   
+   try {
+   
+   fileOperationsPassword = configData.data.fileOperationsPassword;
+       
+       
+   } catch (err) {
+     
+   fetch("{{DETAILSURL}}")
+    .then(res => res.json())
+    .then(data => {
+   
+  fileOperationsPassword  = JSON.parse(data).data.fileOperationsPassword; 
+     
+    }).catch(err => {
+        
+     alert ("You can't rename the selected item(s) because an unknown error occurred.")
+     
+     return;
+    })
+       
+   }
+     
+     
+       if(allowFileOperation) {
+  
+  if(parseInt(globalLength) > 1000)  {
+    
+  document.querySelector("#empty-div").style.display = "none";
+     
+    alert ("You can only rename '1000' items at once.");
+    
+    return;
+  }
+     
+   if(fileOperationsPassword) {   
+ 
+ document.querySelector("#current-operation").innerHTML = "rename item(s).";
+ 
+ document.querySelector("#operation-password").value = "";
+ 
+ document.querySelector("#operation-password-div").style.display = "flex";
+
+ currentOperation = "rename";
+
+   } else {
+       
+  if(parseInt(globalLength) > 1000)  {
+      document.querySelector("#empty-div").style.display = "none";
+     
+    alert ("You can only rename '1000' items at once.");
+    
+    return;
+  }
+     
+     currentOperation = "rename";
+     
+           
+ document.querySelector("#rename-div").style.display = "flex";
+ 
+ displayRenameItems();
+    
+   }
+   
+   
+    } else {
+       
+  document.querySelector("#empty-div").style.display = "none";
+   
+   alert (`You are not allowed to rename item(s).`);
+   return;
+    }
+    
+  
+}
+
+
+// function for showing details Div
+
+
+function showDetailsDiv() {
+    
+    
+  document.querySelector("#more-div").style.display = "none";
+
+ let allowFileOperation;
+ 
+ let fileOperationsPassword;
+ 
+      
+   try {
+   
+   allowFileOperation = configData.data.allowFileOperation;
+ 
+    
+   } catch (err) {
+       
+       
+ allowFileOperation = true;
+       
+   }
+   
+   try {
+   
+   fileOperationsPassword = configData.data.fileOperationsPassword;
+       
+       
+   } catch (err) {
+     
+   fetch("{{DETAILSURL}}")
+    .then(res => res.json())
+    .then(data => {
+   
+  fileOperationsPassword  = JSON.parse(data).data.fileOperationsPassword; 
+     
+    }).catch(err => {
+        
+     alert ("You can't view the details of the selected item(s) because an unknown error occurred.")
+     
+     return;
+    })
+       
+   }
+     
+     
+       if(allowFileOperation) {
+  
+  if(parseInt(globalLength) > 1000)  {
+    
+  document.querySelector("#empty-div").style.display = "none";
+     
+    alert ("You can only view the details of '1000' items at once.");
+    
+    return;
+  }
+     
+   if(fileOperationsPassword) {   
+ 
+ document.querySelector("#current-operation").innerHTML = " view the details of the selected item(s).";
+ 
+ document.querySelector("#operation-password").value = "";
+ 
+ document.querySelector("#operation-password-div").style.display = "flex";
+
+ currentOperation = "details";
+
+   } else {
+       
+  if(parseInt(globalLength) > 1000)  {
+      document.querySelector("#empty-div").style.display = "none";
+     
+    alert ("You can only view the details of '1000' items at once.");
+    
+    return;
+  }
+     
+     currentOperation = "details";
+     
+           
+ document.querySelector("#details-div").style.display = "flex";
+ 
+ getEntryDetails();
+    
+   }
+   
+   
+    } else {
+     
+  document.querySelector("#empty-div").style.display = "none";
+     
+   alert (`You are not allowed to  view the details of the selected item(s).`);
+   return;
+    }
+    
+  
+}
+
+// function for showing share div
+
+function showShareDiv() {
+    
+    
+  document.querySelector("#more-div").style.display = "none";
+
+ let allowFileOperation;
+ 
+ let fileOperationsPassword;
+ 
+      
+   try {
+   
+   allowFileOperation = configData.data.allowFileOperation;
+ 
+    
+   } catch (err) {
+       
+       
+ allowFileOperation = true;
+       
+   }
+   
+   try {
+   
+   fileOperationsPassword = configData.data.fileOperationsPassword;
+       
+       
+   } catch (err) {
+     
+   fetch("{{DETAILSURL}}")
+    .then(res => res.json())
+    .then(data => {
+   
+  fileOperationsPassword  = JSON.parse(data).data.fileOperationsPassword; 
+     
+    }).catch(err => {
+        
+     alert ("You can't share the selected files because an unknown error occurred.")
+     
+     return;
+    })
+       
+   }
+     
+     
+       if(allowFileOperation) {
+  
+  if(parseInt(globalLength) > 10)  {
+    
+  document.querySelector("#empty-div").style.display = "none";
+     
+    alert ("You can only share '10' files at once.");
+    
+    return;
+  }
+     
+   if(fileOperationsPassword) {   
+ 
+ document.querySelector("#current-operation").innerHTML = " share files.";
+ 
+ document.querySelector("#operation-password").value = "";
+ 
+ document.querySelector("#operation-password-div").style.display = "flex";
+
+ currentOperation = "share";
+
+   } else {
+       
+  if(parseInt(globalLength) > 10)  {
+      document.querySelector("#empty-div").style.display = "none";
+     
+    alert ("You can only share '10' files at once.");
+    
+    return;
+  }
+     
+     currentOperation = "share";
+     
+   shareEntry();
+   
+    
+   }
+   
+   
+    } else {
+     
+  document.querySelector("#empty-div").style.display = "none";
+     
+   alert (`You are not allowed to share files.`);
+   return;
+    }
+    
+  
+}
+
+// function for sharing files
+
+async function shareEntry() {
+    
+  
+let checkedItems = Array.from(document.querySelectorAll(".check-item"));
+
+let shareArray = [];
+
+
+ for (let i = 0; i < checkedItems.length; i++) {
+     
+ 
+let elemChecked = checkedItems[i].getAttribute("data-checked").toString().toLowerCase();
+
+  if(elemChecked == "true") {
+      
+ let isFile = fileEntries[i].classList.contains("file-entry");
+ 
+  if(isFile) {
+      
+   shareArray.push(fileEntries[i].textContent);
+     
+  }
+ 
+}
+
+}
+
+if(navigator.share && navigator.canShare) {
+    
+  
+
+let body = JSON.stringify({
+    
+  location: location.href,
+  entries : shareArray
+
+});
+
+let request = new Request ("{{%%FILEOPERATIONURL%%}}/share", {
+    
+  method: "POST",
+  mode: "cors",
+  headers: {
+  "Content-Type": "application/json"
+  },
+  body
+  
+})
+
+
+try {
+    
+ 
+let response  = await fetch (request);
+
+let data  = "";
+
+
+if(response.status == 400) {
+    
+  data = await response.text();
+  
+  alert (data);
+  
+  return;
+    
+}  else if (response.status == 403) {
+    data = await response.text();
+  
+  alert (data);
+  
+  return;  
+    
+}   else if (response.status == 413) {
+    data = await response.text();
+  
+  alert (data);
+  
+  return;  
+    
+} else if (response.status == 500) {
+    
+    data = await response.text();
+  
+  alert (data);
+  
+  return;  
+    
+} else if (response.status == 200) {
+    
+  data = await response.json();
+    
+ let resObj = {...data};
+ 
+ let { responseArray, failedFiles } = resObj.data;
+ 
+ let  filesArray = [];
+ 
+ 
+ for (let i = 0; i < responseArray.length; i++)  {
+     
+ let url = encodeURIComponent(`${responseArray[i]}`);
+     
+  let res = await fetch(`${location.href}${url}`);
+  
+  let blob = await res.blob();
+  
+  let file  = new File([blob], `${responseArray[i]}`, {
+    type: blob.type
+  })
+
+  
+  if(navigator.canShare({files: [file]})) {
+  
+  filesArray.push(file); 
+      
+  }  else  {
+     
+   failedFiles.push(responseArray[i]);
+   
+     
+  }
+     
+ }
+ 
+ 
+  try {
+      
+
+      
+  await navigator.share({files: filesArray
+     
+  });
+  
+  if(failedFiles.length != 0) {
+  
+  alert (`Some files could not be shared: ${failedFiles.join(", ")}.`);
+  }
+  
+  return;
+      
+  } catch (err) {
+  
+  if(err.name.toString().toLowerCase() == "aborterror") {
+   return;
+  }
+  
+   alert ("An error occurred while sharing the files.\n\nNB: Not all file types and file sizes can be shared.");
+   
+   return;
+      
+  }
+    
+
+
+} else {
+    
+   alert ("An unknown error occurred.");
+    
+    return;
+    
+}
+    
+} catch (err)  {
+    
+   alert ("An unknown error occurred.");
+    
+    return;
+    
+    
+}
+   
+    
+} else {
+    
+  alert ("Your browser doesn't support the Web Share API.");
+  
+  return;
+}
+
+}
+
+
+// function for converting dates
+
+
+function convertDate(param) {
+    
+ let day = "";
+ 
+ let date = new Date(param).getDate();
+ 
+ let month = "";
+ 
+ let year = new Date(param).getFullYear();
+ 
+ let hour = new Date(param).getHours();
+ 
+ let realHour = hour > 12 ? hour - 12 : hour == 0 ? 12 : hour;
+ 
+ 
+ if(parseInt(realHour) < 10) {
+     
+     realHour = `0${realHour}`;
+ }
+
+ let minutes = new Date(param).getMinutes();
+ 
+ if(parseInt(minutes) < 10) {
+     
+     minutes = `0${minutes}`;
+ }
+
+ let seconds = new Date(param).getSeconds();
+
+ 
+ if(parseInt(seconds) < 10) {
+     
+     seconds = `0${seconds}`;
+ }
+
+ 
+ switch(new Date(param).getDay()) {
+     
+  case 0:
+  day = "Sunday"
+  break;
+  
+  case 1:
+  day = "Monday"
+  break;
+  
+  case 2:
+  day = "Tuesday"
+  break;
+  
+  case 3:
+  day = "Wednesday"
+  break;
+  
+  case 4:
+  day = "Thursday"
+  break;
+  
+  case 5:
+  day = "Friday"
+  break;
+  
+  case 6:
+  day = "Saturday"
+  break;
+  
+  default:
+  day = "";
+  
+ }
+ 
+ switch (new Date(param).getMonth()) {
+   
+   case 0:
+   month = "January"
+   break; 
+   
+   case 1:
+   month = "February"
+   break;
+    
+   case 2:
+   month = "March"
+   break; 
+   
+   case 3:
+   month = "April"
+   break; 
+   
+   case 4:
+   month = "May"
+   break; 
+   
+   case 5:
+   month = "June"
+   break; 
+   
+   case 6:
+   month = "July"
+   break; 
+   
+   case 7:
+   month = "August"
+   break; 
+   
+   case 8:
+   month = "September"
+   break; 
+   
+   case 9:
+   month = "October"
+   break; 
+   
+   case 10:
+   month = "November"
+   break; 
+   
+   case 11:
+   month = "December"
+   break;
+   
+   default:
+   month = "";
+  
+   
+ }
+ 
+ let realDay = day == "" ? "" : `${day}, `;
+ 
+ let dateSuffix =  date.toString() == "11" ? "<sup><b>th</b></sup>" :date.toString() == "12" ? "<sup><b>th</b></sup>" : date.toString() == "13" ? "<sup><b>th</b></sup>" : date.toString().endsWith("1") ? "<sup><b>st</b></sup>" : date.toString().endsWith("2") ? "<sup><b>nd</b></sup>" : date.toString().endsWith("3") ? "<sup><b>rd</b></sup>" : "<sup><b>th</b></sup>";
+ 
+ let time = hour > 11 ? "<b>PM</b>" : "<b>AM</b>";
+ 
+ let fullTime = `${realDay}&nbsp;${date}${dateSuffix} &nbsp;${month} &nbsp;${year}  &nbsp;(${realHour}:${minutes}:${seconds} ${time})`;
+ 
+  return fullTime;
+}
+
+// function for next item details
+
+
+function nextElemDetails()  {
+    
+ let elemArray = [...detailsContent];
+ 
+ let currentIndex = parseInt(document.querySelector("#details-current-no").textContent);
+ 
+ if(currentIndex == (elemArray.length - 1)) {
+  
+ document.querySelector("#details-item-next-btn").style.pointerEvents = "none";
+
+ document.querySelector("#details-item-next-btn").style.opacity = 0.2;
+ 
+  
+ } 
+ 
+ 
+let nextElem = elemArray[currentIndex];
+
+ if(nextElem.errorState) {
+  
+    
+let elemContent = (`
+       
+    <div id="details-item-head"> Details </div>
+       <br>
+    <!-- Item name -->
+    
+   <div class="details-item-name-div">
+   
+  <span class="details-item-name-text"> Name: &nbsp; </span>
+  
+  <span class="details-item-name">
+  ${nextElem.entryName}
+  </span>
+       
+   </div>
+   <br>
+   
+ This resource was not found.
+   <br>
+   `);
+    
+    
+let itemText = elemArray.length == 1 ? " item. " : " items .";
+ 
+ 
+document.querySelector("#details-current-no").innerHTML = ` ${currentIndex + 1} `;
+
+document.querySelector("#details-total-no").innerHTML = `${elemArray.length}`;
+
+
+document.querySelector("#details-item-div").innerHTML = elemContent;
+
+document.querySelector("#details-items-text").textContent = `${itemText}`;
+
+
+return;
+
+ } else {
+
+
+ let entryType = nextElem.type == "folder" ? "Foldername" : nextElem.type == "file" ?  "Filename" :  "Entryname";
+ 
+ let entryName = entryType == "Foldername" ? nextElem.folderName : entryType == "Filename" ? nextElem.fileName : "";
+ 
+ 
+ let itemLengthText =  entryType == "Foldername" ?  (` <!-- Items Length-->
+    
+   <div class="details-item-length-div">
+   
+  <span class="details-item-length-text"> No. of item(s) : &nbsp; </span>
+  
+  <span class="details-item-length">
+  ${nextElem.itemLength}
+  </span>
+       
+   </div>
+   <br>`) : "";
+   
+ 
+let itemText = elemArray.length == 1 ? " item. " : " items .";
+ 
+ 
+ let fileSize = nextElem.size;
+ 
+ let sizeText = "";
+ 
+   
+   if(fileSize < 1000) {
+     
+   sizeText = "B"  
+    
+   } else if ((fileSize > 1000) && fileSize <= (1000 ** 2)) {
+   
+  fileSize = (fileSize / (1000)).toFixed(2);
+  
+  sizeText = "KB";
+     
+   } else if ((fileSize >= (1000 ** 2)) && (fileSize <= (1000 ** 3))) {
+       
+     fileSize = (fileSize / (1000**2)).toFixed(2);
+  
+  sizeText = "MB";    
+      
+   } else if ((fileSize >= (1000 ** 3)) && (fileSize <= (1000 ** 4))) {
+       
+    fileSize = (fileSize / (1000**3)).toFixed(2);
+  
+  sizeText = "GB";        
+       
+   } else if ((fileSize >= (1000 ** 4)) && (fileSize <= (1000 ** 5))) {
+       
+        fileSize = (fileSize / (1000**4)).toFixed(2);
+  
+  sizeText = "TB";         
+       
+   } else {
+       
+     fileSize = (fileSize / (1000**4)).toFixed(2);
+  
+  sizeText = "TB";     
+  
+   }
+  
+ 
+ 
+ let readable = nextElem.readable ? "Yes" : "No";
+ 
+ let writable = nextElem.writable ? "Yes" : "No";
+ 
+ 
+ 
+let elemContent = (`
+       
+    <div id="details-item-head"> Details </div>
+       <br>
+    <!-- Item name -->
+    
+   <div class="details-item-name-div">
+   
+  <span class="details-item-name-text"> ${entryType}: &nbsp; </span>
+  
+  <span class="details-item-name">
+  ${entryName}
+  </span>
+       
+   </div>
+   <br>
+   
+    <!-- Item size  -->
+    
+  <div class="details-item-size-div">
+   
+  <span class="details-item-size-text"> Size: &nbsp; </span>
+  
+  <span class="details-item-size">
+  ${fileSize} <b>${sizeText}</b>
+  </span>
+       
+   </div>
+   <br>
+   
+    <!-- Item readable  -->
+    
+  <div class="details-item-read-div">
+   
+  <span class="details-item-read-text"> Readable: &nbsp; </span>
+  
+  <span class="details-item-read-value">
+  ${readable}
+  </span>
+       
+   </div>
+   <br>
+   
+    <!-- Item writable -->
+    
+    
+  <div class="details-item-write-div">
+   
+  <span class="details-item-write-text"> Writable: &nbsp; </span>
+  
+  <span class="details-item-write-value">
+ ${writable}
+  </span>
+       
+   </div>
+   <br>
+   
+   ${itemLengthText}
+   
+    <!-- Item last modified  -->
+    
+    
+  <div class="details-item-last-modified-div">
+   
+  <span class="details-item-last-modified-text"> Last Modified Time: &nbsp; </span>
+  
+  <span class="details-item-last-modified-time">
+      
+  ${convertDate(nextElem.lastModifiedTime)}
+  
+  </span>
+       
+   </div>
+   <br>
+   
+   
+   
+ 
+  
+   `);
+   
+   
+document.querySelector("#details-current-no").innerHTML = ` ${currentIndex + 1} `;
+
+document.querySelector("#details-total-no").innerHTML = `${elemArray.length}`;
+
+
+document.querySelector("#details-item-div").innerHTML = elemContent;
+
+document.querySelector("#details-items-text").textContent = `${itemText}`;
+ 
+
+
+ document.querySelector("#details-item-previous-btn").style.pointerEvents = "all";
+
+ document.querySelector("#details-item-previous-btn").style.opacity = 1;
+ 
+}
+
+
+}
+
+
+// function for previous item details
+
+function previousElemDetails()  {
+    
+ let elemArray = [...detailsContent];
+ 
+ let currentIndex = parseInt(document.querySelector("#details-current-no").textContent);
+ 
+ if(currentIndex == 2) {
+     
+    
+ document.querySelector("#details-item-previous-btn").style.pointerEvents = "none";
+
+ document.querySelector("#details-item-previous-btn").style.opacity = 0.2;
+ 
+ } 
+ 
+ 
+ 
+let previousElem = elemArray[currentIndex - 2];
+
+ if(previousElem.errorState) {
+  
+    
+let elemContent = (`
+       
+    <div id="details-item-head"> Details </div>
+       <br>
+    <!-- Item name -->
+    
+   <div class="details-item-name-div">
+   
+  <span class="details-item-name-text"> Name: &nbsp; </span>
+  
+  <span class="details-item-name">
+  ${previousElem.entryName}
+  </span>
+       
+   </div>
+   <br>
+   
+ This resource was not found.
+   <br>
+   `);
+    
+    
+let itemText = elemArray.length == 1 ? " item. " : " items .";
+ 
+ 
+document.querySelector("#details-current-no").innerHTML = ` ${currentIndex - 1} `;
+
+document.querySelector("#details-total-no").innerHTML = `${elemArray.length}`;
+
+
+document.querySelector("#details-item-div").innerHTML = elemContent;
+
+document.querySelector("#details-items-text").textContent = `${itemText}`;
+
+
+return;
+
+ } else {
+
+ let entryType = previousElem.type == "folder" ? "Foldername" : previousElem.type == "file" ?  "Filename" :  "Entryname";
+ 
+ let entryName = entryType == "Foldername" ? previousElem.folderName : entryType == "Filename" ? previousElem.fileName : "";
+ 
+ 
+ let itemLengthText =  entryType == "Foldername" ?  (` <!-- Items Length-->
+    
+   <div class="details-item-length-div">
+   
+  <span class="details-item-length-text"> No. of item(s) : &nbsp; </span>
+  
+  <span class="details-item-length">
+  ${previousElem.itemLength}
+  </span>
+       
+   </div>
+   <br>`) : "";
+   
+ 
+let itemText = elemArray.length == 1 ? " item. " : " items .";
+ 
+ 
+ let fileSize = previousElem.size;
+ 
+ let sizeText = "";
+
+
+   if(fileSize < 1000) {
+     
+   sizeText = "B"  
+    
+   } else if ((fileSize > 1000) && fileSize <= (1000 ** 2)) {
+   
+  fileSize = (fileSize / (1000)).toFixed(2);
+  
+  sizeText = "KB";
+     
+   } else if ((fileSize >= (1000 ** 2)) && (fileSize <= (1000 ** 3))) {
+       
+     fileSize = (fileSize / (1000**2)).toFixed(2);
+  
+  sizeText = "MB";    
+      
+   } else if ((fileSize >= (1000 ** 3)) && (fileSize <= (1000 ** 4))) {
+       
+    fileSize = (fileSize / (1000**3)).toFixed(2);
+  
+  sizeText = "GB";        
+       
+   } else if ((fileSize >= (1000 ** 4)) && (fileSize <= (1000 ** 5))) {
+       
+        fileSize = (fileSize / (1000**4)).toFixed(2);
+  
+  sizeText = "TB";         
+       
+   } else {
+       
+     fileSize = (fileSize / (1000**4)).toFixed(2);
+  
+  sizeText = "TB";     
+  
+   }
+  
+ 
+
+ 
+ let readable = previousElem.readable ? "Yes" : "No";
+ 
+ let writable = previousElem.writable ? "Yes" : "No";
+ 
+ 
+ 
+let elemContent = (`
+       
+    <div id="details-item-head"> Details </div>
+       <br>
+    <!-- Item name -->
+    
+   <div class="details-item-name-div">
+   
+  <span class="details-item-name-text"> ${entryType}: &nbsp; </span>
+  
+  <span class="details-item-name">
+  ${entryName}
+  </span>
+       
+   </div>
+   <br>
+   
+    <!-- Item size  -->
+    
+  <div class="details-item-size-div">
+   
+  <span class="details-item-size-text"> Size: &nbsp; </span>
+  
+  <span class="details-item-size">
+  ${fileSize} <b>${sizeText}</b>
+  </span>
+       
+   </div>
+   <br>
+   
+    <!-- Item readable  -->
+    
+  <div class="details-item-read-div">
+   
+  <span class="details-item-read-text"> Readable: &nbsp; </span>
+  
+  <span class="details-item-read-value">
+  ${readable}
+  </span>
+       
+   </div>
+   <br>
+   
+    <!-- Item writable -->
+    
+    
+  <div class="details-item-write-div">
+   
+  <span class="details-item-write-text"> Writable: &nbsp; </span>
+  
+  <span class="details-item-write-value">
+ ${writable}
+  </span>
+       
+   </div>
+   <br>
+   
+  
+  ${itemLengthText}
+  
+       
+    <!-- Item last modified  -->
+    
+    
+  <div class="details-item-last-modified-div">
+   
+  <span class="details-item-last-modified-text"> Last Modified Time: &nbsp; </span>
+  
+  <span class="details-item-last-modified-time">
+      
+  ${convertDate(previousElem.lastModifiedTime)}
+  
+  </span>
+       
+   </div>
+   <br>
+   
+   
+   `);
+   
+   
+document.querySelector("#details-current-no").innerHTML = ` ${currentIndex - 1} `;
+
+document.querySelector("#details-total-no").innerHTML = `${elemArray.length}`;
+
+
+document.querySelector("#details-item-div").innerHTML = elemContent;
+ 
+ 
+document.querySelector("#details-items-text").textContent = `${itemText}`;
+
+
+ document.querySelector("#details-item-next-btn").style.pointerEvents = "all";
+
+ document.querySelector("#details-item-next-btn").style.opacity = 1;
+ 
+
+}
+
+
+}
+
+// event handler for changing item details on select
+
+
+document.querySelector("#details-item-select").addEventListener("change", e => {
+    
+ let elemArray = [...detailsContent];
+ 
+ let index = e.currentTarget.selectedIndex;
+ 
+ if(index == 0) {
+     
+   
+ document.querySelector("#details-item-previous-btn").style.pointerEvents = "none";
+
+ document.querySelector("#details-item-previous-btn").style.opacity = 0.2;
+     
+ } else {
+     
+    
+ document.querySelector("#details-item-previous-btn").style.pointerEvents = "all";
+
+ document.querySelector("#details-item-previous-btn").style.opacity = 1; 
+ }
+ 
+ 
+ 
+  if(index == (elemArray.length - 1)) {
+      
+   
+ document.querySelector("#details-item-next-btn").style.pointerEvents = "none";
+
+ document.querySelector("#details-item-next-btn").style.opacity = 0.2;
+ 
+  } else {
+      
+      
+ document.querySelector("#details-item-next-btn").style.pointerEvents = "all";
+
+ document.querySelector("#details-item-next-btn").style.opacity = 1;
+ 
+  }
+  
+  
+ 
+ let elem  = elemArray[index];
+ 
+ 
+ 
+ if(elem.errorState) {
+  
+    
+let elemContent = (`
+       
+    <div id="details-item-head"> Details </div>
+       <br>
+    <!-- Item name -->
+    
+   <div class="details-item-name-div">
+   
+  <span class="details-item-name-text"> Name: &nbsp; </span>
+  
+  <span class="details-item-name">
+  ${elem.entryName}
+  </span>
+       
+   </div>
+   <br>
+   
+ This resource was not found.
+   <br>
+   `);
+    
+    
+let itemText = elemArray.length == 1 ? " item. " : " items .";
+ 
+ 
+document.querySelector("#details-current-no").innerHTML = ` ${index + 1} `;
+
+document.querySelector("#details-total-no").innerHTML = `${elemArray.length}`;
+
+
+document.querySelector("#details-item-div").innerHTML = elemContent;
+
+document.querySelector("#details-items-text").textContent = `${itemText}`;
+
+
+return;
+
+ }  else {
+ 
+ let entryType = elem.type == "folder" ? "Foldername" : elem.type == "file" ?  "Filename" :  "Entryname";
+ 
+ let entryName = entryType == "Foldername" ? elem.folderName : entryType == "Filename" ? elem.fileName : "";
+ 
+ 
+ let itemLengthText =  entryType == "Foldername" ?  (` <!-- Items Length-->
+    
+   <div class="details-item-length-div">
+   
+  <span class="details-item-length-text"> No. of item(s) : &nbsp; </span>
+  
+  <span class="details-item-length">
+  ${elem.itemLength}
+  </span>
+       
+   </div>
+   <br>`) : "";
+   
+ 
+let itemText = elemArray.length == 1 ? " item. " : " items .";
+ 
+ 
+ let fileSize = elem.size;
+ 
+ let sizeText = "";
+ 
+ 
+   if(fileSize < 1000) {
+     
+   sizeText = "B"  
+    
+   } else if ((fileSize > 1000) && fileSize <= (1000 ** 2)) {
+   
+  fileSize = (fileSize / (1000)).toFixed(2);
+  
+  sizeText = "KB";
+     
+   } else if ((fileSize >= (1000 ** 2)) && (fileSize <= (1000 ** 3))) {
+       
+     fileSize = (fileSize / (1000**2)).toFixed(2);
+  
+  sizeText = "MB";    
+      
+   } else if ((fileSize >= (1000 ** 3)) && (fileSize <= (1000 ** 4))) {
+       
+    fileSize = (fileSize / (1000**3)).toFixed(2);
+  
+  sizeText = "GB";        
+       
+   } else if ((fileSize >= (1000 ** 4)) && (fileSize <= (1000 ** 5))) {
+       
+        fileSize = (fileSize / (1000**4)).toFixed(2);
+  
+  sizeText = "TB";         
+       
+   } else {
+       
+     fileSize = (fileSize / (1000**4)).toFixed(2);
+  
+  sizeText = "TB";     
+  
+   }
+  
+ 
+ let readable = elem.readable ? "Yes" : "No";
+ 
+ let writable = elem.writable ? "Yes" : "No";
+ 
+ 
+ 
+let elemContent = (`
+       
+    <div id="details-item-head"> Details </div>
+       <br>
+    <!-- Item name -->
+    
+   <div class="details-item-name-div">
+   
+  <span class="details-item-name-text"> ${entryType}: &nbsp; </span>
+  
+  <span class="details-item-name">
+  ${entryName}
+  </span>
+       
+   </div>
+   <br>
+   
+    <!-- Item size  -->
+    
+  <div class="details-item-size-div">
+   
+  <span class="details-item-size-text"> Size: &nbsp; </span>
+  
+  <span class="details-item-size">
+  ${fileSize} <b>${sizeText}</b>
+  </span>
+       
+   </div>
+   <br>
+   
+    <!-- Item readable  -->
+    
+  <div class="details-item-read-div">
+   
+  <span class="details-item-read-text"> Readable: &nbsp; </span>
+  
+  <span class="details-item-read-value">
+  ${readable}
+  </span>
+       
+   </div>
+   <br>
+   
+    <!-- Item writable -->
+    
+    
+  <div class="details-item-write-div">
+   
+  <span class="details-item-write-text"> Writable: &nbsp; </span>
+  
+  <span class="details-item-write-value">
+ ${writable}
+  </span>
+       
+   </div>
+   <br>
+   
+  
+${itemLengthText}
+  
+       
+    <!-- Item last modified  -->
+    
+    
+  <div class="details-item-last-modified-div">
+   
+  <span class="details-item-last-modified-text"> Last Modified Time: &nbsp; </span>
+  
+  <span class="details-item-last-modified-time">
+      
+  ${convertDate(elem.lastModifiedTime)}
+  
+  </span>
+       
+   </div>
+   <br>
+   
+   
+   
+
+   `);
+   
+   
+document.querySelector("#details-current-no").innerHTML = ` ${index + 1} `;
+
+document.querySelector("#details-total-no").innerHTML = `${elemArray.length}`;
+
+
+document.querySelector("#details-item-div").innerHTML = elemContent;
+ 
+ 
+document.querySelector("#details-items-text").textContent = `${itemText}`;
+
+
+    
+};
+
+
+});
+
+
+// function for getting item details
+
+async function getEntryDetails() {
+ 
+ detailsRequestNo = 1;
+ 
+let checkedItems = Array.from(document.querySelectorAll(".check-item"));
+
+let entryArray = [];
+
+let fileArray = [];
+
+let folderArray  = [];
+
+   
+ for (let i = 0; i < checkedItems.length; i++) {
+     
+ 
+let elemChecked = checkedItems[i].getAttribute("data-checked").toString().toLowerCase();
+
+  if(elemChecked == "true") {
+   
+ let isFile = fileEntries[i].classList.contains("file-entry");
+ 
+ 
+ let isFolder = fileEntries[i].classList.contains("folder-entry");
+ 
+ if(isFile) {
+     
+   fileArray.push(fileEntries[i].textContent);
+   
+ } 
+ 
+  
+ if(isFolder) {
+     
+   folderArray.push(fileEntries[i].textContent);
+   
+ } 
+ 
+ 
+ 
+ 
+ entryArray.push(fileEntries[i].textContent);
+ 
+  }
+  
+ }
+ 
+ let timestamp = new Date().getTime();
+ 
+ 
+let body = JSON.stringify({
+    
+  location: location.href,
+  entries : entryArray,
+  timestamp
+
+});
+
+let request = new Request ("{{%%FILEOPERATIONURL%%}}/details", {
+    
+  method: "POST",
+  mode: "cors",
+  headers: {
+  "Content-Type": "application/json"
+  },
+  body
+  
+});
+
+currentTimestamp = timestamp;
+
+ try {
+     
+  let response = await fetch (request);
+
+detailsRequestNo  = 0;
+  
+  let data  = "";
+  
+  if(response.status == 400) {
+      
+  data = await response.text();
+  
+  alert (data);
+  
+ 
+  
+  return;
+   
+  } else if(response.status == 403) {
+      
+  data = await response.text();
+  
+  alert (data);
+  
+ 
+  
+  return;
+   
+  } else if(response.status == 413) {
+      
+  data = await response.text();
+  
+  alert (data);
+ 
+  return;
+   
+  } else if(response.status == 500) {
+      
+  data = await response.json();
+  
+ if(detailsArray.includes(data.data.resTime)) {
+     
+   return;
+   
+ }
+ 
+  
+  alert (data.data.message);
+   
+  return;
+   
+  } else if(response.status == 200) {
+    
+  data = await response.json();
+  
+let resObj = {...data};
+
+// checks if the request was cancelled 
+
+ if(detailsArray.includes(resObj.data.resTime)) {
+     
+   return;
+   
+ }
+ 
+ 
+
+let { data: resData } = resObj; 
+
+detailsContent = [...resData.details];
+  
+ let firstElem = resData.details[0];
+ 
+ document.querySelector("#details-loading-div").style.display = "none";
+ 
+  
+ if(firstElem.errorState) {
+  
+    
+let elemContent = (`
+       
+    <div id="details-item-head"> Details </div>
+       <br>
+    <!-- Item name -->
+    
+   <div class="details-item-name-div">
+   
+  <span class="details-item-name-text"> Name: &nbsp; </span>
+  
+  <span class="details-item-name">
+  ${firstElem.entryName}
+  </span>
+       
+   </div>
+   <br>
+   
+ This resource was not found.
+   <br>
+   `);
+    
+    
+let itemText = resData.details.length == 1 ? " item. " : " items .";
+ 
+     
+let fileSelectContent  = "";
+
+let folderSelectContent  = "";
+
+
+ if(folderArray.length != 0) {
+     
+  let selectContent = "";
+     
+ for (let i = 0; i < folderArray.length; i++) {
+     
+  selectContent += `<option value="${folderArray[i]}"> ${folderArray[i]} </option> `;
+     
+ }
+ 
+ folderSelectContent = `<optgroup label="Folders"> ${selectContent}
+ </optgroup>`;
+     
+ }
+ 
+ 
+ if(fileArray.length != 0) {
+     
+  let selectContent = "";
+     
+ for (let i = 0; i < fileArray.length; i++) {
+     
+  selectContent += `<option value="${fileArray[i]}"> ${fileArray[i]} </option> `;
+     
+ }
+ 
+ fileSelectContent = `<optgroup label="Files"> ${selectContent}
+ </optgroup>`;
+     
+ }
+ 
+ document.querySelector("#details-item-select").innerHTML = `${folderSelectContent}${fileSelectContent}`;
+ 
+document.querySelector("#details-current-no").innerHTML = " 1 ";
+
+document.querySelector("#details-total-no").innerHTML = `${resData.details.length}`;
+
+
+document.querySelector("#details-item-div").innerHTML = elemContent;
+
+document.querySelector("#details-items-text").textContent = `${itemText}`;
+
+
+ document.querySelector("#details-item-previous-btn").style.pointerEvents = "none";
+
+ document.querySelector("#details-item-previous-btn").style.opacity = 0.2;
+ 
+ 
+
+ if(resData.details.length == 1) {
+  
+ document.querySelector("#details-item-next-btn").style.pointerEvents = "none";
+
+ document.querySelector("#details-item-next-btn").style.opacity = 0.2;
+ 
+ } else {
+     
+  
+ document.querySelector("#details-item-next-btn").style.pointerEvents = "all";
+
+ document.querySelector("#details-item-next-btn").style.opacity = 1;
+    
+ }
+ 
+ 
+
+ document.querySelector("#details-item-div").style.display = "flex";
+  
+
+document.querySelector("#details-no-box").style.display = "flex";
+
+
+document.querySelector("#details-btn-div").style.display = "flex";
+
+ finishedState = true;
+ 
+return;
+
+ } else {
+
+  
+ let entryType = firstElem.type == "folder" ? "Foldername" : firstElem.type == "file" ?  "Filename" :  "Entryname";
+ 
+ let entryName = entryType == "Foldername" ? firstElem.folderName : entryType == "Filename" ? firstElem.fileName : "";
+
+
+ 
+let itemText = resData.details.length == 1 ? " item. " : " items .";
+ 
+ let fileSize = firstElem.size;
+ 
+ let itemLengthText =  entryType == "Foldername" ?  (` <!-- Items Length-->
+    
+   <div class="details-item-length-div">
+   
+  <span class="details-item-length-text"> No. of item(s) : &nbsp; </span>
+  
+  <span class="details-item-length">
+  ${firstElem.itemLength}
+  </span>
+       
+   </div>
+   <br>`) : "";
+   
+ 
+   if(fileSize < 1000) {
+     
+   sizeText = "B"  
+    
+   } else if ((fileSize > 1000) && fileSize <= (1000 ** 2)) {
+   
+  fileSize = (fileSize / (1000)).toFixed(2);
+  
+  sizeText = "KB";
+     
+   } else if ((fileSize >= (1000 ** 2)) && (fileSize <= (1000 ** 3))) {
+       
+     fileSize = (fileSize / (1000**2)).toFixed(2);
+  
+  sizeText = "MB";    
+      
+   } else if ((fileSize >= (1000 ** 3)) && (fileSize <= (1000 ** 4))) {
+       
+    fileSize = (fileSize / (1000**3)).toFixed(2);
+  
+  sizeText = "GB";        
+       
+   } else if ((fileSize >= (1000 ** 4)) && (fileSize <= (1000 ** 5))) {
+       
+        fileSize = (fileSize / (1000**4)).toFixed(2);
+  
+  sizeText = "TB";         
+       
+   } else {
+       
+     fileSize = (fileSize / (1000**4)).toFixed(2);
+  
+  sizeText = "TB";     
+  
+   }
+  
+ 
+ let readable = firstElem.readable ? "Yes" : "No";
+ 
+ let writable = firstElem.writable ? "Yes" : "No";
+ 
+ 
+ 
+ 
+let elemContent = (`
+       
+    <div id="details-item-head"> Details </div>
+       <br>
+    <!-- Item name -->
+    
+   <div class="details-item-name-div">
+   
+  <span class="details-item-name-text"> ${entryType}: &nbsp; </span>
+  
+  <span class="details-item-name">
+  ${entryName}
+  </span>
+       
+   </div>
+   <br>
+   
+    <!-- Item size  -->
+    
+  <div class="details-item-size-div">
+   
+  <span class="details-item-size-text"> Size: &nbsp; </span>
+  
+  <span class="details-item-size">
+  ${fileSize} <b>${sizeText}</b>
+  </span>
+       
+   </div>
+   <br>
+   
+    <!-- Item readable  -->
+    
+  <div class="details-item-read-div">
+   
+  <span class="details-item-read-text"> Readable: &nbsp; </span>
+  
+  <span class="details-item-read-value">
+  ${readable}
+  </span>
+       
+   </div>
+   <br>
+   
+    <!-- Item writable -->
+    
+    
+  <div class="details-item-write-div">
+   
+  <span class="details-item-write-text"> Writable: &nbsp; </span>
+  
+  <span class="details-item-write-value">
+ ${writable}
+  </span>
+       
+   </div>
+   <br>
+   
+   ${itemLengthText}
+         
+    <!-- Item last modified  -->
+    
+    
+  <div class="details-item-last-modified-div">
+   
+  <span class="details-item-last-modified-text"> Last Modified Time: &nbsp; </span>
+  
+  <span class="details-item-last-modified-time">
+  ${convertDate(firstElem.lastModifiedTime)}
+  
+  </span>
+       
+   </div>
+   <br>
+   
+   
+     
+   `);
+   
+let fileSelectContent  = "";
+
+let folderSelectContent  = "";
+
+
+ if(folderArray.length != 0) {
+     
+  let selectContent = "";
+     
+ for (let i = 0; i < folderArray.length; i++) {
+     
+  selectContent += `<option value="${folderArray[i]}"> ${folderArray[i]} </option> `;
+     
+ }
+ 
+ folderSelectContent = `<optgroup label="Folders"> ${selectContent}
+ </optgroup>`;
+     
+ }
+ 
+ 
+ if(fileArray.length != 0) {
+     
+  let selectContent = "";
+     
+ for (let i = 0; i < fileArray.length; i++) {
+     
+  selectContent += `<option value="${fileArray[i]}"> ${fileArray[i]} </option> `;
+     
+ }
+ 
+ fileSelectContent = `<optgroup label="Files"> ${selectContent}
+ </optgroup>`;
+     
+ }
+  
+ document.querySelector("#details-item-select").innerHTML = `${folderSelectContent}${fileSelectContent}`;
+ 
+document.querySelector("#details-current-no").innerHTML = " 1 ";
+
+document.querySelector("#details-total-no").innerHTML = `${resData.details.length}`;
+
+
+document.querySelector("#details-item-div").innerHTML = elemContent;
+
+document.querySelector("#details-items-text").textContent = `${itemText}`;
+
+
+ document.querySelector("#details-item-previous-btn").style.pointerEvents = "none";
+
+ document.querySelector("#details-item-previous-btn").style.opacity = 0.2;
+ 
+ 
+ if(resData.details.length == 1) {
+  
+ document.querySelector("#details-item-next-btn").style.pointerEvents = "none";
+
+ document.querySelector("#details-item-next-btn").style.opacity = 0.2;
+ 
+ } else {
+     
+  
+ document.querySelector("#details-item-next-btn").style.pointerEvents = "all";
+
+ document.querySelector("#details-item-next-btn").style.opacity = 1;
+    
+ }
+ 
+ 
+
+  document.querySelector("#details-item-div").style.display = "flex";
+  
+
+document.querySelector("#details-no-box").style.display = "flex";
+
+
+document.querySelector("#details-btn-div").style.display = "flex";
+
+
+return;
+
+}
+
+  } else {
+      
+ 
+   
+   alert ("An unknown error occurred.");
+     
+     return;
+  }
+  
+  
+ } catch (err) {
+  
+ if(detailsRequestNo == 1) {
+    
+ alert ("An unknown error occurred.");
+             
+ document.querySelector("#details-div").style.display = "none";
+    
+   detailsRequestNo = 0;
+ } 
+ 
+     
+     return;    
+ }
+  
+}
+
+// function for displaying rename items
+
+ async function displayRenameItems() {
+   
+
+setTimeout(() => {
+     
+let checkedItems = Array.from(document.querySelectorAll(".check-item"));
+
+let fileArray = [];
+
+let folderArray = [];
+
+let [fileContent, folderContent ] = ["", ""];
+    
+ for (let i = 0; i < checkedItems.length; i++) {
+     
+ 
+let elemChecked = checkedItems[i].getAttribute("data-checked").toString().toLowerCase();
+
+  if(elemChecked == "true") {
+      
+ let isFile = fileEntries[i].classList.contains("file-entry");
+ 
+ 
+ let isFolder = fileEntries[i].classList.contains("folder-entry");
+ 
+    if(isFile) {
+        
+     fileArray.push(fileEntries[i]);
+  continue;
+    }
+    
+    if(isFolder) {
+        
+     folderArray.push(fileEntries[i]);
+     continue;
+    }
+    
+  }
+ }
+ 
+ renameFileArray = [...fileArray];
+ 
+ renameFolderArray = [...folderArray];
+ 
+ 
+ if(folderArray.length != 0) {
+     
+   document.querySelector("#rename-arrow-folder-length").innerHTML = `${folderArray.length}`;
+  
+ folderContent = (`
+   
+ <div id="rename-folder-no">
+   
+  <span class = "rename-arrow" title="Hide All"> 
+  
+<svg id="rename-arrow-svg1" class="rename-arrow-svg" data-invert="false" fill="#000000" version="1.1" 
+	 viewBox="0 0 386.257 386.257" xml:space="preserve">
+<polygon points="0,96.879 193.129,289.379 386.257,96.879 "/>
+</svg>
+
+  </span>&nbsp;No. of folder(s): <span id="rename-folder-length"> ${folderArray.length} </span>
+  
+ </div><br><br id="rename-last-br">`);
+ 
+ folderContent += `<div id="rename-folder-box">`;
+ 
+  for (let i = 0; i < folderArray.length; i++) {
+  
+  
+ folderContent += (` <div class="rename-folder-content">
+       
+    <div class="rename-folder-index"> (${i + 1})
+    </div> 
+    
+  <div class="rename-folder-item">
+   
+  <div class="old-folder-name-div">
+   
+  <span class="old-folder-name-text">Folder Name: </span>
+  
+  <span class="old-folder-name" value="${folderArray[i].textContent}"> ${folderArray[i].textContent} </span>
+  
+  </div>
+     
+     
+  <div class="new-folder-name-div">
+   
+  <span class="new-folder-name-text">New Name: </span>
+  
+  <input type="text" class="new-folder-name" >
+    
+  </div>
+  
+   
+  <div class="add-folder-name-div">
+      
+  <button class="add-folder-name-btn">
+      Add folder name </button>
+      
+      </div>
+
+      
+  </div>
+      
+   </div>`);
+    
+  }
+  
+  folderContent += `</div>`;
+  
+ }
+ 
+ 
+ 
+ if(fileArray.length != 0) {
+     
+  document.querySelector("#rename-arrow-file-length").innerHTML = `${fileArray.length}`;
+  
+ fileContent = (`
+   
+ <div id="rename-file-no">
+   
+  
+  <span class = "rename-arrow" title="Hide All"> 
+  
+<svg id="rename-arrow-svg2" class="rename-arrow-svg" data-invert="false" fill="#000000" version="1.1" 
+	 viewBox="0 0 386.257 386.257" xml:space="preserve">
+<polygon points="0,96.879 193.129,289.379 386.257,96.879 "/>
+</svg>
+
+  </span>&nbsp;No. of file(s): <span id="rename-file-length"> ${fileArray.length} </span>
+  
+ </div><br><br id="rename-last-files-br">`);
+ 
+ 
+ fileContent += `<div id="rename-file-box">`;
+ 
+  for (let i = 0; i < fileArray.length; i++) {
+  
+let fileExt = fileArray[i].parentElement.parentElement.getAttribute("data-ext").toString();
+
+  if(fileExt[0] == ".") {
+      
+    fileExt = fileExt.slice(1);
+    
+  }
+  
+  
+ fileContent += (` <div class="rename-file-content">
+       
+    <div class="rename-file-index"> (${i + 1})
+    </div> 
+    
+  <div class="rename-file-item">
+   
+  <div class="old-name-div">
+   
+  <span class="old-name-text">File Name: </span>
+  
+  <span class="old-name" value="${fileArray[i].textContent}"> ${fileArray[i].textContent} </span>
+  
+  </div>
+     
+     
+  <div class="new-name-div">
+   
+  <span class="new-name-text">New Name: </span>
+  
+  <input type="text" class="new-name" >
+  
+  <span class="new-name-dot"> .  </span>
+  
+  <input type="text" class="new-name-ext"  value="${fileExt}" data-value = "${fileExt}">
+  
+  </div>
+  
+   
+  <div class="add-name-div">
+      
+  <button class="add-name-btn">
+      Add file name </button>
+      
+      </div>
+
+      
+  </div>
+      
+   </div>`);
+    
+  }
+
+  fileContent += `</div>`;
+}
+
+document.querySelector("#rename-animation-div").style.display = "none";
+
+
+document.querySelector("#rename-folder-div").style.display = "block";
+
+
+document.querySelector("#rename-file-div").style.display = "block";
+
+document.querySelector("#rename-folder-div").innerHTML = `${folderContent}`;
+
+
+document.querySelector("#rename-file-div").innerHTML = `${fileContent}`;
+ 
+ let addFolderNameBtn = Array.from(document.querySelectorAll(".add-folder-name-btn"));
+ 
+ let newFolderNameInput = Array.from(document.querySelectorAll(".new-folder-name"));
+ 
+
+ let oldFolderNameInput = Array.from(document.querySelectorAll(".old-folder-name"));
+ 
+ 
+ let addNameBtn = Array.from(document.querySelectorAll(".add-name-btn"));
+ 
+
+ let newNameInput = Array.from(document.querySelectorAll(".new-name"));
+ 
+
+ let oldNameInput = Array.from(document.querySelectorAll(".old-name"));
+ 
+
+ let newNameExt = Array.from(document.querySelectorAll(".new-name-ext"));
+ 
+ 
+ /*
+ if(folderArray.length != 0) {
+
+let formerFolderContent =  document.querySelector("#rename-folder-box").innerHTML;
+
+document.querySelector("#rename-arrow-svg1").addEventListener("click", (e) => {
+   
+    
+let invertState = e.currentTarget.getAttribute("data-invert").toString().toLowerCase();
+
+if(invertState == "false") {
+ 
+ document.querySelector("#rename-folder-box").innerHTML = "";
+
+document.querySelector("#rename-last-br").style.display = "none";
+
+e.currentTarget.classList.add("invert-rename-svg");
+
+e.currentTarget.setAttribute("data-invert", "true");
+    
+} else {
+   
+ 
+ document.querySelector("#rename-folder-box").innerHTML = `${formerFolderContent}`;
+
+document.querySelector("#rename-last-br").style.display = "block";
+
+e.currentTarget.classList.remove("invert-rename-svg");
+
+e.currentTarget.setAttribute("data-invert", "false");
+    
+    
+addFolderNameBtn.forEach((btn, index) => {
+    
+  btn.addEventListener("click", e => {
+     
+let currentText = oldFolderNameInput[index].textContent.toString().trim();
+
+let newText = newFolderNameInput[index].value;
+
+newFolderNameInput[index].value = `${newText}${currentText}`;
+ 
+ newFolderNameInput[index].focus();
+      
+  })  
+    
+})
+
+
+}
+});
+
+}
+
+
+
+if(fileArray.length != 0) {
+
+
+document.querySelector("#rename-arrow-svg2").addEventListener("click", (e) => {
+
+let formerFileContent =  document.querySelector("#rename-file-box").innerHTML;
+   
+    
+let invertState = e.currentTarget.getAttribute("data-invert").toString().toLowerCase();
+
+if(invertState == "false") {
+ 
+ document.querySelector("#rename-file-box").innerHTML = "";
+
+document.querySelector("#rename-last-files-br").style.display = "none";
+
+e.currentTarget.classList.add("invert-rename-svg");
+
+e.currentTarget.setAttribute("data-invert", "true");
+    
+} else {
+   
+ 
+ document.querySelector("#rename-file-box").innerHTML = `${formerFileContent}`;
+
+document.querySelector("#rename-last-files-br").style.display = "block";
+
+e.currentTarget.classList.remove("invert-rename-svg");
+
+e.currentTarget.setAttribute("data-invert", "false");
+    
+    
+addNameBtn.forEach((btn, index) => {
+    
+  btn.addEventListener("click", e => {
+     
+let currentText = oldNameInput[index].textContent.toString().trim();
+
+let ext = newNameExt[index].getAttribute("data-value").toString().trim();
+
+let extIndex = currentText.lastIndexOf(ext);
+
+
+let oldText =  ext == "" ? currentText.slice(0, extIndex) : currentText.slice(0, (extIndex - 1));
+
+
+let newText = newNameInput[index].value;
+
+newNameInput[index].value = `${newText}${oldText}`;
+ 
+ newNameInput[index].focus();
+      
+  })  
+    
+})
+
+
+}
+});
+
+}
+*/
+
+
+
+addFolderNameBtn.forEach((btn, index) => {
+    
+  btn.addEventListener("click", e => {
+     
+let currentText = oldFolderNameInput[index].textContent.toString().trim();
+
+let newText = newFolderNameInput[index].value;
+
+newFolderNameInput[index].value = `${newText}${currentText}`;
+ 
+ newFolderNameInput[index].focus();
+      
+  })  
+    
+})
+
+
+addNameBtn.forEach((btn, index) => {
+    
+  btn.addEventListener("click", e => {
+     
+let currentText = oldNameInput[index].textContent.toString().trim();
+
+let ext = newNameExt[index].getAttribute("data-value").toString().trim();
+
+let extIndex = currentText.lastIndexOf(ext);
+
+
+let oldText =  ext == "" ? currentText.slice(0, extIndex) : currentText.slice(0, (extIndex - 1));
+
+
+let newText = newNameInput[index].value;
+
+newNameInput[index].value = `${newText}${oldText}`;
+ 
+ newNameInput[index].focus();
+      
+  })  
+    
+})
+
+if(folderArray.length != 0) {
+
+
+document.querySelector("#rename-arrow-svg1").addEventListener("click", (e) => {
+
+
+document.querySelector("#rename-folder-div").style.display = "none";
+
+
+
+document.querySelector("#rename-folder-arrow").style.display = "block";
+
+
+})
+
+
+document.querySelector("#rename-folder-invert-svg").addEventListener("click", (e) => {
+
+
+document.querySelector("#rename-folder-div").style.display = "block";
+
+
+
+document.querySelector("#rename-folder-arrow").style.display = "none";
+
+
+})
+
+
+
+
+}
+
+    
+
+
+if(fileArray.length != 0) {
+
+
+document.querySelector("#rename-arrow-svg2").addEventListener("click", (e) => {
+
+
+document.querySelector("#rename-file-div").style.display = "none";
+
+
+
+document.querySelector("#rename-file-arrow").style.display = "block";
+
+
+})
+
+
+document.querySelector("#rename-file-invert-svg").addEventListener("click", (e) => {
+
+
+document.querySelector("#rename-file-div").style.display = "block";
+
+
+
+document.querySelector("#rename-file-arrow").style.display = "none";
+
+
+})
+
+
+
+
+}
+
+    
+}, 10);
+ 
+
+}
+
+// function for renaming items
+
+async function renameEntry() {
+    
+let fileArray = [];
+
+let folderArray = [];
+
+let fileEntryArray = [];
+
+let folderEntryArray = [];
+
+let fileNames = Array.from(document.querySelectorAll(".new-name"));
+
+let extNames = Array.from(document.querySelectorAll(".new-name-ext"));
+
+let folderNames = Array.from(document.querySelectorAll(".new-folder-name"));
+
+// Gets the real files names 
+
+if(renameFileArray.length != 0) {
+
+ for (let i = 0; i < renameFileArray.length; i++) {
+  
+fileArray.push(renameFileArray[i].textContent) 
+    
+  }
+  
+}
+
+// Gets the real folders names 
+
+if(renameFolderArray.length != 0) {
+
+ for (let i = 0; i < renameFolderArray.length; i++) {
+  
+folderArray.push(renameFolderArray[i].textContent) 
+    
+  }
+  
+}
+    
+
+ if((fileNames.length !== fileArray.length) || (extNames.length !== fileArray.length) || (folderNames.length !== folderArray.length)) {
+ 
+ alert ("An unknown error occurred.");
+ 
+ return;
+  
+ }
+ 
+ 
+ // Gets the new files names 
+ 
+ 
+ for (let i = 0; i < fileNames.length; i++) {
+     
+ let fileName = fileNames[i].value.toString().trim();
+ 
+ let extName = extNames[i].value.toString().toLowerCase().trim();
+ 
+ if(extName.startsWith(".")) {
+     
+     extName = extName.slice(1);
+ }
+ 
+ let newName = `${fileName}.${extName}`;
+ 
+ fileEntryArray.push({oldName: fileArray[i], newName});
+     
+ }
+ 
+ // Gets the new folders names
+ 
+ 
+ for (let i = 0; i < folderNames.length; i++) {
+     
+ let newName = folderNames[i].value.toString().trim();
+ 
+  folderEntryArray.push({oldName: folderArray[i], newName});
+     
+ }
+ 
+ 
+ // checks for invalid file name
+
+let totalEntry = [...fileEntryArray, ...folderEntryArray];
+
+ 
+ for (let i = 0; i < totalEntry.length; i++) {
+     
+  
+ let param = totalEntry[i].newName.match(/[^\w\d\s\-\.\(\)\[\]\&\#\@\$\+\%\=\!\{\}\~\,\']/) ? true : false;
+  
+ 
+ if((totalEntry[i].newName == "") || (totalEntry[i].newName == ".") ||  param ) {
+     
+ alert (`Please provide a valid name for "${totalEntry[i].oldName}".`);
+
+ 
+  return;
+
+}
+
+}
+ 
+
+let body = JSON.stringify({
+    
+  location: location.href,
+  entries : [fileEntryArray, folderEntryArray]
+
+});
+
+let request = new Request ("{{%%FILEOPERATIONURL%%}}", {
+    
+  method: "PATCH",
+  mode: "cors",
+  headers: {
+  "Content-Type": "application/json"
+  },
+  body
+  
+})
+
+
+document.querySelector('.rename-btn').classList.add("disable-rename-btn");
+
+ try {
+     
+let response = await fetch(request);
+
+let data = "";
+
+  if(response.status == 400) {
+      
+ data = await response.text();
+ 
+ alert (data);
+ 
+document.querySelector('.rename-btn').classList.remove("disable-rename-btn");
+
+  return;
+     
+  } else if (response.status == 403) {
+      
+ data = await response.text();
+ 
+ alert (data);
+ 
+document.querySelector('.rename-btn').classList.remove("disable-rename-btn");
+
+  return;
+     
+  } else if (response.status == 413) {
+      
+ data = await response.text();
+ 
+ alert (data);
+ 
+document.querySelector('.rename-btn').classList.remove("disable-rename-btn");
+
+  return;
+     
+  } else if (response.status == 409) {
+      
+ data = await response.text();
+ 
+ alert (data);
+ 
+document.querySelector('.rename-btn').classList.remove("disable-rename-btn");
+
+  return;
+     
+  }  else if(response.status == 200) {
+      
+ data = await response.text();
+ 
+ alert (data);
+ 
+document.querySelector('.rename-btn').classList.remove("disable-rename-btn");
+
+  return;
+     
+  } else {
+    
+   
+ alert ("An unknown error occurred.");
+ 
+document.querySelector('.rename-btn').classList.remove("disable-rename-btn");
+
+  return; 
+  
+  }
+  
+  
+ } catch (err)  {
+     
+ if(unloadPage) {
+     
+     return;
+ }   
+ 
+  alert ("An unknown error occurred.");
+  
+  
+document.querySelector('.rename-btn').classList.remove("disable-rename-btn");
+
+  
+  return;
+  
+ }
+
+ 
+}
+
+
+
+ document.querySelector("#compress-div-select").addEventListener("input", (e) => {
+     
+ let selectedIndex = e.currentTarget.selectedIndex;
+     
+   if(selectedIndex == 0) {
+  
+  document.querySelector('#compress-option-text').innerHTML = " This option creates a compressed file containing all selected item(s)." 
+  
+ document.querySelector("#compress-value").setAttribute("placeholder", "Name of compressed file");
+    
+document.querySelector("#compress-download-div").style.opacity = 1;
+ 
+document.querySelector("#compress-download-div").style.pointerEvents = "all";
+ 
+   } else if (selectedIndex == 1) {
+       
+  document.querySelector('#compress-option-text').innerHTML = " This option creates a folder containing compressed files for each selected item."  
+  
+ document.querySelector("#compress-value").setAttribute("placeholder", "Name of folder");
+
+document.querySelector("#compress-download-box").checked = false;
+
+document.querySelector("#compress-download-div").style.opacity = 0.2;
+ 
+document.querySelector("#compress-download-div").style.pointerEvents = "none";
+
+ 
+   }
+     
+ 
+    
+});
+
+
+// function for compressing itrms
+
+
+ async function compressEntry() {
+    
+
+let checkedItems = Array.from(document.querySelectorAll(".check-item"));
+
+let fileEntries =  Array.from(document.querySelectorAll(".specific-name"));
+
+let compressArray = [];
+
+checkedItems.forEach((el, index) => {
+    
+let elemChecked = el.getAttribute("data-checked").toString().toLowerCase();
+
+  if(elemChecked == "true") {
+      
+ let isFile = fileEntries[index].classList.contains("file-entry");
+ 
+ 
+ let isFolder = fileEntries[index].classList.contains("folder-entry");
+ 
+      
+  compressArray.push({fileName: fileEntries[index].textContent, isFile, isFolder});
+  }
+  
+})
+
+let downloadItems = document.querySelector("#compress-download-box").checked;
+
+let deleteItems = document.querySelector("#compress-delete-box").checked;
+
+let compressOption =  document.querySelector("#compress-div-select").selectedIndex;
+
+let compressValue =  document.querySelector("#compress-value").value.toString().trim();
+
+ if ((compressOption == 0) && (compressValue == "")) {
+     
+  alert ("Please provide a name for the compressed file.");
+  
+  return;
+   
+ }
+ 
+ if ((compressOption == 0) && compressValue.match(/\W/)) {
+     
+  alert ("The compressed file name must contain only alphanumeric characters.");
+  
+  return;
+   
+ }
+
+
+ if ((compressOption == 1) && (compressValue == "")) {
+     
+  alert ("Please provide a name for the folder.");
+  
+  return;
+   
+ }
+ 
+ if ((compressOption == 1) && compressValue.match(/\W/)) {
+     
+  alert ("The folder name must contain only alphanumeric characters.");
+  
+  return;
+   
+ }
+
+let body = JSON.stringify({
+    
+  location: location.href,
+  entries: compressArray,
+  option: compressOption,
+  value: compressValue
+
+});
+
+let request = new Request ("{{%%FILEOPERATIONURL%%}}/compress", {
+    
+  method: "POST",
+  mode: "cors",
+  headers: {
+  "Content-Type": "application/json",
+  "Data-Delete": deleteItems
+  },
+  body
+  
+ 
+})
+
+
+document.querySelector('#compress-btn').style.pointerEvents = "none";
+
+document.querySelector('#compress-btn').style.opacity = 0.2;
+
+
+try {
+    
+let response = await fetch(request);
+
+let data = ""
+
+if(response.status == 400) {
+   
+ data = await response.text();
+ 
+ alert(data);
+ 
+document.querySelector('#compress-btn').style.pointerEvents = "all";
+
+document.querySelector('#compress-btn').style.opacity = 1;
+
+
+
+ return;
+  
+} else if (response.status == 403) {
+    
+       
+ data = await response.text();
+ 
+ alert(data);
+ 
+ 
+document.querySelector('#compress-btn').style.pointerEvents = "all";
+
+document.querySelector('#compress-btn').style.opacity = 1;
+
+
+ return;
+  
+} else if (response.status == 409) {
+    
+    data = await response.text();
+ 
+ alert(data);
+ 
+ 
+document.querySelector('#compress-btn').style.pointerEvents = "all";
+
+document.querySelector('#compress-btn').style.opacity = 1;
+
+
+ return;
+ 
+} else if (response.status == 500) {
+    
+   data = await response.text();
+ 
+ alert(data);
+ 
+document.querySelector('#compress-btn').style.pointerEvents = "all";
+
+document.querySelector('#compress-btn').style.opacity = 1;
+
+
+ return;
+ 
+} else if (response.status == 201) {
+    
+    data = await response.text();
+ 
+alert(data);
+
+ 
+document.querySelector('#compress-btn').style.pointerEvents = "all";
+
+document.querySelector('#compress-btn').style.opacity = 1;
+
+
+ if((compressOption == 0) && downloadItems) {
+     Response = await fetch (`{{%%FILEOPERATIONURL%%}}/download?time=${timeStamp}`, {
+    
+  method: "POST",
+  mode: "cors",
+  headers: {
+  "Content-Type": "application/json"
+  },
+  
+  body: JSON.stringify({
+  location: location.href,
+  entry: `${compressValue}.zip`
+  })
+
+});
+
+if(downloadResponse.status == 200) {
+
+let downloadData = await downloadResponse.json();
+  
+let { fileLocation } = downloadData;
+ 
+let link = document.createElement("a");
+
+link.setAttribute("href", `${fileLocation}`);
+
+
+link.setAttribute("class", "download-link");
+
+link.setAttribute("download", `${compressValue}.zip`);
+
+document.body.appendChild(link);
+
+link.click();
+
+document.body.removeChild(link);
+
+
+
+} else {
+    
+ alert ("The compressed file could not be downloaded.");
+ 
+ return;
+}
+ 
+     
+ }
+ 
+  
+ return;
+ 
+} else {
+    
+  alert ("An unknown error occurred.");
+  
+document.querySelector('#compress-btn').style.pointerEvents = "all";
+
+document.querySelector('#compress-btn').style.opacity = 1;
+
+
+  return;
+}
+    
+    
+} catch (err) {
+   
+ if(unloadPage) {
+     
+     return;
+ }   
+       
+alert ("An unknown error occurred.");
+
+document.querySelector('#compress-btn').style.pointerEvents = "all";
+
+document.querySelector('#compress-btn').style.opacity = 1;
+
+
+  
+  return;
+
+    
+}
+
+
+
+}
+
+
+// function for closing compress div
+
+function cancelCompress() {
+    
+  document.querySelector("#compress-div").style.display = "none";
+  
+  
+  document.querySelector("#empty-div").style.display = "none";
+  
+}
+
+
+// for checking items set for download
+
+  async function checkDownloadItems() {
+    
+ 
+let checkedItems = Array.from(document.querySelectorAll(".check-item"));
+
+let fileEntries =  Array.from(document.querySelectorAll(".specific-name"));
+
+let downloadArray = [];
+
+let failedArray = [];
+
+let absentArray = [];
+
+
+
+checkedItems.forEach((el, index) => {
+    
+let elemChecked = el.getAttribute("data-checked").toString().toLowerCase();
+
+  if(elemChecked == "true") {
+      
+  downloadArray.push(fileEntries[index].textContent);
+  }
+  
+})
+
+ alert ("NB: Do not exit the page till your receive a notification from your browser.\n\nMake sure you enable 'Automatic Download' for this site (Settings - site settings- Automatic Download).");
+ 
+ let failedText = "";
+ 
+ let absentText = "";
+ 
+ 
+ document.querySelector("#operation-password-div").style.display = "none";
+   
+ 
+ let empty = await new Promise( async (resolve, reject) => {
+  
+  
+for(let i = 0; i < downloadArray.length; i++) {
+    
+
+let timeStamp = new Date().getTime();
+     
+let request = new Request (`{{%%FILEOPERATIONURL%%}}/download?time=${timeStamp}`, {
+    
+  method: "POST",
+  mode: "cors",
+  headers: {
+  "Content-Type": "application/json"
+  },
+  
+  body: JSON.stringify({
+  location: location.href,
+  entry: downloadArray[i]
+  })
+
+})
+
+ try {
+     
+let response = await fetch(request);
+
+let data = "";
+
+
+if(response.status == 400) {
+    
+ failedArray.push(downloadArray[i]);
+   
+  
+   
+} else if (response.status == 403) {
+    
+  failedArray.push(downloadArray[i]);
+   
+  
+   
+} else if (response.status == 404) {
+   
+   absentArray.push(downloadArray[i]);
+   
+  
+   
+} else if (response.status == 500) {
+
+  failedArray.push(downloadArray[i]);
+   
+   
+   
+} else if (response.status == 200) { 
+     
+   data = await response.json();
+  
+let { fileLocation } = data;
+ 
+ 
+let link = document.createElement("a");
+
+link.setAttribute("href", `${fileLocation}`);
+
+
+link.setAttribute("class", "download-link");
+
+link.setAttribute("download", `${downloadArray[i]}`);
+
+document.body.appendChild(link);
+
+link.click();
+
+document.body.removeChild(link);
+
+
+} else {
+    
+    failedArray.push(downloadArray[i]);
+   
+     
+}
+
+ } catch (err) {
+   
+failedArray.push(downloadArray[i]);
+
+    
+ }
+ 
+ if (i == (downloadArray.length - 1)) {
+     
+     resolve();
+     
+ }
+
+
+
+}
+
+ });
+
+
+ if(failedArray.length != 0) {
+
+let txt1 = absentArray.length == 1 ? "file" : "files";
+ 
+let txt2 = absentArray.length == 1 ? "was" : "were";
+
+ failedText = `${failedArray.length} ${txt1} ${txt2} not downloaded: ${failedArray.join(", ")}.\n\n`;
+  
+ } 
+ 
+ if(absentArray.length != 0) {
+
+let txt1 = absentArray.length == 1 ? "file" : "files";
+ 
+let txt2 = absentArray.length == 1 ? "was" : "were";
+ 
+ absentText = `${absentArray.length} ${txt1} ${txt2} not found: ${absentArray.join(", ")}.`;
+      
+   
+ }
+   
+ if((absentArray.length != 0) || (failedArray.length != 0)) {
+     
+  alert (`${failedText}${absentText}`);
+ }
+
+}
+  
+  
+  
+ /*
+  async function checkDownloadItems() {
+    
+ 
+let checkedItems = Array.from(document.querySelectorAll(".check-item"));
+
+let fileEntries =  Array.from(document.querySelectorAll(".specific-name"));
+
+let downloadArray = [];
+
+
+checkedItems.forEach((el, index) => {
+    
+let elemChecked = el.getAttribute("data-checked").toString().toLowerCase();
+
+  if(elemChecked == "true") {
+      
+  downloadArray.push(fileEntries[index].textContent);
+  }
+  
+})
+
+ alert ("NB: Do not exit the page till your receive a notification from your browser.");
+ 
+ 
+for(let i = 0; i < downloadArray.length; i++) {
+    
+
+let timeStamp = new Date().getTime();
+     
+let locationUrl = location.href;
+
+let entry = downloadArray[i];
+
+
+ 
+  try {
+    
+  locationUrl = decodeURIComponent(location);
+
+
+   } catch (err) {
+  
+ let path = locationUrl.split("/");
+
+ let invalidCharacters =  path.map(el => {
+     
+  let invalidCharacter =  el.toString().match(/\%[^\dABCDEFabcdef]+/);
+  
+  if(invalidCharacter) {
+ 
+ let index = invalidCharacter.index;
+ 
+ let otherPath = el.slice(0, index);
+ 
+ let wrongCharacter = el.slice(index);
+ 
+ 
+ let encodedCharacter = encodeURIComponent(wrongCharacter);
+ 
+ return `${otherPath}${encodedCharacter}`; 
+  } else {
+      
+      return el;
+  }
+ 
+ 
+})
+
+locationUrl = invalidCharacters.join("/");
+
+  } 
+
+ 
+ let index = locationUrl.toString().indexOf("/files");
+ 
+ let folderLocation = locationUrl.toString().slice((index + 6));
+  
+  
+
+
+let iframeUrl = `{{%%FILEOPERATIONURL%%}}/download/${entry}?time=${timeStamp}&location=${folderLocation}`;
+
+
+
+let iframeElem  = document.createElement("iframe");
+
+iframeElem.setAttribute("src", iframeUrl);
+
+document.body.appendChild(iframeElem);
+
+}
+
+  
+  }
+  
+  */
+  
+  // function for closing the delete div
+
+function closeDelete() {
+    
+  document.querySelector("#delete-div").style.display = "none";
+  
+  
+  document.querySelector("#empty-div").style.display = "none";
+  
+}
+
+// Function for deleting files
+
+async function deleteEntry() {
+    
+let checkedItems = Array.from(document.querySelectorAll(".check-item"));
+
+let fileEntries =  Array.from(document.querySelectorAll(".specific-name"));
+
+let deleteArray = [];
+
+checkedItems.forEach((el, index) => {
+    
+let elemChecked = el.getAttribute("data-checked").toString().toLowerCase();
+
+  if(elemChecked == "true") {
+      
+ let isFile = fileEntries[index].classList.contains("file-entry");
+ 
+ 
+ let isFolder = fileEntries[index].classList.contains("folder-entry");
+ 
+      
+  deleteArray.push({fileName: fileEntries[index].textContent, isFile, isFolder});
+  }
+  
+})
+
+
+let body = JSON.stringify({
+    
+   location: location.href, 
+    entries: deleteArray
+});
+
+
+
+let request = new Request ("{{%%FILEOPERATIONURL%%}}", {
+    
+  method: "DELETE",
+  mode: "cors",
+  headers: {
+  "Content-Type": "application/json"
+  },
+  
+  body 
+})
+
+
+document.querySelector('#delete-btn').style.pointerEvents = "none";
+
+document.querySelector('#delete-btn').style.opacity = 0.2;
+
+
+
+document.querySelector("#delete-div").style.display = "none";
+ 
+  try {
+      
+ let response = await fetch(request);
+ 
+ let data = "";
+ 
+   if(response.status == 400) {
+    
+ data = await response.text();
+ 
+ alert (data);
+ 
+ 
+document.querySelector('#delete-btn').style.pointerEvents = "all";
+
+document.querySelector('#delete-btn').style.opacity = 1;
+
+ 
+ return;
+       
+   } else if (response.status == 403) {
+       
+ data = await response.text();
+ 
+ alert (data);
+ 
+document.querySelector('#delete-btn').style.pointerEvents = "all";
+
+document.querySelector('#delete-btn').style.opacity = 1;
+
+ 
+ return; 
+   
+   } else if (response.status == 500) {
+        
+ data = await response.text();
+ 
+ alert (data);
+ 
+document.querySelector('#delete-btn').style.pointerEvents = "all";
+
+document.querySelector('#delete-btn').style.opacity = 1;
+
+ return;
+     
+   } else if (response.status == 200) {
+       
+       
+ data = await response.text();
+ 
+ alert (data);
+ 
+ 
+document.querySelector('#delete-btn').style.pointerEvents = "all";
+
+document.querySelector('#delete-btn').style.opacity = 1;
+
+
+
+ return; 
+   } else {
+       
+ data = await response.text();
+ 
+ alert (data);
+ 
+document.querySelector('#delete-btn').style.pointerEvents = "all";
+
+document.querySelector('#delete-btn').style.opacity = 1;
+
+ return;
+         
+       
+   }
+
+  } catch (err) {
+    
+ if(unloadPage) {
+     
+     return;
+ }   
+ 
+    alert ("An unknown error occurred.");
+    
+    
+document.querySelector('#delete-btn').style.pointerEvents = "all";
+
+document.querySelector('#delete-btn').style.opacity = 1;
+
+    
+    return;
+  }
+    
+    
+}
+
+
+  
+function cancelOperationPassword() {
+    
+  document.querySelector("#operation-password-div").style.display = "none";
+}
+
+ 
+
+async function checkOperationPassword() {
+    
+ let body = document.querySelector("#operation-password").value.toString();
+ 
+ 
+    
+let request = new Request ("{{%%FILEOPERATIONURL%%}}", {
+    
+  method: "POST",
+  mode: "cors",
+  headers : {
+   'Content-Type': 'text/plain'
+   },
+   body
+  
+})
+
+
+try {
+
+let response = await fetch(request);
+
+let data = "";
+
+  if(response.status == 403) {
+      
+ data = await response.text();
+ 
+ alert (data);
+ 
+ document.querySelector("#operation-password-div").style.display = "none";
+ 
+ return;
+ 
+  } else if(response.status == 401) {
+      
+  data = await response.text();
+  
+  alert (data)
+  
+ document.querySelector("#operation-password-div").style.display = "none";
+ 
+ 
+ return;
+  } else if(response.status == 200) {
+      
+  if(currentOperation == "upload") {
+    
+ document.querySelector("#operation-password-div").style.display = "none";
+ 
+ 
+ document.querySelector("#upload-div").style.display = "flex";
+ 
+  } else if (currentOperation == "delete") {
+         
+ document.querySelector("#operation-password-div").style.display = "none";
+ 
+   document.querySelector("#delete-div").style.display = "flex";
+       
+  
+  } else if (currentOperation == "download") {
+              
+ document.querySelector("#operation-password-div").style.display = "none";
+ 
+   checkDownloadItems();
+   
+  } else if (currentOperation == "compress") {
+      
+        
+ document.querySelector("#operation-password-div").style.display = "none";
+ 
+   document.querySelector("#compress-div").style.display = "flex";
+       
+  } else if (currentOperation == "rename") {
+          
+ document.querySelector("#operation-password-div").style.display = "none";
+ 
+ 
+ 
+  document.querySelector("#rename-div").style.display = "flex";
+ 
+displayRenameItems();
+ 
+ 
+  } else if (currentOperation == "details") { 
+      
+ document.querySelector("#operation-password-div").style.display = "none";
+ 
+ 
+  document.querySelector("#details-div").style.display = "flex";
+     
+    getEntryDetails();
+    
+  } else if (currentOperation == "share") { 
+      
+ document.querySelector("#operation-password-div").style.display = "none";
+ 
+ shareEntry();
+    
+  }
+  
+ return;
+
+      
+  } else {
+      
+  alert ("An unknown error occurred.")
+  
+   document.querySelector("#operation-password-div").style.display = "none";
+ 
+ return;
+  }
+} catch (err) {
+    
+    alert ("An unknown error occurred.");
+    
+  document.querySelector("#operation-password-div").style.display = "none";
+ 
+  return;
+}
+    
+}
+  
+  
+  
+  function closeUpload() {
+    
+   document.querySelector("#upload-div").style.display = "none";
+   
+   
+  document.querySelector("#empty-div").style.display = "none";
+  
+      
+  }
+  
+  
+ async function createDirectory() {
+  
+ let body = document.querySelector("#folder-name").value.toString().trim();
+ 
+  let param = body.match(/[^\w\d\s\-\.\(\)\[\]\&\#\@\$\+\%\=\!\{\}\~\,\']/) ? true : false;
+  
+  
+ 
+ if((body == "") || param) {
+     
+ alert ("Please enter a valid folder name.")
+  return;
+ } else if(body.length > 100) {
+     
+ alert ("Folder name must be less than '100' characters.");
+ 
+ return;
+   } else {
+       
+ 
+let request = new Request ("{{%%FILEOPERATIONURL%%}}/directory", {
+    
+  method: "POST",
+  mode: "cors",
+  headers : {
+   'Content-Type': 'application/json'
+   },
+   body: JSON.stringify({
+     
+     directoryName : body,
+     location: location.href
+
+   })
+  
+})
+
+ document.querySelector("#folder-btn").style.pointerEvents = "none";
+ 
+  document.querySelector("#folder-btn").style.opacity = 0.2;
+
+
+
+try {
+
+let response = await fetch(request);
+
+let data = "";
+
+   if(response.status == 403) {
+       
+ data = await response.text();
+   
+ alert (data);
+ 
+  document.querySelector("#folder-btn").style.pointerEvents = "all";
+ 
+  document.querySelector("#folder-btn").style.opacity = 1;
+
+
+ 
+  return;
+       
+   } else if (response.status == 400) {
+  
+  data = await response.text();
+   
+ alert (data);
+ 
+  document.querySelector("#folder-btn").style.pointerEvents = "all";
+ 
+  document.querySelector("#folder-btn").style.opacity = 1;
+
+
+ 
+  return;     
+       
+       
+   } else if (response.status == 500) {
+       
+   data = await response.text();
+   
+ alert (data);
+ 
+  document.querySelector("#folder-btn").style.pointerEvents = "all";
+ 
+  document.querySelector("#folder-btn").style.opacity = 1;
+
+
+ 
+  return;        
+  
+   } else if (response.status == 409) {
+   data = await response.text();
+   
+ alert (data);   
+ 
+  document.querySelector("#folder-btn").style.pointerEvents = "all";
+ 
+  document.querySelector("#folder-btn").style.opacity = 1;
+
+
+ 
+ return;
+     
+   } else if (response.status == 201) {
+       
+    data = await response.text();
+   
+ alert (data);    
+ 
+ 
+  document.querySelector("#folder-btn").style.pointerEvents = "all";
+ 
+  document.querySelector("#folder-btn").style.opacity = 1;
+
+
+   
+    return;
+    
+   } else {
+       
+     
+  alert ("An unknown error occurred.");
+  
+   document.querySelector("#folder-btn").style.pointerEvents = "all";
+ 
+  document.querySelector("#folder-btn").style.opacity = 1;
+
+
+  
+  return;
+   }
+} catch (err) {
+    
+ if(unloadPage) {
+     
+     return;
+ }   
+  alert ("An unknown error occurred.");
+  
+   document.querySelector("#folder-btn").style.pointerEvents = "all";
+ 
+  document.querySelector("#folder-btn").style.opacity = 1;
+
+
+  
+  return;
+}
+
+ }
+ }
+ 
+ 
+ function chooseFile() {
+     
+  document.querySelector("#real-file-btn").click();
+  
+     
+ document.querySelector("#upload-animation-div").style.display = "flex";
+
+ }
+ 
+ 
+ async function showFiles() {
+ 
+ const uploadFiles = document.querySelector("#real-file-btn");
+ 
+ const uploadFilesDiv = document.querySelector("#uploaded-files-div");
+
+ 
+ if("files" in uploadFiles) {
+     
+  let filesContainer = Array.from(uploadFiles.files);
+  
+  let totalSize = 0;
+  
+ for (let i = 0; i < filesContainer.length; i++) {
+    
+  if ("size" in filesContainer[i]) {
+      
+    totalSize += parseFloat(filesContainer[i].size)
+  }
+  
+  
+    
+ }
+ 
+ if(filesContainer.length == 0) {
+     
+     
+      document.querySelector("#file-no").innerHTML = 0;
+ 
+    uploadFilesDiv.innerHTML = "";
+   
+     document.querySelector("#upload-btn").style.pointerEvents = "none";
+ 
+  document.querySelector("#upload-btn").style.opacity = 0.2;
+ 
+ 
+     
+ } else if(totalSize > ((1000**3) * 5)) {
+      
+ alert (`Total Size: ${(totalSize / (1000**3)).toFixed(2)}GB.\nThe total file size must not be greater than "5GB".`);
+
+ document.querySelector("#file-no").innerHTML = 0;
+ 
+    uploadFilesDiv.innerHTML = "";
+   
+ document.querySelector("#upload-btn").style.pointerEvents = "none";
+ 
+  document.querySelector("#upload-btn").style.opacity = 0.2;
+     
+ document.querySelector("#upload-animation-div").style.display = "none";
+ 
+  return;
+  } else {
+
+ 
+  
+  let fileMap = filesContainer.map((el, index) => {
+      
+  let val = "";
+  
+   if("name" in el) {
+    
+  val += `<span class="upload-text">(${index + 1})&nbsp;&nbsp;&nbsp;Filename:</span>&nbsp; ${el.name}<br>`;
+    
+   }
+   
+   if("size" in el) {
+       
+  let fileSize = parseFloat(el.size);
+  
+ 
+ 
+    if(fileSize < 1000) {
+ 
+      fileSize = `${fileSize} <b class="file-size"><i>B</i></b>`;
+  
+  
+ } else if((fileSize > 1000) && fileSize <= (1000 ** 2)) {
+      
+   fileSize = `${(fileSize / 1000).toFixed(2)} <b class="file-size"><i>KB</i></b>`;
+   
+  } else if ((fileSize >= (1000 ** 2)) && (fileSize <= (1000 ** 3))) {
+    
+      fileSize = `${(fileSize / (1000 ** 2)).toFixed(2)} <b class="file-size"><i>MB</i></b>`
+       
+  } else if ((fileSize >= (1000 ** 3)) && (fileSize <= (1000 ** 4))) {
+      
+     fileSize = `${(fileSize / (1000 ** 3)).toFixed(2)} <b class="file-size"><i>GB</i></b>`
+        
+  } else {
+      
+    fileSize = `${(fileSize / (1000 ** 3)).toFixed(2)} <b class="file-size"><i>GB</i></b>`
+  }
+  
+  
+  
+  if((index + 1).toString().length == 1) {
+      
+       val += `&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="upload-text">Filesize:</span>&nbsp; ${fileSize}`;
+ 
+  } else if ((index + 1).toString().length == 2) {
+      
+       val += `&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="upload-text">&nbsp;&nbsp;Filesize:</span>&nbsp; ${fileSize}`;
+ 
+  } else if ((index + 1).toString().length == 3) {
+      
+       val += `&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="upload-text">&nbsp;&nbsp;&nbsp;&nbsp;Filesize:</span>&nbsp; ${fileSize}`;
+ 
+  }
+   
+  
+   }
+   
+   return `<div class="uploaded-files">${val}</div><br><br>`;
+    
+  }).join("");
+  
+  document.querySelector("#file-no").innerHTML = filesContainer.length;
+    uploadFilesDiv.innerHTML = fileMap;
+    
+    document.querySelector("#upload-btn").style.pointerEvents = "all";
+ 
+  document.querySelector("#upload-btn").style.opacity = 1;
+ 
+ 
+   
+ }
+ 
+ 
+ }
+ 
+ 
+     
+ document.querySelector("#upload-animation-div").style.display = "none";
+
+ }
+  
+ 
+
+ function unCheckAll() {
+      
+
+  Array.from(document.querySelectorAll(".check-item")).forEach((el, index, array) => {
+      
+   el.setAttribute("data-checked", false);
+   array[index].style.background = "white";
+
+      
+  })
+  
+ document.querySelector("#config-box").style.display = "none";
+ 
+ document.querySelector("#upload-box").style.display = "none";
+ 
+ 
+  
+   }
+ 
+  
+ checkEntries.forEach((el, index, array) => {
+   el.addEventListener("click", e => {
+  let elemChecked = el.getAttribute("data-checked");
+  
+  if(elemChecked.toString() == "false") {
+      
+   el.setAttribute("data-checked", true);
+   
+ array[index].style.background = "gold";
+ 
+document.querySelector("body").dispatchEvent(new Event("checkitem"));
+  } else {
+      
+   el.setAttribute("data-checked", false);
+   array[index].style.background = "white";
+   
+   document.querySelector("body").dispatchEvent(new Event("checkitem"));
+  }
+   })
+   
+  })
+  
+  
+
+  function confirmBoxSize() {
+  
+  let  screenWidth = parseFloat(screen.availWidth);
+
+let screenHeight = parseFloat(screen.availHeight);
+
+  
+let fileOpsHeight = parseFloat(document.querySelector('#file-ops-div').offsetHeight);
+
+let moreOffsetLeft = parseFloat(document.querySelector('#more-ops').offsetLeft) + parseFloat(document.querySelector('#more-ops').offsetWidth);
+
+let moreDivRight = parseFloat(document.querySelector('#file-ops-div').offsetWidth) - moreOffsetLeft;
+  
+  let posLeft = 
+  (parseFloat(document.querySelector("#upload-content").offsetLeft) + parseFloat(document.querySelector("#upload-content").offsetWidth))  - parseFloat(document.querySelector("#upload-btn").offsetWidth);
+  
+ let closeUploadLeft  = parseFloat(document.querySelector("#upload-content").offsetLeft) + parseFloat(document.querySelector("#upload-content").offsetWidth);
+  
+ let closeUploadTop  = parseFloat(document.querySelector("#upload-content").offsetTop);
+
+  let requestLeft = 
+  
+  (parseFloat(document.querySelector("#request-div-content").offsetLeft) + parseFloat(document.querySelector("#request-div-content").offsetWidth))  - parseFloat(document.querySelector("#request-all-btn-div").offsetWidth);
+  
+let renameBtnLeft = 
+  (parseFloat(document.querySelector("#rename-div-content").offsetLeft) + parseFloat(document.querySelector("#rename-div-content").offsetWidth))  - parseFloat(document.querySelector(".rename-btn").offsetWidth);
+
+   
+let renameCloseLeft = 
+  parseFloat(document.querySelector("#rename-div-content").offsetLeft) + parseFloat(document.querySelector("#rename-div-content").offsetWidth);
+  
+  let renameCloseTop =  parseFloat(document.querySelector("#rename-div-content").offsetTop);
+
+
+ let marginVal = (-1575 / 31) + (screenWidth * (17 / 93));
+  
+let compressMargin = (-370/31) + (screenHeight * (80 / 465));
+
+let deleteMargin = (-3250/31) + (screenHeight * (200 / 465))
+
+ let selectTextWidth  = parseFloat(document.querySelector('#details-items-change').offsetWidth);
+ 
+ let selectDivWidth  = parseFloat(document.querySelector('#details-select-div').offsetWidth);
+ 
+ 
+let closeRequestLeft = 
+  parseFloat(document.querySelector("#request-div-content").offsetLeft) + parseFloat(document.querySelector("#request-div-content").offsetWidth);
+  
+  let closeRequestTop =  parseFloat(document.querySelector("#request-div-content").offsetTop);
+
+ 
+document.querySelector("#upload-content").style.marginLeft = `${marginVal}px`;
+
+
+document.querySelector("#upload-content").style.marginRight = `${marginVal}px`;
+
+document.querySelector("#upload-btn").style.left = `${posLeft - 10}px`;
+
+document.querySelector("#more-div").style.bottom = `${fileOpsHeight + 2}px`;
+
+
+document.querySelector("#more-div").style.right = `${moreDivRight}px`;
+
+
+document.querySelector("#delete-div-content").style.marginLeft = `${marginVal}px`;
+
+
+document.querySelector("#delete-div-content").style.marginRight = `${marginVal}px`;
+
+
+document.querySelector("#compress-div-content").style.marginLeft = `${marginVal}px`;
+
+
+document.querySelector("#compress-div-content").style.marginRight = `${marginVal}px`;
+
+
+document.querySelector("#compress-div-content").style.marginTop = `${compressMargin}px`;
+
+
+document.querySelector("#delete-div-content").style.marginTop = `${deleteMargin}px`;
+
+
+document.querySelector("#operation-password-box").style.marginTop = `${deleteMargin}px`;
+
+
+document.querySelector("#operation-password-box").style.marginLeft = `${marginVal}px`;
+
+
+document.querySelector("#operation-password-box").style.marginRight = `${marginVal}px`;
+
+document.querySelector("#rename-div-content").style.marginLeft = `${marginVal}px`;
+
+
+document.querySelector("#rename-div-content").style.marginRight = `${marginVal}px`;
+
+document.querySelector(".rename-btn").style.left = `${renameBtnLeft - 10}px`;
+
+
+document.querySelector("#details-div-content").style.marginLeft = `${marginVal}px`;
+
+
+document.querySelector("#details-div-content").style.marginRight = `${marginVal}px`;
+
+ document.querySelector("#details-item-select").style.maxWidth = `${selectDivWidth - selectTextWidth - 20}px`;
+ 
+ 
+document.querySelector("#request-div-content").style.marginLeft = `${marginVal}px`;
+
+
+document.querySelector("#request-div-content").style.marginRight = `${marginVal}px`;
+
+document.querySelector("#request-all-btn-div").style.left = `${requestLeft - 10}px`;
+
+document.querySelector("#cancel-upload-svg").style.left = `${closeUploadLeft - 40}px`;
+
+document.querySelector("#cancel-upload-svg").style.top = `${closeUploadTop + 15}px`;
+
+document.querySelector("#cancel-rename-svg").style.left = `${renameCloseLeft - 40}px`;
+
+document.querySelector("#cancel-rename-svg").style.top = `${renameCloseTop + 15}px`;
+
+
+document.querySelector("#close-request-svg").style.left = `${closeRequestLeft - 40}px`;
+
+document.querySelector("#close-request-svg").style.top = `${closeRequestTop + 15}px`;
+
+}
+
+
+setInterval(confirmBoxSize, 0);
+
+
+document.querySelector("#menu-box").onclick = e => {
+    
+ let configDisplay = getComputedStyle(document.querySelector("#config-box")).getPropertyValue("display");
+ 
+ let uploadDisplay = getComputedStyle(document.querySelector("#upload-box")).getPropertyValue("display");
+ 
+ 
+  
+  if((configDisplay != "flex") || (uploadDisplay != "flex")) {
+    
+document.querySelector("#config-box").style.display = "flex";
+
+document.querySelector("#upload-box").style.display = "flex";
+
+} else {
+   
+ 
+  document.querySelector("#config-box").style.display = "none";
+    
+ document.querySelector("#upload-box").style.display = "none";
+    
+}
+
+
+}
+
+
+
+  const links = Array.from(document.querySelector("#links").children);
+  
+ const fileItems = Array.from(document.querySelectorAll(".files a"));
+
+
+const ext = [".html", ".htm", ".css", ".js", ".jpg", ".jpeg", ".png", ".gif", ".svg", ".json", ".mp4", ".mp3", ".txt", ".webp"];
+ 
+ 
+ 
+ let totalWidth = 0;
+ 
+ links.forEach(el => {
+     
+   totalWidth += parseFloat(el.offsetWidth);
+ })
+ 
+ totalWidth = totalWidth - parseFloat(links[links.length - 1].offsetWidth );
+ 
+ 
+document.querySelector("#links").scrollLeft = totalWidth;
+
+fileItems.forEach(el => {
+  
+
+ if(el.hasAttribute("data-ext")) {
+
+  el.addEventListener("click", e => {
+    
+ 
+let disp = getComputedStyle(document.querySelector('#select-div')).getPropertyValue("display").toString().toLowerCase();
+
+if(disp != "flex") {
+
+ const extension = el.getAttribute("data-ext").toString();
+ 
+ const state = ext.find(elem => elem == `${extension}`);
+ 
+
+ if(!state) {
+   
+     
+ const confirmVal = confirm(`This file "might" be downloaded depending on the browser. Click 'Ok' to proceed.`);
+     
+  if(!confirmVal) {
+      
+   e.preventDefault();
+  }
+  
+}
+ 
+ }
+     
+   
+  })
+    
+
+}
+
+ 
+})
+
+
+ function closeRequest()  {
+     
+  document.querySelector("#request-div").style.display = "none";   
+ }
+
+ function showRequestDiv() {
+     
+  document.querySelector("#request-div").style.display = "flex"; 
+ }
+
+
+/*
+ function createComfirmBox(name, browser) {
+   
+ 
+     
+let parentDiv = document.createElement("div");
+
+parentDiv.setAttribute("class", "confirm-message-box");
+
+let childDiv = document.createElement("div");
+
+childDiv.setAttribute("class", "confirm-box");
+
+let spanText = document.createElement("span");
+
+spanText.setAttribute("class", "confirm-head-text");
+
+spanText.appendChild(document.createTextNode("Confirm Connection"));
+
+let confirmText  = document.createElement("span");
+
+confirmText.setAttribute("class", "confirm-text");
+
+let boldtxt1 = document.createElement("b");
+
+boldtxt1.appendChild(document.createTextNode(`${name}`));
+
+let boldtxt2 = document.createElement("b");
+
+boldtxt2.appendChild(document.createTextNode(`${browser}`));
+
+confirmText.appendChild(boldtxt1);
+
+confirmText.appendChild(document.createTextNode(" on "));
+
+confirmText.appendChild(boldtxt2);
+
+
+confirmText.appendChild(document.createTextNode(" browser is trying to connect to your server. Click yes to allow access to your server. "));
+
+let btnBox  = document.createElement("span");
+
+btnBox.setAttribute("class", "btn-box");
+
+
+let yesBtn  = document.createElement("button");
+
+yesBtn.setAttribute("class", "yes-btn");
+
+yesBtn.setAttribute("onclick", `allowAccess()`);
+
+yesBtn.appendChild(document.createTextNode(` Yes `));
+
+ 
+
+let noBtn  = document.createElement("button");
+
+noBtn.setAttribute("class", "no-btn");
+
+noBtn.setAttribute("onclick", `denyAccess()`);
+
+noBtn.appendChild(document.createTextNode(` No `));
+
+btnBox.appendChild(yesBtn);
+
+
+btnBox.appendChild(noBtn);
+
+
+childDiv.appendChild(spanText);
+
+
+childDiv.appendChild(confirmText);
+
+
+childDiv.appendChild(document.createElement("br"));
+
+
+childDiv.appendChild(document.createElement("br"));
+
+childDiv.appendChild(btnBox);
+
+
+parentDiv.appendChild(childDiv);
+
+return parentDiv;
+       
+
+(`<div id="confirm-message-box">
+    
+   <div id="confirm-box">
+    
+    <span id="confirm-head-text"> Confirm Connection </span>
+    
+   
+    <span id="Confirm-text"> 
+    
+      </span>
+      
+  <span id="btn-box">
+      
+       <button id="yes-btn" onclick="allowAccess()"> Yes </button> 
+  
+  <button id="no-btn" onclick="denyAccess()"> No </button> </span>
+  
+  
+   </div>
+    
+ </div>`);
+    
+ }
+ */
+ 
+ 
+ let requestId = 0;
+
+ let requestDataArray  = [];
+ 
+ let clientIp = new Set();
+ 
+async function confirmClient() {
+  
+if(typeof(EventSource) != undefined) {
+    
+
+//let source = new EventSource("{{%EVENTURL%}}");
+
+let source = new EventSource("{{%URLPREFIX%}}/sse");
+
+
+
+source.addEventListener("newclient", (event) => {
+  
+  let { ip: reqIp } = JSON.parse(event.data);
+   
+ if(clientIp.has(reqIp)) {
+     
+    return;
+ }
+   
+ clientIp.add(reqIp);
+   
+let disp1 = getComputedStyle(document.querySelector('.confirm-message-box')).getPropertyValue("display").toString().toLowerCase();
+ 
+let disp2 = getComputedStyle(document.querySelector('#request-icon-box')).getPropertyValue("display").toString().toLowerCase();
+ 
+  if((disp1 == "flex") || (disp2 == "flex")) {
+      
+    requestId += 1;
+     
+ let reqNo = requestId == `0` ? "" : requestId  > 999 ? `999<sup><b>+</b></sup>` : `${requestId}`;
+         
+  document.querySelector("#request-no").innerHTML = reqNo;
+  
+  document.querySelector("#request-icon-box").style.display = "flex";
+  
+ let requestData  = JSON.parse(event.data);
+ 
+ 
+  requestDataArray.push(requestData);
+  
+  
+ let {browser, deviceBrand, deviceModel, ip} = requestData;
+ 
+ let deviceName;
+ 
+ if((deviceBrand.toString().trim() == "") && (deviceModel.toString().trim() == "")) {
+     
+   deviceName = `${ip}`;
+   
+ } else {
+     
+     deviceName = `${deviceBrand} ${deviceModel}`;
+ }
+ 
+ 
+ let requestDiv  = document.querySelector("#request-div-details").innerHTML;
+ 
+ let requestContent =  (`  
+ 
+ <div class="request-details">
+      
+   <div class="request-details-no">
+      
+      (${requestId}) 
+       
+   </div> 
+   
+   
+   <div class="request-details-box">
+   
+ <div class="details-device-div">
+     
+  <span class="details-device-text"> Device Name: </span>
+  <span class="details-device-name"> ${deviceName} </span>
+     
+ </div>
+ 
+  <div class="details-browser-div">
+      
+           
+  <span class="details-browser-text"> Browser Name:  </span>
+  <span class="details-browser-name"> ${browser} </span>
+     
+  </div>
+    
+  <br>
+    <div class="request-btn-box">
+     
+   <button class="request-confirm-btn" data-ip="${ip}" data-index="${requestId - 1}" onclick="allowAccess(event)"> Confirm </button>  
+   <button class="request-decline-btn" data-ip="${ip}" data-index="${requestId - 1}" onclick="denyAccess(event)"> Decline </button>
+       
+   </div>
+       
+   </div>
+   
+
+          
+     </div>
+     
+   `)
+   
+ document.querySelector("#request-div-details").innerHTML = `${requestDiv}${requestContent}<br><br>`;
+ 
+ 
+       
+   } else {
+ 
+ let {browser, deviceBrand, deviceModel, ip} = JSON.parse(event.data);
+ 
+ let deviceName;
+ 
+ if((deviceBrand.toString().trim() == "") && (deviceModel.toString().trim() == "")) {
+     
+   deviceName = `${ip}`;
+   
+ } else {
+     
+     deviceName = `${deviceBrand} ${deviceModel}`;
+ }
+
+ document.querySelector(".Confirm-text").innerHTML = `<b>${deviceName}</b> on <b>${browser}</b> browser is trying to connect to your server. Clicking 'yes' gives all browsers on the same device,  access to your server.`;
+ 
+ 
+    /*
+ document.body.appendChild(createComfirmBox(deviceName, browser));
+ */
+ 
+ document.querySelector(".yes-btn").setAttribute("data-ip", `${ip}`);
+ 
+ document.querySelector(".no-btn").setAttribute("data-ip", `${ip}`);
+ 
+ 
+ 
+document.querySelector(".confirm-message-box").style.display = "flex"; 
+  
+   }
+   
+   
+ document.querySelector("#notification-sound").play();
+
+ 
+try {
+    
+
+ navigator.vibrate(200);
+
+} catch (err) {
+    
+    
+}
+
+   
+});
+
+source.addEventListener("errorcalled", event => {
+    
+  document.querySelector(".confirm-message-box").style.display = "none";
+ 
+})
+
+source.addEventListener("configcalled", event => {
+    
+  document.querySelector(".confirm-message-box").style.display = "none";
+ 
+    
+})
+    
+  
+source.addEventListener("successcalled", event => {
+    
+  document.querySelector(".confirm-message-box").style.display = "none";
+ 
+    
+})
+    
+      
+} else {
+    
+   return;
+}
+
+}
+
+
+async function allowAccess(e) {
+     
+     
+ let ip = e.currentTarget.getAttribute("data-ip");
+ 
+ let index = "false";
+ 
+  if(e.currentTarget.hasAttribute("data-index")) { 
+  
+  index = parseInt(e.currentTarget.getAttribute("data-index"));
+      
+  }
+ 
+ let request = new Request("{{%URLPREFIX%}}/confirmConnection", {
+     
+   method: "POST",
+   mode: "cors",
+   headers : {
+   'Content-Type': 'application/json'
+   },
+   body: JSON.stringify({data: "success_yes", ip})
+   
+ });
+ 
+ 
+ try {
+ 
+ let response = await fetch(request);
+ 
+ let data = "";
+ 
+  if(response.status == 400) {
+      
+    
+   data = await response.text();
+   
+   alert (data);
+   
+  document.querySelector(".confirm-message-box").style.display = "none";
+  
+  if(index == "false") {
+     
+  clientIp.delete(ip);
+  
+  } 
+  
+   return;
+   
+  } else if (response.status == 403)  {
+   
+   data = await response.json();
+   
+  let { type } = data;
+   
+   if(type == "Forbidden") {
+       
+   alert (data.data);
+   
+  document.querySelector(".confirm-message-box").style.display = "none";
+  
+  if(index == "false") {
+     
+  clientIp.delete(ip);
+  
+  } 
+      
+  
+   } else if (type == "Permission") {
+      
+      alert (data.data);
+   
+  document.querySelector(".confirm-message-box").style.display = "none";
+  
+  if(index == "false") {
+     
+  clientIp.delete(ip);
+  
+  } 
+  
+      
+   } else {
+       
+  throw new Error();     
+       
+   }
+  
+  return; 
+      
+  } else if (response.status == 200) {
+   
+ document.querySelector(".confirm-message-box").style.display = "none";
+  
+    clientIp.delete(ip);
+  
+  if(index != "false") {
+  
+ 
+ let reqDetailsArr = document.querySelectorAll(".request-details");
+ 
+ 
+ let currentElem  = reqDetailsArr[index];
+ 
+ let parentDiv  = document.querySelector("#request-div-details");
+ 
+ currentElem.style.display = "none";
+ 
+ parentDiv.removeChild(currentElem);
+ 
+ requestId -= 1;
+ 
+ requestDataArray.splice(index, 1);
+ 
+  if(requestDataArray.length == 0) {
+   
+  
+  document.querySelector("#request-icon-box").style.display = "none";     
+  
+ 
+  document.querySelector("#request-div").style.display = "none"; 
+  
+   
+ document.querySelector("#request-div-details").innerHTML  = "";
+
+       
+   } else {
+ 
+ let requestDiv = "";
+ 
+  document.querySelector("#request-no").innerHTML = requestId;
+  
+ 
+ Array.from(requestDataArray).forEach((el, i) => {
+     
+   
+ let {browser, deviceBrand, deviceModel, ip} = el;
+ 
+ let deviceName;
+ 
+ if((deviceBrand.toString().trim() == "") && (deviceModel.toString().trim() == "")) {
+     
+   deviceName = `${ip}`;
+   
+ } else {
+     
+     deviceName = `${deviceBrand} ${deviceModel}`;
+ }
+ 
+ 
+ let requestContent =  (`  
+ 
+ <div class="request-details">
+      
+   <div class="request-details-no">
+      
+      (${i + 1}) 
+       
+   </div> 
+   
+   
+   <div class="request-details-box">
+   
+ <div class="details-device-div">
+     
+  <span class="details-device-text"> Device Name: </span>
+  <span class="details-device-name"> ${deviceName} </span>
+     
+ </div>
+ 
+  <div class="details-browser-div">
+      
+           
+  <span class="details-browser-text"> Browser Name:  </span>
+  <span class="details-browser-name"> ${browser} </span>
+     
+  </div>
+    
+  <br>
+    <div class="request-btn-box">
+     
+   <button class="request-confirm-btn" data-ip="${ip}" data-index="${i}" onclick="allowAccess(event)"> Confirm </button>  
+   <button class="request-decline-btn" data-ip="${ip}" data-index="${i}" onclick="denyAccess(event)"> Decline </button>
+       
+   </div>
+       
+   </div>
+   
+
+          
+     </div><br><br>
+     
+   `)
+   
+   requestDiv += requestContent;
+     
+ });
+ 
+ 
+ document.querySelector("#request-div-details").innerHTML = requestDiv;
+      
+   
+  } 
+  }
+   
+   
+   } else {
+       
+  throw new Error();  
+       
+   }
+
+ } catch (err)  {
+       
+ document.querySelector(".confirm-message-box").style.display = "none";
+    
+  if(index == "false") {
+     
+  clientIp.delete(ip);
+  
+  } 
+  
+ alert ("An unknown error occurred.")
+   
+
+}
+
+ }
+
+
+async function denyAccess(e) {
+     
+     
+ let ip = e.currentTarget.getAttribute("data-ip");
+ 
+ let index = "false";
+ 
+  if(e.currentTarget.hasAttribute("data-index")) { 
+  
+  index = parseInt(e.currentTarget.getAttribute("data-index"));
+      
+  }
+ 
+ let request = new Request("{{%URLPREFIX%}}/confirmConnection", {
+     
+   method: "POST",
+   mode: "cors",
+   headers : {
+   'Content-Type': 'application/json'
+   },
+   body: JSON.stringify({data: "success_no", ip})
+   
+ });
+ 
+ 
+ try {
+ 
+ let response = await fetch(request);
+ 
+ let data = "";
+ 
+  if(response.status == 400) {
+      
+    
+   data = await response.text();
+   
+   alert (data);
+   
+  document.querySelector(".confirm-message-box").style.display = "none";
+  
+  if(index == "false") {
+     
+  clientIp.delete(ip);
+  
+  } 
+  
+   return;
+   
+  } else if (response.status == 403)  {
+   
+   data = await response.json();
+   
+  let { type } = data;
+   
+   if(type == "Forbidden") {
+       
+   alert (data.data);
+   
+  document.querySelector(".confirm-message-box").style.display = "none";
+  
+  if(index == "false") {
+     
+  clientIp.delete(ip);
+  
+  } 
+      
+  
+   } else if (type == "Permission") {
+      
+      alert (data.data);
+   
+  document.querySelector(".confirm-message-box").style.display = "none";
+  
+  if(index == "false") {
+     
+  clientIp.delete(ip);
+  
+  } 
+  
+      
+   } else {
+       
+  throw new Error();     
+       
+   }
+   
+   return;
+      
+  } else if (response.status == 200) {
+   
+ document.querySelector(".confirm-message-box").style.display = "none";
+  
+    clientIp.delete(ip);
+  
+  if(index != "false") {
+  
+ 
+ let reqDetailsArr = document.querySelectorAll(".request-details");
+ 
+ 
+ let currentElem  = reqDetailsArr[index];
+ 
+ let parentDiv  = document.querySelector("#request-div-details");
+ 
+ currentElem.style.display = "none";
+ 
+ parentDiv.removeChild(currentElem);
+ 
+ requestId -= 1;
+ 
+ requestDataArray.splice(index, 1);
+ 
+  if(requestDataArray.length == 0) {
+   
+  
+  document.querySelector("#request-icon-box").style.display = "none";     
+  
+ 
+  document.querySelector("#request-div").style.display = "none"; 
+  
+   
+ document.querySelector("#request-div-details").innerHTML  = "";
+
+       
+   } else {
+ 
+ let requestDiv = "";
+ 
+  document.querySelector("#request-no").innerHTML = requestId;
+  
+ 
+ Array.from(requestDataArray).forEach((el, i) => {
+     
+   
+ let {browser, deviceBrand, deviceModel, ip} = el;
+ 
+ let deviceName;
+ 
+ if((deviceBrand.toString().trim() == "") && (deviceModel.toString().trim() == "")) {
+     
+   deviceName = `${ip}`;
+   
+ } else {
+     
+     deviceName = `${deviceBrand} ${deviceModel}`;
+ }
+ 
+ 
+ let requestContent =  (`  
+ 
+ <div class="request-details">
+      
+   <div class="request-details-no">
+      
+      (${i + 1}) 
+       
+   </div> 
+   
+   
+   <div class="request-details-box">
+   
+ <div class="details-device-div">
+     
+  <span class="details-device-text"> Device Name: </span>
+  <span class="details-device-name"> ${deviceName} </span>
+     
+ </div>
+ 
+  <div class="details-browser-div">
+      
+           
+  <span class="details-browser-text"> Browser Name:  </span>
+  <span class="details-browser-name"> ${browser} </span>
+     
+  </div>
+    
+  <br>
+    <div class="request-btn-box">
+     
+   <button class="request-confirm-btn" data-ip="${ip}" data-index="${i}" onclick="allowAccess(event)"> Confirm </button>  
+   <button class="request-decline-btn" data-ip="${ip}" data-index="${i}" onclick="denyAccess(event)"> Decline </button>
+       
+   </div>
+       
+   </div>
+   
+
+          
+     </div><br><br>
+     
+   `)
+   
+   requestDiv += requestContent;
+     
+ });
+ 
+ 
+ document.querySelector("#request-div-details").innerHTML = requestDiv;
+      
+   
+  } 
+  }
+   
+   
+   } else {
+       
+  throw new Error();  
+       
+   }
+
+ } catch (err)  {
+       
+ document.querySelector(".confirm-message-box").style.display = "none";
+    
+  if(index == "false") {
+     
+  clientIp.delete(ip);
+  
+  } 
+  
+ alert ("An unknown error occurred.")
+   
+
+}
+
+ }
+
+  /*
+  function denyAccess(e) {
+    
+ let ip = e.currentTarget.getAttribute("data-ip");
+ 
+  
+ let index = "false";
+ 
+  if(e.currentTarget.hasAttribute("data-index")) { 
+  
+  index = parseInt(e.currentTarget.getAttribute("data-index"));
+      
+  }
+ 
+ let request = new Request("{{%URLPREFIX%}}/confirmConnection", {
+     
+   method: "POST",
+   mode: "cors",
+   headers : {
+   'Content-Type': 'application/json'
+   },
+  body: JSON.stringify({data: "success_no", ip})
+   
+   
+ });
+ 
+ 
+   fetch(request)
+   .then()
+   .then(() => {
+     document.querySelector(".confirm-message-box").style.display = "none";
+ 
+     clientIp.delete(ip);
+
+  if(index != "false") {
+  
+ 
+ let reqDetailsArr = document.querySelectorAll(".request-details");
+ 
+ 
+ let currentElem  = reqDetailsArr[index];
+ 
+ let parentDiv  = document.querySelector("#request-div-details");
+ 
+ currentElem.style.display = "none";
+ 
+ parentDiv.removeChild(currentElem);
+ 
+ requestId -= 1;
+ 
+ requestDataArray.splice(index, 1);
+ 
+  if(requestDataArray.length == 0) {
+   
+  
+  document.querySelector("#request-icon-box").style.display = "none";     
+  
+ 
+  document.querySelector("#request-div").style.display = "none"; 
+   
+ document.querySelector("#request-div-details").innerHTML  = "";
+     
+   } else {
+ 
+ let requestDiv = "";
+ 
+  document.querySelector("#request-no").innerHTML = requestId;
+  
+ 
+ Array.from(requestDataArray).forEach((el, i) => {
+     
+   
+ let {browser, deviceBrand, deviceModel, ip} = el;
+ 
+ let deviceName;
+ 
+ if((deviceBrand.toString().trim() == "") && (deviceModel.toString().trim() == "")) {
+     
+   deviceName = `${ip}`;
+   
+ } else {
+     
+     deviceName = `${deviceBrand} ${deviceModel}`;
+ }
+ 
+ 
+ let requestContent =  (`  
+ 
+ <div class="request-details">
+      
+   <div class="request-details-no">
+      
+      (${i + 1}) 
+       
+   </div> 
+   
+   
+   <div class="request-details-box">
+   
+ <div class="details-device-div">
+     
+  <span class="details-device-text"> Device Name: </span>
+  <span class="details-device-name"> ${deviceName} </span>
+     
+ </div>
+ 
+  <div class="details-browser-div">
+      
+           
+  <span class="details-browser-text"> Browser Name:  </span>
+  <span class="details-browser-name"> ${browser} </span>
+     
+  </div>
+    
+  <br>
+    <div class="request-btn-box">
+     
+   <button class="request-confirm-btn" data-ip="${ip}" data-index="${i}" onclick="allowAccess(event)"> Confirm </button>  
+   <button class="request-decline-btn" data-ip="${ip}" data-index="${i}" onclick="denyAccess(event)"> Decline </button>
+       
+   </div>
+       
+   </div>
+   
+
+          
+     </div><br><br>
+     
+   `)
+   
+   requestDiv += requestContent;
+     
+ });
+ 
+ 
+ document.querySelector("#request-div-details").innerHTML = requestDiv;
+      
+   
+  } 
+  }
+   
+   })
+   .catch(err => {
+       
+     document.querySelector(".confirm-message-box").style.display = "none";
+     
+    
+  if(index == "false") {
+     
+  clientIp.delete(ip);
+  
+  } 
+
+  
+    alert ("An unknown error occurred.")
+   })
+
+
+
+ }
+ */
+ 
+ 
+async function allowAllAccess() {
+     
+  
+ let request = new Request("{{%URLPREFIX%}}/confirmConnection", {
+     
+   method: "POST",
+   mode: "cors",
+   headers : {
+   'Content-Type': 'application/json'
+   },
+   body: JSON.stringify({data: "success_yes", ip: "all"})
+   
+ });
+ 
+ try {
+     
+let response = await fetch(request);
+
+let data = "";
+
+ if(response.status == 400) {
+    
+   data = await response.text();
+   
+   alert (data);
+   
+  document.querySelector(".confirm-message-box").style.display = "none";
+
+   return;
+   
+  } else if (response.status == 403)  {
+   
+   data = await response.json();
+   
+  let { type } = data;
+   
+   if(type == "Forbidden") {
+       
+   alert (data.data);
+   
+  document.querySelector(".confirm-message-box").style.display = "none";
+ 
+  
+   } else if (type == "Permission") {
+      
+      alert (data.data);
+   
+  document.querySelector(".confirm-message-box").style.display = "none";
+  
+   } else {
+       
+  throw new Error();     
+       
+   }
+  
+  return; 
+      
+  } else if (response.status == 200) {
+      
+ document.querySelector(".confirm-message-box").style.display = "none";
+     
+  
+  document.querySelector("#request-icon-box").style.display = "none";     
+  
+ 
+  document.querySelector("#request-div").style.display = "none"; 
+       
+  document.querySelector("#request-no").innerHTML = "";
+   
+ document.querySelector("#request-div-details").innerHTML  = "";
+
+ requestId = 0;
+ 
+ clientIp.clear();
+ 
+ requestDataArray = [];
+ 
+return;
+} else {
+    
+    throw new Error();
+}
+
+  } catch(err)  {
+       
+ document.querySelector(".confirm-message-box").style.display = "none";
+     
+  
+    alert ("An unknown error occurred.");
+return;
+ }
+
+}
+
+
+async function denyAllAccess() {
+     
+  
+ let request = new Request("{{%URLPREFIX%}}/confirmConnection", {
+     
+   method: "POST",
+   mode: "cors",
+   headers : {
+   'Content-Type': 'application/json'
+   },
+   body: JSON.stringify({data: "success_no", ip: "all"})
+   
+ });
+ 
+ try {
+     
+let response = await fetch(request);
+
+let data = "";
+
+ if(response.status == 400) {
+    
+   data = await response.text();
+   
+   alert (data);
+   
+  document.querySelector(".confirm-message-box").style.display = "none";
+
+   return;
+   
+  } else if (response.status == 403)  {
+   
+   data = await response.json();
+   
+  let { type } = data;
+   
+   if(type == "Forbidden") {
+       
+   alert (data.data);
+   
+  document.querySelector(".confirm-message-box").style.display = "none";
+ 
+  
+   } else if (type == "Permission") {
+      
+      alert (data.data);
+   
+  document.querySelector(".confirm-message-box").style.display = "none";
+  
+   } else {
+       
+  throw new Error();     
+       
+   }
+  
+  return; 
+      
+  } else if (response.status == 200) {
+      
+ document.querySelector(".confirm-message-box").style.display = "none";
+     
+  
+  document.querySelector("#request-icon-box").style.display = "none";     
+  
+ 
+  document.querySelector("#request-div").style.display = "none"; 
+       
+  document.querySelector("#request-no").innerHTML = "";
+   
+ document.querySelector("#request-div-details").innerHTML  = "";
+
+ requestId = 0;
+ 
+ clientIp.clear();
+ 
+ requestDataArray = [];
+ 
+return;
+} else {
+    
+    throw new Error();
+}
+
+  } catch(err)  {
+       
+ document.querySelector(".confirm-message-box").style.display = "none";
+     
+  
+    alert ("An unknown error occurred.");
+return;
+ }
+
+}
+  
+ /*
+  function denyAllAccess() {
+ 
+ let request = new Request("{{%URLPREFIX%}}/confirmConnection", {
+     
+   method: "POST",
+   mode: "cors",
+   headers : {
+   'Content-Type': 'application/json'
+   },
+  body: JSON.stringify({data: "success_no", ip: "all"})
+   
+   
+ });
+ 
+ 
+   fetch(request)
+   .then()
+   .then(() => {
+     document.querySelector(".confirm-message-box").style.display = "none";
+     
+     
+     document.querySelector("#request-icon-box").style.display = "none";    
+ 
+  document.querySelector("#request-div").style.display = "none"; 
+       
+  document.querySelector("#request-no").innerHTML = "";
+   
+ document.querySelector("#request-div-details").innerHTML  = "";
+
+ requestId = 0;
+ 
+ clientIp.clear();
+ 
+ requestDataArray = [];
+
+   })
+   .catch(err => {
+       
+     document.querySelector(".confirm-message-box").style.display = "none";
+     
+ 
+  
+    alert ("An unknown error occurred.")
+   })
+
+
+
+ }
+ */
+ 
+ async function changeAccess() {
+     
+    
+if(typeof(EventSource) != undefined) {
+
+
+let source = new EventSource("{{%URLPREFIX%}}/sse/change");
+
+
+source.addEventListener("changeaccess", async (event) => {
+
+
+ let data  = JSON.parse(event.data);
+ 
+ let { ip, type } = data;
+ 
+ 
+ try {
+   
+   
+ let response = await fetch ("{{DETAILSURL}}/true");  
+  
+  if(response.status != 200) {
+      
+  return;
+  
+  }
+  
+ let resData = await response.json();
+ 
+ let  { ip: clientIp, owner } = resData.data;
+ 
+ if(owner) {
+     
+ return;    
+ }
+ 
+ if(ip.toString() == clientIp.toString()) {
+  
+  if(type == "deny") {
+   
+   location.reload();   
+      
+  } else {
+      
+   return;
+   
+  }
+  
+     
+ } else {
+   
+   return;  
+     
+ }
+ 
+     
+ } catch (err)  {
+   
+   return;  
+     
+ }
+
+})
+
+
+} else {
+    
+    return;
+}
+ }
+ 
+ 
+</script>
+
+     </body>
+</html>

@@ -1,0 +1,486 @@
+<!DOCTYPE HTML>
+
+<html>
+    
+  <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="The Godfather">
+    <title>File Server</title>
+    
+   <link rel="icon" type="image/x-icon" href={{%ICON%}} >
+
+  
+  <style>
+  
+  * {
+      box-sizing: border-box;
+  }
+  
+  body {
+      
+      margin: 0;
+      
+  }
+
+ 
+ #confirm-div {
+ 
+  color: red;
+  font-size: 1.1rem;
+  margin: 5px;
+  margin-top: 10px;
+ }
+ 
+ #animation-div {
+     
+   display: flex;
+   align-items: center;
+   justify-content: center;
+ }
+ 
+ .animation-svg {
+     
+     width: 15px;
+     height: 15px;
+     fill: black;
+     font-weight: bold;
+     background: black;
+     border-radius: 50%;
+     margin: 4px;
+ 
+ }
+ 
+   
+ #animation-div svg:nth-child(1) {
+  
+  transform: translateY(83px) translateX(92px); 
+  
+    animation-name: showRenameItems;
+ animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-delay: 0.5s;
+    
+    animation-timing-function: ease-in-out;
+ }
+ 
+ 
+ #animation-div svg:nth-child(2) {
+    
+   
+  transform: translateY(72px) translateX(37px); 
+  
+    animation-name: showRenameItems;
+ animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-delay: 0.625s;
+    
+    animation-timing-function: ease-in-out;
+ }
+ 
+ 
+ #animation-div svg:nth-child(3) {
+   
+  transform: translateY(40px) translateX(5px);
+  
+    animation-name: showRenameItems;
+ animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-delay: 0.75s;
+     
+    animation-timing-function: ease-in-out;
+ }
+ 
+ #animation-div svg:nth-child(4) {
+   
+  transform: translateY(13px) translateX(-6px); 
+  
+    animation-name: showRenameItems;
+ animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-delay: 0.875s;
+    
+    animation-timing-function: ease-in-out;
+ }
+ 
+ #animation-div svg:nth-child(5) {
+  
+    animation-name: showRenameItems;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+     
+    animation-timing-function: ease-in-out;
+ }
+ 
+ 
+ #animation-div svg:nth-child(6) {
+  
+  
+  transform: translateY(13px) translateX(10px); 
+
+     
+    animation-name: showRenameItems;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-delay: 0.125s;
+     
+    animation-timing-function: ease-in-out;
+ }
+ 
+  
+ #animation-div svg:nth-child(7) {
+     
+  
+  transform: translateY(41px) translateX(-3px); 
+  
+    animation-name: showRenameItems;
+ animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-delay: 0.25s;
+      
+    animation-timing-function: ease-in-out;
+ }
+ 
+   
+ #animation-div svg:nth-child(8) {
+  
+  
+  transform: translateY(70px) translateX(-35px); 
+  
+    animation-name: showRenameItems;
+ animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-delay: 0.375s;
+     
+    animation-timing-function: ease-in-out;
+ }
+ 
+ @keyframes showRenameItems {
+     
+  from {
+    
+ 
+   background: black;
+   
+  } to {
+      background: white;
+  
+  }
+     
+ }
+ 
+ 
+ 
+ 
+  </style>
+  
+  </head>
+  
+  <body onpagehide="correctError()">
+   
+  <div id="confirm-div">
+    
+  Your request need to be confirmed before you access the server.
+  <br><br><br><br>
+  
+   <div id="animation-div">
+    
+
+<svg class="animation-svg" version="1.1" 
+
+	 viewBox="0 0 29.107 29.107" xml:space="preserve">
+    
+<g>
+	<g id="c149_moon">
+		<path id="_x3C_Compound_Path_x3E__7_" d="M14.558,2.079c6.877,0,12.471,5.597,12.471,12.473c0,6.877-5.594,12.476-12.471,12.476
+			c-6.879,0-12.478-5.599-12.478-12.476C2.08,7.676,7.679,2.079,14.558,2.079 M14.558,0C6.563,0,0,6.562,0,14.552
+			c0,7.995,6.563,14.555,14.558,14.555s14.549-6.56,14.549-14.555C29.106,6.562,22.552,0,14.558,0L14.558,0z"/>
+	</g>
+	<g id="Capa_1_226_">
+	</g>
+</g>
+</svg>
+     
+
+<svg class="animation-svg" version="1.1" 
+
+	 viewBox="0 0 29.107 29.107" xml:space="preserve">
+    
+<g>
+	<g id="c149_moon">
+		<path id="_x3C_Compound_Path_x3E__7_" d="M14.558,2.079c6.877,0,12.471,5.597,12.471,12.473c0,6.877-5.594,12.476-12.471,12.476
+			c-6.879,0-12.478-5.599-12.478-12.476C2.08,7.676,7.679,2.079,14.558,2.079 M14.558,0C6.563,0,0,6.562,0,14.552
+			c0,7.995,6.563,14.555,14.558,14.555s14.549-6.56,14.549-14.555C29.106,6.562,22.552,0,14.558,0L14.558,0z"/>
+	</g>
+	<g id="Capa_1_226_">
+	</g>
+</g>
+</svg>
+     
+ 
+<svg class="animation-svg" version="1.1" 
+
+	 viewBox="0 0 29.107 29.107" xml:space="preserve">
+    
+<g>
+	<g id="c149_moon">
+		<path id="_x3C_Compound_Path_x3E__7_" d="M14.558,2.079c6.877,0,12.471,5.597,12.471,12.473c0,6.877-5.594,12.476-12.471,12.476
+			c-6.879,0-12.478-5.599-12.478-12.476C2.08,7.676,7.679,2.079,14.558,2.079 M14.558,0C6.563,0,0,6.562,0,14.552
+			c0,7.995,6.563,14.555,14.558,14.555s14.549-6.56,14.549-14.555C29.106,6.562,22.552,0,14.558,0L14.558,0z"/>
+	</g>
+	<g id="Capa_1_226_">
+	</g>
+</g>
+</svg>
+     
+
+<svg class="animation-svg" version="1.1" 
+
+	 viewBox="0 0 29.107 29.107" xml:space="preserve">
+    
+<g>
+	<g id="c149_moon">
+		<path id="_x3C_Compound_Path_x3E__7_" d="M14.558,2.079c6.877,0,12.471,5.597,12.471,12.473c0,6.877-5.594,12.476-12.471,12.476
+			c-6.879,0-12.478-5.599-12.478-12.476C2.08,7.676,7.679,2.079,14.558,2.079 M14.558,0C6.563,0,0,6.562,0,14.552
+			c0,7.995,6.563,14.555,14.558,14.555s14.549-6.56,14.549-14.555C29.106,6.562,22.552,0,14.558,0L14.558,0z"/>
+	</g>
+	<g id="Capa_1_226_">
+	</g>
+</g>
+</svg>
+     
+
+<svg class="animation-svg" version="1.1" 
+
+	 viewBox="0 0 29.107 29.107" xml:space="preserve">
+    
+<g>
+	<g id="c149_moon">
+		<path id="_x3C_Compound_Path_x3E__7_" d="M14.558,2.079c6.877,0,12.471,5.597,12.471,12.473c0,6.877-5.594,12.476-12.471,12.476
+			c-6.879,0-12.478-5.599-12.478-12.476C2.08,7.676,7.679,2.079,14.558,2.079 M14.558,0C6.563,0,0,6.562,0,14.552
+			c0,7.995,6.563,14.555,14.558,14.555s14.549-6.56,14.549-14.555C29.106,6.562,22.552,0,14.558,0L14.558,0z"/>
+	</g>
+	<g id="Capa_1_226_">
+	</g>
+</g>
+</svg>
+     
+ 
+<svg class="animation-svg" version="1.1" 
+
+	 viewBox="0 0 29.107 29.107" xml:space="preserve">
+    
+<g>
+	<g id="c149_moon">
+		<path id="_x3C_Compound_Path_x3E__7_" d="M14.558,2.079c6.877,0,12.471,5.597,12.471,12.473c0,6.877-5.594,12.476-12.471,12.476
+			c-6.879,0-12.478-5.599-12.478-12.476C2.08,7.676,7.679,2.079,14.558,2.079 M14.558,0C6.563,0,0,6.562,0,14.552
+			c0,7.995,6.563,14.555,14.558,14.555s14.549-6.56,14.549-14.555C29.106,6.562,22.552,0,14.558,0L14.558,0z"/>
+	</g>
+	<g id="Capa_1_226_">
+	</g>
+</g>
+</svg>
+     
+
+<svg class="animation-svg" version="1.1" 
+
+	 viewBox="0 0 29.107 29.107" xml:space="preserve">
+    
+<g>
+	<g id="c149_moon">
+		<path id="_x3C_Compound_Path_x3E__7_" d="M14.558,2.079c6.877,0,12.471,5.597,12.471,12.473c0,6.877-5.594,12.476-12.471,12.476
+			c-6.879,0-12.478-5.599-12.478-12.476C2.08,7.676,7.679,2.079,14.558,2.079 M14.558,0C6.563,0,0,6.562,0,14.552
+			c0,7.995,6.563,14.555,14.558,14.555s14.549-6.56,14.549-14.555C29.106,6.562,22.552,0,14.558,0L14.558,0z"/>
+	</g>
+	<g id="Capa_1_226_">
+	</g>
+</g>
+</svg>
+     
+
+<svg class="animation-svg" version="1.1" 
+
+	 viewBox="0 0 29.107 29.107" xml:space="preserve">
+    
+<g>
+	<g id="c149_moon">
+		<path id="_x3C_Compound_Path_x3E__7_" d="M14.558,2.079c6.877,0,12.471,5.597,12.471,12.473c0,6.877-5.594,12.476-12.471,12.476
+			c-6.879,0-12.478-5.599-12.478-12.476C2.08,7.676,7.679,2.079,14.558,2.079 M14.558,0C6.563,0,0,6.562,0,14.552
+			c0,7.995,6.563,14.555,14.558,14.555s14.549-6.56,14.549-14.555C29.106,6.562,22.552,0,14.558,0L14.558,0z"/>
+	</g>
+	<g id="Capa_1_226_">
+	</g>
+</g>
+</svg>
+     
+              
+       
+
+      
+      </div>
+      
+      <br>
+      
+      
+  </div>
+  
+   
+        
+  <script>
+  
+  
+ let unloadPage  = false;
+ 
+ document.querySelector("body").addEventListener("requestmade", getDetails);
+  
+  function confirmRequest() {
+ 
+ let request = new Request ("{{%URLPREFIX%}}/confirmConnection", {
+     
+     method: "GET",
+     mode: "cors"
+    
+ });
+ 
+document.querySelector("body").dispatchEvent(new Event ("requestmade"));
+ 
+ fetch(request)
+ .then(response => {
+   
+  if(response.status == 200) {
+  
+   location.reload();
+ 
+ 
+  } else if(response.status == 403) {
+      
+  document.write(`<span><b style="color: red; font-size: 1.2rem;"> You were denied access to the server.</b></span>`);
+
+  } 
+     
+ })
+ .then()
+ .catch(err => {
+     
+   if(!unloadPage) {
+ 
+ alert ("Try reloading the page, an unknown error occurred.");
+   }
+ 
+ })
+ 
+ 
+  }
+  
+  confirmRequest();
+  
+  
+ async function changeAccess() {
+     
+    
+if(typeof(EventSource) != undefined) {
+
+
+let source = new EventSource("{{%URLPREFIX%}}/sse/change");
+
+
+source.addEventListener("changeaccess", async (event) => {
+
+
+ let data  = JSON.parse(event.data);
+ 
+ let { ip, type } = data;
+ 
+ 
+ try {
+   
+   
+ let response = await fetch ("{{DETAILSURL}}/true");  
+  
+  if(response.status != 200) {
+      
+  return;
+  
+  }
+  
+ let resData = await response.json();
+ 
+ let  { ip: clientIp, owner } = resData.data;
+ 
+ if(owner) {
+     
+   return;  
+ }
+ 
+ if(ip.toString() == clientIp.toString()) {
+  
+  if(type == "confirm") {
+   
+   location.reload();   
+      
+  } else {
+      
+   return;
+   
+  }
+  
+     
+ } else {
+   
+   return;  
+     
+ }
+ 
+     
+ } catch (err)  {
+   
+   return;  
+     
+ }
+
+})
+
+
+} else {
+    
+    return;
+}
+ }
+ 
+changeAccess();
+
+async function getDetails() {
+ 
+ try {
+ 
+ let response = await fetch("{{DETAILSURL}}"); 
+ 
+ let { data } = await response.json();
+ 
+ let { ownerConnected } = data;
+ 
+ if(!ownerConnected) {
+     
+ setTimeout(() => {
+     
+ alert ("The server owner isn't connected. Ensure that the owner is connected, and then reload the page.");
+ 
+ }, 2000);  
+ }
+ 
+ } catch (err) {
+     
+     
+ }
+    
+}
+
+function correctError() {
+    
+ unloadPage = true;
+ 
+}
+
+  </script>
+ 
+  </body>
+</html>

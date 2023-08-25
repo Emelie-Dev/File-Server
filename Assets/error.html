@@ -1,0 +1,3016 @@
+<!DOCTYPE HTML>
+
+<html>
+    
+  <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="The Godfather">
+    <title>File Server</title>
+    
+   <link rel="icon" type="image/x-icon" href={{%ICON%}} >
+
+  
+  <style>
+  
+  * {
+      box-sizing: border-box;
+  }
+  
+  body {
+    margin: 0;
+   
+  }
+  
+  #head {
+     display: flex;
+     flex-direction: column;
+     position: sticky;
+     top: 0;
+     background: white;
+     z-index: 5;
+    
+  }
+  
+  #head-text {
+      text-align-last: center;
+      margin-top: 15px;
+      text-decoration: underline;
+      font-size: 1.3rem;
+    font-family: "Times New Roman";
+   font-variant: small-caps;
+     
+  }
+  
+  #links {
+      
+  font-size: 1.25rem;
+  background: black;
+  color: white;
+  padding: 7px;
+  white-space: nowrap;
+  overflow: auto;
+  }
+  
+  #links a {
+      
+      color: white;
+      text-decoration: none;
+  }
+    
+   #links a:visited {
+  
+  text-decoration: none;
+ color: white;
+   }
+   
+   #links a:hover {
+  
+  text-decoration: underline;
+  color: white;
+  
+   }
+   
+  #links a:active {
+  
+  text-decoration: none;
+  color: white;
+   }
+
+    .sign {
+       vertical-align: 5px;
+      font-size: 1.2rem;
+   }
+   
+   .sign:hover  {
+    text-decoration: none;
+   }
+   
+   #error-text {
+  margin: 5px;
+  color: red;
+  font-size: 0.6rem;
+   }
+   
+    #menu-box {
+      display: none;
+   position: fixed;
+   bottom: 20px;
+   z-index: 10;
+   right: 5%;
+   background: gold;
+   padding: 10px;
+ border-radius: 50%;
+ 
+ justify-content: center;
+ align-items: center;
+ display: {{%MENUBOX%}};
+  }
+  
+  #config-box {
+  display: none;
+  position: fixed;
+ z-index: 10;
+   right: 5%;
+   background: gold;
+   padding: 10px;
+ border-radius: 50%;
+ justify-content: center;
+ align-items: center;
+ animation-name: showConfig;
+ animation-duration: 0.3s;
+ animation-iteration-count: ease-in-out;
+ animation-fill-mode: both;
+  }
+  
+  #permission-config-box {
+      
+      display: none;
+  position: fixed;
+ z-index: 10;
+   right: 5%;
+   bottom: 30px;
+   background: gold;
+   padding: 10px;
+ border-radius: 50%;
+ justify-content: center;
+ align-items: center;
+ display: {{%PERMISSION%}};
+  }
+  
+  
+  #upload-box {
+   display: none;
+  position: fixed;
+  bottom: 140px;
+  z-index: 10;
+   right: 5%;
+   background: gold;
+   padding: 10px;
+ border-radius: 50%;
+ justify-content: center;
+ align-items: center;
+animation-name: showUpload;
+ animation-duration: 0.3s;
+ animation-iteration-count: ease-in-out;
+ animation-fill-mode: both;
+  }
+  
+  #client-upload-box {
+   display: none;
+  position: fixed;
+  bottom: 30px;
+  z-index: 10;
+   right: 5%;
+   background: gold;
+   padding: 10px;
+ border-radius: 50%;
+ justify-content: center;
+ align-items: center;
+ display: {{%CLIENTBOX%}};
+  }
+  #menu-icon, #config-icon, #upload-icon, #client-upload-icon, #permission-config-icon {
+   
+   width: 30px;
+   height: 30px;
+ 
+  }
+ 
+ #menu-box:hover, #config-box:hover, #upload-box:hover, #client-upload-box:hover, #permission-config-box:hover {
+     
+  border: 2px solid black;
+ }
+ 
+ 
+ #config-url, #permission-config-url {
+  color: black;
+  text-decoration: none;
+ }
+ 
+ #config-url:visited, #permission-config-url:visited {
+  color: black;
+  text-decoration: none;
+ }
+ 
+ #config-url:hover, #permission-config-url:hover {
+  color: black;
+  text-decoration: none;
+ }
+ 
+ #config-url:active, #permission-config-url:active {
+  color: black;
+  text-decoration: none;
+ }
+ 
+  
+ #confirm-message-box {
+     top: 0;
+    left: 0;
+   position: fixed;
+   z-index: 30;
+  background: transparent;
+  display: none;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+ }
+ 
+ #confirm-box {
+  width: 300px;
+  margin-top: 20px;
+  background: gold;
+  color: black;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 1px 1px 10px 1px black;
+  display: flex;
+  flex-direction: column;
+ }
+ 
+ #confirm-head-text {
+     
+    font-size: 1.3rem;
+   font-family: "Times New Roman";
+   font-weight: bold;
+   font-variant: small-caps;
+   display: block;
+   margin-bottom: 15px;
+   font-style: oblique;
+   text-decoration: underline;
+ }
+ 
+ 
+ #Confirm-text {
+  
+  font-size: 1rem;
+  font-family: "Times New Roman";
+  font-style: italic;
+  display: block;
+ }
+ 
+ #btn-box {
+     
+ 
+ margin-left: auto;
+ display: block;
+ margin-top: 15px;
+ margin-bottom: 10px;
+ }
+ 
+ #yes-btn {
+     
+   padding: 15px;
+   padding-bottom: 7px;
+   padding-top: 7px;
+   font-size: 1.2rem;
+   font-family: "Times New Roman";
+   font-weight: bold;
+   background: white;
+   color: black;
+   outline: none;
+   border: 2px solid black;
+   border-radius: 5px;
+   margin-right: 10px;
+ }
+ 
+ #no-btn {
+     
+   padding: 15px;
+   padding-bottom: 7px;
+   padding-top: 7px;
+   font-size: 1.2rem;
+   font-family: "Times New Roman";
+   font-weight: bold;
+   background: black;
+   color: white;
+   outline: none;
+   border: 2px solid black;
+   border-radius: 5px;
+ }
+ 
+ #yes-btn:hover {
+     
+ color: white;
+ background: black;
+ box-shadow: 2px 2px 10px 2px black;
+ }
+ 
+ #no-btn:hover {
+     
+ color: black;
+ background: white;
+ box-shadow: 2px 2px 10px 2px black; 
+ }
+ 
+ #notification-sound {
+     
+  display: none;
+ }
+ 
+ 
+ 
+ #upload-div {
+     
+  position: fixed;
+  z-index: 15;
+  background: rgba(0,0,0,0.7);
+  display: none;
+ 
+  justify-content: center;
+  align-items: flex-start
+overflow: auto;
+ animation-name: showOperationDiv;
+ animation-duration: 0.3s;
+ animation-iteration-count: ease-in-out;
+ width: 100%;
+ height: 100%;
+ }
+ 
+ #upload-content {
+   position: relative;
+  margin-top: 20px;
+  margin-bottom: 20px;
+ background: gold;
+ padding: 10px;
+ display: flex;
+ width: auto;
+ flex-direction: column;
+ border-radius: 10px;
+ overflow: auto;
+
+ }
+ 
+ #upload-head {
+ margin-top: 10px; 
+ font-weight: bold;
+ font-family: "Times New Roman";
+ color: black;
+ font-size: 1.3rem;
+ text-decoration: underline;
+ font-variant: small-caps;
+ text-align: left;
+ padding-left: 10px;
+ }
+ 
+ input[id="folder-name"] {
+     
+   outline: none;
+   border: 2px groove black;
+   border-radius: 5px;
+   width: auto;
+   font-weight: bold;
+   padding: 5px;
+   font-family: "Times New Roman";
+   font-size: 1.1rem;
+ }
+ 
+ #folder-btn {
+  
+ color: white;
+ background: black;
+ padding: 5px;
+ font-size: 0.9rem;
+ font-weight: bold;
+ font-family: "Times New Roman";
+  border-radius: 5px;
+  text-transform: capitalize;
+ }
+ 
+ #or {
+     
+  text-align: center;
+  font-variant: small-caps;
+  font-weight: bold;
+  font-size: 1.2rem;
+  font-family: "Times New Roman";
+ }
+ 
+ #real-file-btn {
+     
+  display: none;
+ }
+ 
+ #fake-file-btn {
+     
+   color: white;
+ background: black;
+ padding: 5px;
+ font-size: 0.9rem;
+ font-weight: bold;
+ font-family: "Times New Roman";
+  border-radius: 5px;
+  text-transform: capitalize;
+ }
+ 
+ #uploaded-files-div {
+ 
+ display: flex;
+ align-items: center;
+ flex-direction: column;
+ 
+ }
+ 
+ .uploaded-files {
+  margin-right: auto;
+  word-wrap: break-word;
+  word-break: break-all;
+  font-family: "Times New Roman";
+ }
+ 
+ .upload-text {
+     
+  font-size: 1.1rem;
+  font-variant: small-caps;
+  font-weight: bold;
+  
+ }
+ 
+ 
+ #files-div {
+ display: flex;
+ margin-top: 25px;
+ align-items: center;
+ }
+ 
+ #files-no {
+     
+  margin-left: auto;
+  font-size: 1.1rem;
+  font-weight: bold;
+  font-style: italic;
+  font-family: "Times New Roman";
+ }
+ 
+ .file-size {
+     
+  font-variant: small-caps;
+  font-size: 0.9rem;
+ }
+ 
+ #cancel-upload-svg {
+     
+   width: 30px;
+   height: 30px;
+   position: fixed;
+   transition: all 0.3s;
+    z-index: 20;
+ }
+ 
+ 
+  #cancel-upload-svg:hover {
+      
+   background: black; 
+   color: gold;
+   padding: 5px;
+   transform: scale(1.25);
+   border-radius: 50%;
+   
+  }
+
+ #upload-btn {
+   position: fixed;    
+   color: white;
+ background: black;
+ padding: 5px;
+ font-size: 0.9rem;
+ font-weight: bold;
+ font-family: "Times New Roman";
+  border-radius: 5px;
+  text-transform: capitalize;
+   z-index: 18;
+   bottom: 35px;
+ pointer-events: none;
+ opacity: 0.2;
+ }
+ 
+ #upload-btn:hover,  #cancel-upload:hover, #fake-file-btn:hover, #folder-btn:hover {
+     
+     opacity: 0.85;
+ }
+ 
+ 
+ .notice-msg {
+     
+   font-style: italic;
+   font-size: 0.9rem;
+ }
+ 
+ 
+ #operation-password-div {
+     
+ position: fixed;
+ background: rgba(0,0,0, 0.7);
+ display: none;
+ z-index: 20;
+ width: 100%;
+ height: 100%;
+ align-items: center;
+ justify-content: center;
+ overflow: auto;
+ }
+ 
+ #operation-password-box {
+     
+   background: gold;
+   display: flex;
+   flex-direction: column;
+   border-radius: 10px;
+   padding: 10px;
+   overflow: auto;
+   align-self: flex-start;
+   margin-bottom: 50px;
+ }
+ 
+ #operation-head {
+     
+ color: black;
+ font-variant: small-caps;
+ font-family: "Times New Roman";
+ font-weight: bold;
+  text-decoration: underline;
+  font-size: 1.2rem;
+  margin-top: 10px;
+ }
+ 
+ #operation-text {
+     
+ 
+ font-style: italic;
+ font-size: 0.9rem;
+  color: black;
+ font-weight: 300;
+ 
+ }
+ 
+ #operation-password {
+     
+  outline: none;
+  border: none;
+  color: black;
+  font-family: "Times New Roman";
+  font-size: 1.1rem;
+  border-bottom: 2px solid black;
+  background: transparent;
+ }
+
+ ::-webkit-input-placeholder {
+     
+     color: gray;
+   font-weight: bold;
+   font-variant: small-caps;
+   font-family: "Times New Roman";
+   padding: 5px;
+ }
+ 
+ :-ms-input-placeholder {
+     
+     color: gray;
+   font-weight: bold;
+   font-variant: small-caps;
+   font-family: "Times New Roman";
+   padding: 5px;
+ }
+ 
+ ::placeholder {
+   color: gray;
+   font-weight: bold;
+   font-variant: small-caps;
+   font-family: "Times New Roman";
+   padding: 5px;
+ }
+ 
+ #operation-btn-div {
+     
+   display: flex;
+   justify-content: flex-end;
+   margin-bottom: 5px;
+ }
+ 
+ #operation-btn {
+         
+   color: white;
+ background: black;
+ padding: 5px;
+ font-size: 0.9rem;
+ font-weight: bold;
+ font-family: "Times New Roman";
+  border-radius: 5px;
+  text-transform: capitalize;
+  
+ }
+ 
+ #operation-cancel-btn {
+     
+     color: white;
+ background: black;
+ padding: 5px;
+ font-size: 0.9rem;
+ font-weight: bold;
+ font-family: "Times New Roman";
+  border-radius: 5px;
+  text-transform: capitalize;
+margin-right: 15px;
+ }
+ 
+ #operation-btn:hover, #operation-cancel-btn {
+     
+     opacity: 0.85;
+ }
+ 
+ #upload-form {
+     
+     display: none;
+ }
+ 
+ 
+ 
+ #request-div {
+     
+  position: fixed;
+  z-index: 35;
+  background: rgba(0,0,0,0.7);
+  display: none;
+ 
+  justify-content: center;
+  /*align-items: flex-start;*/
+overflow: auto;
+ animation-name: showOperationDiv;
+ animation-duration: 0.3s;
+ animation-iteration-count: ease-in-out;
+ width: 100%;
+ height: 100%;
+ 
+ }
+ 
+ #request-div-content {
+     
+   position: relative;
+  margin-top: 20px;
+  margin-bottom: 20px;
+ background: gold;
+ padding: 10px;
+ display: flex;
+ width: auto;
+ flex-direction: column;
+ border-radius: 10px;
+ overflow: auto;
+
+ }
+ 
+#request-icon-box {
+  
+  z-index: 10;
+  display: none;
+  position: fixed;
+  justify-content: center;
+  align-items: center;
+  background: gold;
+  border-radius: 50%;
+  padding: 10px;
+  right: 5%;
+  top: 115px;
+}
+
+#request-icon-box:hover {
+    
+    box-shadow: 1px 1px 5px 1px black;
+}
+
+#request-icon {
+    
+    width: 30px;
+    height: 30px;
+}
+
+ #request-no  {
+  
+  position: absolute;
+  top: -8px;
+  right: 0px;
+  font-weight: bold;
+  font-size: 1.3rem;
+  font-style: italic;
+  font-family: "Times New Roman";
+   z-index: 12;
+ }
+ 
+ 
+ #close-request-svg {
+     
+   width: 28px;
+   height: 28px;
+   position: fixed;
+   transition: all 0.3s;
+ }
+ 
+ 
+  #close-request-svg:hover {
+      
+   background: black; 
+   color: gold;
+   padding: 5px;
+   transform: scale(1.25);
+   border-radius: 50%;
+   
+  }
+  
+  #request-div-head  {
+      
+    margin-top: 10px; 
+ font-weight: bold;
+ font-family: "Times New Roman";
+ color: black;
+ font-size: 1.3rem;
+ text-decoration: underline;
+ font-variant: small-caps;
+ text-align: left;
+ 
+      
+  }
+  
+  #request-div-text {
+      
+      
+ font-family: "Times New Roman";
+ color: black;
+ font-size: 1rem;
+ font-style: italic;
+ 
+  }
+  
+  .request-details {
+      
+    display: flex;
+    align-items: flex-start;
+    
+  }
+  
+  .request-details-box  {
+      
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .details-device-div, .details-browser-div  {
+      
+    display: flex;  
+    margin-bottom: 5px;
+    word-break: break-all;
+    margin-right: 5px;
+  }
+  
+  .request-btn-box  {
+    
+    display: flex;  
+    align-items: center;
+  margin-left: auto;
+  margin-right: 5px;
+  
+  }
+  
+  .request-details-no {
+      
+     font-size: 1.3rem;
+     font-family: "Times New Roman";
+     font-weight: bold;
+    margin-right: 18px;
+    transform: translateY(-2px);
+    white-space: nowrap;
+  }
+  
+  .details-device-text, .details-browser-text  {
+      
+ font-variant: small-caps;
+ font-size: 1.1rem;
+ font-family: "Times New Roman";
+ font-weight: bold;
+ margin-right: 10px;
+ transform: translateY(-2px);
+ white-space: nowrap;
+  }
+  
+  .request-confirm-btn {
+      
+    padding: 5px;
+   font-size: 1rem;
+   font-family: "Times New Roman";
+   font-weight: bold;
+   background: white;
+   color: black;
+   outline: none;
+   border-radius: 5px;
+   margin-right: 15px;
+   
+  }
+  
+   .request-decline-btn {
+      
+    padding: 5px;
+   font-size: 1rem;
+   font-family: "Times New Roman";
+   font-weight: bold;
+   background: black;
+   color: white;
+   outline: none;
+   border-radius: 5px;
+   margin-right: 15px;
+   
+  }
+  
+  .request-confirm-btn:hover, .request-decline-btn:hover {
+      
+    box-shadow:  1px 1px 10px 1px black;
+    
+  } 
+
+ 
+  .confirm-all-btn {
+      
+    padding: 5px;
+   font-size: 1rem;
+   font-family: "Times New Roman";
+   font-weight: bold;
+   background: white;
+   color: black;
+   outline: none;
+   border-radius: 5px;
+   margin-right: 20px;
+   
+  }
+  
+   .decline-all-btn {
+      
+    padding: 5px;
+   font-size: 1rem;
+   font-family: "Times New Roman";
+   font-weight: bold;
+   background: black;
+   color: white;
+   outline: none;
+   border-radius: 5px;
+   margin-right: 15px;
+   
+  }
+  
+  .confirm-all-btn:hover, .decline-all-btn:hover {
+      
+    box-shadow:  1px 1px 10px 1px black;
+    
+  } 
+
+  #request-all-btn-div {
+      z-index: 40;
+       position: fixed;
+      bottom: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+     
+  }
+
+   #upload-animation-div{
+     
+   align-self: center;
+   margin-right: auto;
+   margin-left: auto;
+   display: none;
+   justify-content: center;
+   align-items: center;
+   font-size: 1.3rem;
+   font-variant: small-caps;
+   font-weight: bold;
+   
+ }
+
+
+ @keyframes showConfig {
+     
+   from {
+       
+    bottom: 20px;
+    display: none;
+   } to {
+     bottom: 80px;
+     display: flex;
+   }
+ }
+ 
+ 
+ @keyframes showUpload {
+     
+   from {
+       
+    bottom: 80px;
+    display: none;
+   } to {
+     bottom: 140px;
+     display: flex;
+   }
+ }
+
+
+@keyframes showOperationDiv {
+    
+  from {
+      
+  transform: scale(0);
+  } to {
+      
+ transform: scale (1);
+  }
+  
+  
+}
+
+
+  </style>
+  
+  </head>
+  
+  <body data-owner="{{%OWNER%}}"  onload="confirmBoxSize()" onresize="confirmBoxSize()" onpagehide="detectOperation()">
+    
+ <span id="request-icon-box" title="Confirm clients requests." onclick="showRequestDiv()">
+   
+   <span id="request-no"></span>  
+     
+     <svg id="request-icon"  fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+         
+  <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+</svg>
+
+     
+ </span>
+ 
+ 
+ <div id="request-div">
+     
+  <div id="request-div-content">
+ 
+  <div id="request-all-btn-div" >
+      
+ <button class="confirm-all-btn" onclick="allowAllAccess()">
+    Confirm All
+ </button>
+ 
+  <button class="decline-all-btn" onclick="denyAllAccess()">
+    Decline All
+ </button>
+ 
+  </div>    
+   
+  <span id="close-request" title="Close"> 
+  
+  <svg onclick="closeRequest()" id="close-request-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <line x1="6" y1="18" x2="18" y2="6" />
+  <line x1="6" y1="6" x2="18" y2="18" />
+</svg>
+
+ </span>
+ 
+ <span id="request-div-head">
+   
+   Confirm Connection  
+     
+ </span>    
+      <br>
+      
+ <span id="request-div-text">
+   
+  Click the 'Confirm' or 'Decline' buttons to allow or deny access to your server, respectively. Clicking 'Confirm' gives all browsers on the same device,  access to your server.
+        
+    </span>
+    
+    <br><br>
+    
+    
+  <div id="request-div-details">
+      
+    <!--  
+ <div class="request-details">
+      
+   <div class="request-details-no">
+      
+      (1) 
+       
+   </div> 
+   
+   
+   <div class="request-details-box">
+   
+ <div class="details-device-div">
+     
+  <span class="details-device-text"> Device Name: </span>
+  <span class="details-device-name"> Resbsszbznxnnnddxhxhxhxhn </span>
+     
+ </div>
+ 
+  <div class="details-browser-div">
+      
+           
+  <span class="details-browser-text"> Browser Name:  </span>
+  <span class="details-browser-name"> Chrome </span>
+     
+  </div>
+    
+  <br>
+    <div class="request-btn-box">
+     
+   <button class="request-confirm-btn"> Confirm </button>  
+   <button class="request-decline-btn"> Decline </button>
+       
+   </div>
+       
+   </div>
+   
+
+          
+     </div>
+     
+   -->
+      
+  </div>
+  
+     <br><br> 
+  </div>
+     
+ </div>
+      
+  
+      
+  <div id="operation-password-div">
+      
+    <div id="operation-password-box">
+        
+  <div id="operation-head"> Password Required </div>
+  <br>
+  
+  <div id="operation-text"> Password is required before you <span id="current-operation"> upload files.</span> </div>
+  <br>
+  <br>
+  
+  <input type="password" id="operation-password" placeholder="Enter Password"  onkeyup="submitPassword(event)">
+  <br><br>
+  <div id="operation-btn-div">
+        <button id="operation-cancel-btn" onclick="cancelOperationPassword()"> Cancel </button>
+        
+  <button id="operation-btn" onclick="checkOperationPassword()"> Done </button>
+  </div>
+  
+  
+  </div>
+   </div>
+   
+      
+      
+  <!-- Upload Files Div -->
+  
+  <div id="upload-div">
+    
+   <div id="upload-content">
+ 
+ 
+ <button id='upload-btn' form="upload-form" type="submit"> Upload </button>
+ 
+   <span id="cancel-upload" title="Close">
+      
+  <svg onclick="closeUpload()" id="cancel-upload-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <line x1="6" y1="18" x2="18" y2="6" />
+  <line x1="6" y1="6" x2="18" y2="18" />
+</svg>
+
+</span>
+   
+    <div id="upload-head"> Upload Files </div>
+    <br>
+    
+   <span class="notice-msg">NB: When creating a new folder or uploading files, should you leave the page or refresh it, you will not receive a notification upon completion. You can click on the "X" symbol, to close the box. </span>
+   <br>
+    <div id="folder-div">
+        
+  <input type="text" name="folder-name" id="folder-name" placeholder="Enter Folder Name">
+  
+  <br><br>
+  
+  <button id="folder-btn" onclick="createDirectory()"> Create new folder </button>
+    </div>
+    <br><br>
+    <span id="or"> OR </span>
+    
+  <div id="files-div">
+      
+   <form id="upload-form" method="POST" enctype="multipart/form-data" action="{{%%FILEOPERATIONURL%%}}"></form>
+    
+    <input form="upload-form" type="file" name="uploaded-files" id="real-file-btn" onchange="showFiles()" multiple>
+    <button id="fake-file-btn" onclick="chooseFile()">  Choose File(s) </button>
+    <span id="files-no"> No. of files: <span id="file-no">0 </span></span>
+   </div>
+   
+   
+  <br>
+ 
+
+ <div id="upload-animation-div">
+    <br>
+    Loading.....
+    
+    </div>
+    
+  <div id="uploaded-files-div">
+      
+      
+   </div>
+
+
+   </div>
+     
+  </div>
+  
+      
+      <!-- Confirm message -->
+  
+  
+<div id="confirm-message-box">
+    
+   <div id="confirm-box">
+    
+    <span id="confirm-head-text"> Confirm Connection </span>
+    
+   
+    <span id="Confirm-text"> 
+    
+      </span>
+      
+  <span id="btn-box">
+      
+       <button id="yes-btn" onclick="allowAccess(event)"> Yes </button> 
+  
+  <button id="no-btn" onclick="denyAccess(event)"> No </button> </span>
+  
+  
+   </div>
+    
+ </div>
+  
+  
+       <!-- Owner's upload box -->
+ 
+   <span id="upload-box" title="Upload Files" onclick="showUploadDiv()">
+ <svg id="upload-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+</svg>
+
+       
+   </span>
+   
+   <!-- client upload box -->
+    <span id="client-upload-box" title="Upload Files" onclick="showUploadDiv()">
+ <svg id="client-upload-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+</svg>
+
+       
+   </span>
+   
+ <!-- config URL when permission is not granted  -->
+
+<a href="{{%URL%}}" id="permission-config-url">
+     <span id="permission-config-box" title="Configuration File">
+        
+  <svg id="permission-config-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" />
+  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+</svg>
+
+        
+    </span></a>
+    
+   
+ <a href="{{%URL%}}" id="config-url">
+     <span id="config-box" title="Configuration File">
+        
+  <svg id="config-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" />
+  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+</svg>
+
+        
+    </span></a>
+    
+  <span id="menu-box">
+           
+
+<svg id="menu-icon"  viewBox="0 0 24 24" >
+
+
+<title/>
+
+<g id="Complete">
+
+<g id="align-left">
+
+<g>
+
+<polygon fill="#ffffff" points="12.9 18 4.1 18 4.1 18 12.9 18 12.9 18" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+
+<polygon fill="#ffffff" points="20 14 4 14 4 14 20 14 20 14" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+
+<polygon fill="#ffffff" points="12.9 10 4.1 10 4.1 10 12.9 10 12.9 10" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+
+<polygon fill="#ffffff" points="20 6 4 6 4 6 20 6 20 6" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+
+</g>
+
+</g>
+
+</g>
+
+</svg>
+       
+       </span>
+      
+      
+      
+      
+      
+      
+   <div id="head">
+       
+   <div id="head-text"> {{%SERVERNAME%}} File Server</div>
+   <br>
+   <div id="links">
+ <a href={{%HOME%}}>Home</a>
+ 
+
+ 
+{{%LINKS%}}
+
+ 
+ </div>
+       
+   </div>
+  
+  <div id="error-text">
+      
+      
+   
+   {{%Files%}}
+    
+</div>
+
+<audio id="notification-sound">
+     
+ <source src="{{%URLPREFIX%}}/notification.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+ 
+ 
+ let configData = {};
+ 
+ 
+let unloadPage = false;
+
+ // when the page unloads
+
+function detectOperation()  {
+   
+   unloadPage = true; 
+   
+}
+
+ (async () => {
+     
+     try {
+       
+  let res = await fetch ("{{DETAILSURL}}");  
+  
+  if(res.status != 200) {
+      
+  throw new Error ();
+  
+  }
+  
+  let data = await res.json();
+  
+  configData = data;
+
+ let realOwner = document.querySelector("body").getAttribute("data-owner").toString();
+ 
+ if(realOwner == "true") {
+   
+   
+ let owner = configData.data.owner;
+ 
+ if(owner.toString() == "true") {
+
+   confirmClient();
+   
+ } else {
+     
+   
+ }
+   
+ }     
+
+
+ if(realOwner == "false") {
+   
+   
+ let owner = configData.data.owner;
+ 
+ if(owner.toString() == "false") {
+
+   changeAccess();
+   
+ } else {
+     
+   
+ }
+   
+ }     
+
+
+   } catch(err) {
+       
+    configData = {};
+    
+    
+ let realOwner = document.querySelector("body").getAttribute("data-owner").toString();
+  
+ if(realOwner == "true") {
+     
+ 
+  confirmClient();
+  
+ }
+ 
+  if(realOwner == "false") {
+ 
+  changeAccess();
+  
+}
+   }
+      
+  
+     
+ })();
+      
+ 
+     
+  
+document.querySelector("#menu-box").onclick = e => {
+    
+ let configDisplay = getComputedStyle(document.querySelector("#config-box")).getPropertyValue("display");
+ 
+ let uploadDisplay = getComputedStyle(document.querySelector("#upload-box")).getPropertyValue("display");
+ 
+ 
+  
+  if((configDisplay != "flex") || (uploadDisplay != "flex")) {
+    
+document.querySelector("#config-box").style.display = "flex";
+
+document.querySelector("#upload-box").style.display = "flex";
+
+} else {
+   
+ 
+  document.querySelector("#config-box").style.display = "none";
+    
+ document.querySelector("#upload-box").style.display = "none";
+    
+}
+
+
+}
+
+
+
+let uploadForm = document.querySelector("#upload-form");
+  
+  uploadForm.addEventListener("submit", e => {
+      
+     e.preventDefault();
+      
+   new FormData(uploadForm);
+      
+  });
+  
+
+uploadForm.addEventListener("formdata", async (e) => {
+    
+const data = e.formData;
+
+   
+ let request = new Request("{{%%FILEOPERATIONURL%%}}/upload", {
+   
+   method: "POST",
+   mode: "cors",
+   headers: {
+       
+  location: location.href
+  
+   },
+   body: data 
+   
+ })
+  
+   document.querySelector("#upload-btn").style.pointerEvents = "none";
+ 
+  document.querySelector("#upload-btn").style.opacity = 0.2;
+ 
+  try {
+      
+   let response = await fetch(request);
+   
+   let data = "";
+   
+   if (response.status == 400) {
+       
+       
+   data = await response.text();
+   
+   alert (data);
+   
+   document.querySelector("#upload-btn").style.pointerEvents = "all";
+ 
+  document.querySelector("#upload-btn").style.opacity = 1;
+
+   
+   return;
+   
+   } else if (response.status == 403) {
+  
+         
+   data = await response.text();
+   
+   alert (data);
+   
+    document.querySelector("#upload-btn").style.pointerEvents = "all";
+ 
+  document.querySelector("#upload-btn").style.opacity = 1;
+
+
+   
+   return;
+       
+   } else if (response.status == 500) {
+       
+             
+   data = await response.text();
+   
+   alert (data);
+   
+    document.querySelector("#upload-btn").style.pointerEvents = "all";
+ 
+  document.querySelector("#upload-btn").style.opacity = 1;
+
+
+   
+   return;
+
+   } else if (response.status == 201) {
+       
+            
+   data = await response.text();
+   
+   alert (data);
+   
+    document.querySelector("#upload-btn").style.pointerEvents = "all";
+ 
+  document.querySelector("#upload-btn").style.opacity = 1;
+
+
+   
+   return;
+
+   } else {
+       
+   
+   alert ("An unknown error occurred.");
+   
+    document.querySelector("#upload-btn").style.pointerEvents = "all";
+ 
+  document.querySelector("#upload-btn").style.opacity = 1;
+
+
+   
+   return;
+
+   }
+       
+  } catch (err) {
+      
+   if(unloadPage) {
+          
+   return;
+   
+      }
+    alert ("An unknown error occurred.");
+    
+     document.querySelector("#upload-btn").style.pointerEvents = "all";
+ 
+  document.querySelector("#upload-btn").style.opacity = 1;
+
+
+   
+   return;  
+      
+  }
+ 
+
+    
+   
+});
+ 
+
+  
+  function closeUpload() {
+    
+   document.querySelector("#upload-div").style.display = "none";
+  
+  }
+  
+  
+ async function createDirectory() {
+  
+ let body = document.querySelector("#folder-name").value.toString().trim();
+ 
+  let param = body.match(/[^\w\d\s\-\.\(\)\[\]\&\#\@\$\+\%\=\!\{\}\~\,\']/) ? true : false;
+  
+  
+ 
+ if((body == "") || param) {
+     
+ alert ("Please enter a valid folder name.")
+  return;
+ } else if(body.length > 100) {
+     
+ alert ("Folder name must be less than '100' characters.");
+ 
+ return;
+   } else {
+       
+ 
+let request = new Request ("{{%%FILEOPERATIONURL%%}}/directory", {
+    
+  method: "POST",
+  mode: "cors",
+  headers : {
+   'Content-Type': 'application/json'
+   },
+   body: JSON.stringify({
+     
+     directoryName : body,
+     location: location.href
+
+   })
+  
+})
+
+ document.querySelector("#folder-btn").style.pointerEvents = "none";
+ 
+  document.querySelector("#folder-btn").style.opacity = 0.2;
+
+
+
+try {
+
+let response = await fetch(request);
+
+let data = "";
+
+   if(response.status == 403) {
+       
+ data = await response.text();
+   
+ alert (data);
+ 
+  document.querySelector("#folder-btn").style.pointerEvents = "all";
+ 
+  document.querySelector("#folder-btn").style.opacity = 1;
+
+
+ 
+  return;
+       
+   } else if (response.status == 400) {
+  
+  data = await response.text();
+   
+ alert (data);
+ 
+  document.querySelector("#folder-btn").style.pointerEvents = "all";
+ 
+  document.querySelector("#folder-btn").style.opacity = 1;
+
+
+ 
+  return;     
+       
+       
+   } else if (response.status == 500) {
+       
+   data = await response.text();
+   
+ alert (data);
+ 
+  document.querySelector("#folder-btn").style.pointerEvents = "all";
+ 
+  document.querySelector("#folder-btn").style.opacity = 1;
+
+
+ 
+  return;        
+  
+   } else if (response.status == 409) {
+   data = await response.text();
+   
+ alert (data);   
+ 
+  document.querySelector("#folder-btn").style.pointerEvents = "all";
+ 
+  document.querySelector("#folder-btn").style.opacity = 1;
+
+
+ 
+ return;
+     
+   } else if (response.status == 201) {
+       
+    data = await response.text();
+   
+ alert (data);    
+ 
+ 
+  document.querySelector("#folder-btn").style.pointerEvents = "all";
+ 
+  document.querySelector("#folder-btn").style.opacity = 1;
+
+
+   
+    return;
+    
+   } else {
+       
+     
+  alert ("An unknown error occurred.");
+  
+   document.querySelector("#folder-btn").style.pointerEvents = "all";
+ 
+  document.querySelector("#folder-btn").style.opacity = 1;
+
+
+  
+  return;
+   }
+} catch (err) {
+    
+ if(unloadPage) {
+     
+     return;
+ }   
+ 
+  alert ("An unknown error occurred.");
+  
+   document.querySelector("#folder-btn").style.pointerEvents = "all";
+ 
+  document.querySelector("#folder-btn").style.opacity = 1;
+
+
+  
+  return;
+}
+
+ }
+ }
+ 
+ 
+ function chooseFile() {
+     
+  document.querySelector("#real-file-btn").click();
+  
+   
+ document.querySelector("#upload-animation-div").style.display = "flex";
+ }
+ 
+
+ 
+  function showFiles() {
+ 
+ const uploadFiles = document.querySelector("#real-file-btn");
+ 
+ const uploadFilesDiv = document.querySelector("#uploaded-files-div");
+
+ 
+ 
+ if("files" in uploadFiles) {
+     
+  let filesContainer = Array.from(uploadFiles.files);
+  
+  let totalSize = 0;
+  
+ for (let i = 0; i < filesContainer.length; i++) {
+    
+  if ("size" in filesContainer[i]) {
+      
+    totalSize += parseFloat(filesContainer[i].size)
+  }
+  
+  
+    
+ }
+ 
+ if(filesContainer.length == 0) {
+     
+     
+      document.querySelector("#file-no").innerHTML = 0;
+ 
+    uploadFilesDiv.innerHTML = "";
+   
+     document.querySelector("#upload-btn").style.pointerEvents = "none";
+ 
+  document.querySelector("#upload-btn").style.opacity = 0.2;
+ 
+ 
+     
+ } else if(totalSize > ((1000**3) * 5)) {
+      
+ alert (`Total Size: ${(totalSize / (1000**3)).toFixed(2)}GB.\nThe total file size must not be greater than "5GB".`);
+
+ document.querySelector("#file-no").innerHTML = 0;
+ 
+    uploadFilesDiv.innerHTML = "";
+   
+ document.querySelector("#upload-btn").style.pointerEvents = "none";
+ 
+  document.querySelector("#upload-btn").style.opacity = 0.2;
+ 
+ 
+     
+ document.querySelector("#upload-animation-div").style.display = "none";
+ 
+  return;
+  } else {
+
+ 
+  
+  let fileMap = filesContainer.map((el, index) => {
+      
+  let val = "";
+  
+   if("name" in el) {
+    
+  val += `<span class="upload-text">(${index + 1})&nbsp;&nbsp;&nbsp;Filename:</span>&nbsp; ${el.name}<br>`;
+    
+   }
+   
+   if("size" in el) {
+       
+  let fileSize = parseFloat(el.size);
+  
+ 
+ 
+    if(fileSize < 1000) {
+ 
+      fileSize = `${fileSize} <b class="file-size"><i>B</i></b>`;
+  
+  
+ } else if((fileSize > 1000) && fileSize <= (1000 ** 2)) {
+      
+   fileSize = `${(fileSize / 1000).toFixed(2)} <b class="file-size"><i>KB</i></b>`;
+   
+  } else if ((fileSize >= (1000 ** 2)) && (fileSize <= (1000 ** 3))) {
+    
+      fileSize = `${(fileSize / (1000 ** 2)).toFixed(2)} <b class="file-size"><i>MB</i></b>`
+       
+  } else if ((fileSize >= (1000 ** 3)) && (fileSize <= (1000 ** 4))) {
+      
+     fileSize = `${(fileSize / (1000 ** 3)).toFixed(2)} <b class="file-size"><i>GB</i></b>`
+        
+  } else {
+      
+    fileSize = `${(fileSize / (1000 ** 3)).toFixed(2)} <b class="file-size"><i>GB</i></b>`
+  }
+  
+  
+  
+  if((index + 1).toString().length == 1) {
+      
+       val += `&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="upload-text">Filesize:</span>&nbsp; ${fileSize}`;
+ 
+  } else if ((index + 1).toString().length == 2) {
+      
+       val += `&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="upload-text">&nbsp;&nbsp;Filesize:</span>&nbsp; ${fileSize}`;
+ 
+  } else if ((index + 1).toString().length == 3) {
+      
+       val += `&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="upload-text">&nbsp;&nbsp;&nbsp;&nbsp;Filesize:</span>&nbsp; ${fileSize}`;
+ 
+  }
+   
+  
+   }
+   
+   return `<div class="uploaded-files">${val}</div><br><br>`;
+    
+  }).join("");
+  
+  document.querySelector("#file-no").innerHTML = filesContainer.length;
+    uploadFilesDiv.innerHTML = fileMap;
+    
+    document.querySelector("#upload-btn").style.pointerEvents = "all";
+ 
+  document.querySelector("#upload-btn").style.opacity = 1;
+ 
+ 
+   
+ }
+ 
+ 
+ }
+ 
+     
+ document.querySelector("#upload-animation-div").style.display = "none";
+ 
+ }
+  
+ 
+
+
+  function showUploadDiv() {
+      
+
+ let allowFileOperation;
+ 
+ let fileOperationsPassword;
+ 
+ 
+      
+   try {
+   
+   allowFileOperation = configData.data.allowFileOperation;
+ 
+    
+   } catch (err) {
+       
+       
+ allowFileOperation = true;
+       
+   }
+   
+   try {
+   
+   fileOperationsPassword = configData.data.fileOperationsPassword;
+       
+       
+   } catch (err) {
+     
+   fetch("{{DETAILSURL}}")
+    .then(res => res.json())
+    .then(data => {
+   
+  fileOperationsPassword  = JSON.parse(data).data.fileOperationsPassword; 
+     
+    }).catch(err => {
+        
+     alert ("You can't upload files because an unknown error occurred.")
+     
+     return;
+    })
+       
+   }
+     
+   
+ 
+    if(allowFileOperation) {
+        
+     
+   if(fileOperationsPassword) {   
+
+ 
+ document.querySelector("#operation-password").value = "";
+ 
+ document.querySelector("#operation-password-div").style.display = "flex";
+
+
+   } else {
+       
+        
+    document.querySelector("#upload-div").style.display = "flex"; 
+    
+   }
+   
+   
+    } else {
+        
+   alert (`You are not allowed to upload files.`);
+   return;
+    }
+  }
+  
+  
+function cancelOperationPassword() {
+    
+  document.querySelector("#operation-password-div").style.display = "none";
+}
+
+ 
+
+async function checkOperationPassword() {
+    
+ let body = document.querySelector("#operation-password").value.toString();
+ 
+ 
+    
+let request = new Request ("{{%%FILEOPERATIONURL%%}}", {
+    
+  method: "POST",
+  mode: "cors",
+  headers : {
+   'Content-Type': 'text/plain'
+   },
+   body
+  
+})
+
+
+try {
+
+let response = await fetch(request);
+
+let data = "";
+
+  if(response.status == 403) {
+      
+ data = await response.text();
+ 
+ alert (data);
+ 
+ document.querySelector("#operation-password-div").style.display = "none";
+ 
+ return;
+ 
+  } else if(response.status == 401) {
+      
+  data = await response.text();
+  
+  alert (data)
+  
+ document.querySelector("#operation-password-div").style.display = "none";
+ 
+ 
+ return;
+  } else if(response.status == 200) {
+      
+    
+ document.querySelector("#operation-password-div").style.display = "none";
+ 
+ 
+ document.querySelector("#upload-div").style.display = "flex";
+ 
+ 
+ return;
+
+      
+  } else {
+      
+  alert ("An unknown error occurred.")
+  
+   document.querySelector("#operation-password-div").style.display = "none";
+ 
+ return;
+  }
+} catch (err) {
+    
+    alert ("An unknown error occurred.");
+    
+  document.querySelector("#operation-password-div").style.display = "none";
+ 
+  return;
+}
+    
+}
+  
+  
+  
+
+  const links = Array.from(document.querySelector("#links").children);
+  
+ let totalWidth = 0;
+ 
+ links.forEach(el => {
+     
+   totalWidth += el.offsetWidth;
+ })
+ 
+ 
+  totalWidth = totalWidth - parseFloat(links[links.length - 1].offsetWidth);
+ 
+ 
+document.querySelector("#links").scrollLeft = totalWidth; 
+
+
+  
+
+  function confirmBoxSize() {
+  
+  let  screenWidth = parseFloat(screen.availWidth);
+
+let screenHeight = parseFloat(screen.availHeight);
+
+  let posLeft = 
+  (parseFloat(document.querySelector("#upload-content").offsetLeft) + parseFloat(document.querySelector("#upload-content").offsetWidth))  - parseFloat(document.querySelector("#upload-btn").offsetWidth);
+  
+  
+ let closeUploadLeft  = parseFloat(document.querySelector("#upload-content").offsetLeft) + parseFloat(document.querySelector("#upload-content").offsetWidth);
+  
+ let closeUploadTop  = parseFloat(document.querySelector("#upload-content").offsetTop);
+
+
+  let requestLeft = 
+  
+  (parseFloat(document.querySelector("#request-div-content").offsetLeft) + parseFloat(document.querySelector("#request-div-content").offsetWidth))  - parseFloat(document.querySelector("#request-all-btn-div").offsetWidth);
+
+ let marginVal = (-1575 / 31) + (screenWidth * (17 / 93));
+  
+
+let deleteMargin = (-3250/31) + (screenHeight * (200 / 465))
+
+
+let closeRequestLeft = 
+  parseFloat(document.querySelector("#request-div-content").offsetLeft) + parseFloat(document.querySelector("#request-div-content").offsetWidth);
+  
+  let closeRequestTop =  parseFloat(document.querySelector("#request-div-content").offsetTop);
+
+document.querySelector("#upload-content").style.marginLeft = `${marginVal}px`;
+
+
+document.querySelector("#upload-content").style.marginRight = `${marginVal}px`;
+
+document.querySelector("#upload-btn").style.left = `${posLeft - 10}px`;
+
+
+document.querySelector("#operation-password-box").style.marginTop = `${deleteMargin}px`;
+
+
+document.querySelector("#operation-password-box").style.marginLeft = `${marginVal}px`;
+
+
+document.querySelector("#operation-password-box").style.marginRight = `${marginVal}px`;
+
+
+document.querySelector("#request-div-content").style.marginLeft = `${marginVal}px`;
+
+
+document.querySelector("#request-div-content").style.marginRight = `${marginVal}px`;
+
+
+document.querySelector("#request-all-btn-div").style.left = `${requestLeft - 10}px`;
+
+document.querySelector("#cancel-upload-svg").style.left = `${closeUploadLeft - 40}px`;
+
+document.querySelector("#cancel-upload-svg").style.top = `${closeUploadTop + 15}px`;
+
+
+document.querySelector("#close-request-svg").style.left = `${closeRequestLeft - 40}px`;
+
+document.querySelector("#close-request-svg").style.top = `${closeRequestTop + 15}px`;
+}
+
+
+setInterval(confirmBoxSize, 0);
+
+
+ function closeRequest()  {
+     
+  document.querySelector("#request-div").style.display = "none";   
+ }
+
+ function showRequestDiv() {
+     
+  document.querySelector("#request-div").style.display = "flex"; 
+ }
+
+ let requestId = 0;
+
+ let requestDataArray  = [];
+ 
+ let clientIp = new Set();
+ 
+
+async function confirmClient() {
+  
+if(typeof(EventSource) != undefined) {
+    
+
+//let source = new EventSource("{{%EVENTURL%}}");
+
+let source = new EventSource("{{%URLPREFIX%}}/sse");
+
+
+
+source.addEventListener("newclient", (event) => {
+  
+  let { ip: reqIp } = JSON.parse(event.data);
+   
+ if(clientIp.has(reqIp)) {
+     
+    return;
+ }
+   
+ clientIp.add(reqIp);
+   
+let disp1 = getComputedStyle(document.querySelector('#confirm-message-box')).getPropertyValue("display").toString().toLowerCase();
+ 
+let disp2 = getComputedStyle(document.querySelector('#request-icon-box')).getPropertyValue("display").toString().toLowerCase();
+ 
+  if((disp1 == "flex") || (disp2 == "flex")) {
+      
+    requestId += 1;
+     
+ let reqNo = requestId == `0` ? "" : requestId  > 999 ? `999<sup><b>+</b></sup>` : `${requestId}`;
+         
+  document.querySelector("#request-no").innerHTML = reqNo;
+  
+  document.querySelector("#request-icon-box").style.display = "flex";
+  
+ let requestData  = JSON.parse(event.data);
+ 
+ 
+  requestDataArray.push(requestData);
+  
+  
+ let {browser, deviceBrand, deviceModel, ip} = requestData;
+ 
+ let deviceName;
+ 
+ if((deviceBrand.toString().trim() == "") && (deviceModel.toString().trim() == "")) {
+     
+   deviceName = `${ip}`;
+   
+ } else {
+     
+     deviceName = `${deviceBrand} ${deviceModel}`;
+ }
+ 
+ 
+ let requestDiv  = document.querySelector("#request-div-details").innerHTML;
+ 
+ let requestContent =  (`  
+ 
+ <div class="request-details">
+      
+   <div class="request-details-no">
+      
+      (${requestId}) 
+       
+   </div> 
+   
+   
+   <div class="request-details-box">
+   
+ <div class="details-device-div">
+     
+  <span class="details-device-text"> Device Name: </span>
+  <span class="details-device-name"> ${deviceName} </span>
+     
+ </div>
+ 
+  <div class="details-browser-div">
+      
+           
+  <span class="details-browser-text"> Browser Name:  </span>
+  <span class="details-browser-name"> ${browser} </span>
+     
+  </div>
+    
+  <br>
+    <div class="request-btn-box">
+     
+   <button class="request-confirm-btn" data-ip="${ip}" data-index="${requestId - 1}" onclick="allowAccess(event)"> Confirm </button>  
+   <button class="request-decline-btn" data-ip="${ip}" data-index="${requestId - 1}" onclick="denyAccess(event)"> Decline </button>
+       
+   </div>
+       
+   </div>
+   
+
+          
+     </div>
+     
+   `)
+   
+ document.querySelector("#request-div-details").innerHTML = `${requestDiv}${requestContent}<br><br>`;
+ 
+ 
+       
+   } else {
+ 
+ let {browser, deviceBrand, deviceModel, ip} = JSON.parse(event.data);
+ 
+ let deviceName;
+ 
+ if((deviceBrand.toString().trim() == "") && (deviceModel.toString().trim() == "")) {
+     
+   deviceName = `${ip}`;
+   
+ } else {
+     
+     deviceName = `${deviceBrand} ${deviceModel}`;
+ }
+
+ document.querySelector("#Confirm-text").innerHTML = `<b>${deviceName}</b> on <b>${browser}</b> browser is trying to connect to your server. Clicking 'yes' gives all browsers on the same device,  access to your server.`;
+ 
+ 
+    /*
+ document.body.appendChild(createComfirmBox(deviceName, browser));
+ */
+ 
+ document.querySelector("#yes-btn").setAttribute("data-ip", `${ip}`);
+ 
+ document.querySelector("#no-btn").setAttribute("data-ip", `${ip}`);
+ 
+ 
+ 
+document.querySelector("#confirm-message-box").style.display = "flex"; 
+  
+   }
+   
+   
+ 
+try {
+    
+
+ navigator.vibrate(200);
+
+} catch (err) {
+    
+    
+}
+
+
+
+ document.querySelector("#notification-sound").play();
+
+   
+});
+
+source.addEventListener("errorcalled", event => {
+    
+  document.querySelector("#confirm-message-box").style.display = "none";
+ 
+})
+
+source.addEventListener("configcalled", event => {
+    
+  document.querySelector("#confirm-message-box").style.display = "none";
+ 
+    
+})
+    
+ 
+source.addEventListener("successcalled", event => {
+    
+  document.querySelector("#confirm-message-box").style.display = "none";
+ 
+    
+})
+    
+         
+} else {
+    
+   return;
+}
+
+}
+
+ 
+ 
+
+async function allowAccess(e) {
+     
+     
+ let ip = e.currentTarget.getAttribute("data-ip");
+ 
+ let index = "false";
+ 
+  if(e.currentTarget.hasAttribute("data-index")) { 
+  
+  index = parseInt(e.currentTarget.getAttribute("data-index"));
+      
+  }
+ 
+ let request = new Request("{{%URLPREFIX%}}/confirmConnection", {
+     
+   method: "POST",
+   mode: "cors",
+   headers : {
+   'Content-Type': 'application/json'
+   },
+   body: JSON.stringify({data: "error_yes", ip})
+   
+ });
+ 
+ 
+ try {
+ 
+ let response = await fetch(request);
+ 
+ let data = "";
+ 
+  if(response.status == 400) {
+      
+    
+   data = await response.text();
+   
+   alert (data);
+   
+  document.querySelector("#confirm-message-box").style.display = "none";
+  
+  if(index == "false") {
+     
+  clientIp.delete(ip);
+  
+  } 
+  
+   return;
+   
+  } else if (response.status == 403)  {
+   
+   data = await response.json();
+   
+  let { type } = data;
+   
+   if(type == "Forbidden") {
+       
+   alert (data.data);
+   
+  document.querySelector("#confirm-message-box").style.display = "none";
+  
+  if(index == "false") {
+     
+  clientIp.delete(ip);
+  
+  } 
+      
+  
+   } else if (type == "Permission") {
+      
+      alert (data.data);
+   
+  document.querySelector("#confirm-message-box").style.display = "none";
+  
+  if(index == "false") {
+     
+  clientIp.delete(ip);
+  
+  } 
+  
+      
+   } else {
+       
+  throw new Error();     
+       
+   }
+  
+  return; 
+      
+  } else if (response.status == 200) {
+   
+ document.querySelector("#confirm-message-box").style.display = "none";
+  
+    clientIp.delete(ip);
+  
+  if(index != "false") {
+  
+ 
+ let reqDetailsArr = document.querySelectorAll(".request-details");
+ 
+ 
+ let currentElem  = reqDetailsArr[index];
+ 
+ let parentDiv  = document.querySelector("#request-div-details");
+ 
+ currentElem.style.display = "none";
+ 
+ parentDiv.removeChild(currentElem);
+ 
+ requestId -= 1;
+ 
+ requestDataArray.splice(index, 1);
+ 
+  if(requestDataArray.length == 0) {
+   
+  
+  document.querySelector("#request-icon-box").style.display = "none";     
+  
+ 
+  document.querySelector("#request-div").style.display = "none"; 
+  
+   
+ document.querySelector("#request-div-details").innerHTML  = "";
+
+       
+   } else {
+ 
+ let requestDiv = "";
+ 
+  document.querySelector("#request-no").innerHTML = requestId;
+  
+ 
+ Array.from(requestDataArray).forEach((el, i) => {
+     
+   
+ let {browser, deviceBrand, deviceModel, ip} = el;
+ 
+ let deviceName;
+ 
+ if((deviceBrand.toString().trim() == "") && (deviceModel.toString().trim() == "")) {
+     
+   deviceName = `${ip}`;
+   
+ } else {
+     
+     deviceName = `${deviceBrand} ${deviceModel}`;
+ }
+ 
+ 
+ let requestContent =  (`  
+ 
+ <div class="request-details">
+      
+   <div class="request-details-no">
+      
+      (${i + 1}) 
+       
+   </div> 
+   
+   
+   <div class="request-details-box">
+   
+ <div class="details-device-div">
+     
+  <span class="details-device-text"> Device Name: </span>
+  <span class="details-device-name"> ${deviceName} </span>
+     
+ </div>
+ 
+  <div class="details-browser-div">
+      
+           
+  <span class="details-browser-text"> Browser Name:  </span>
+  <span class="details-browser-name"> ${browser} </span>
+     
+  </div>
+    
+  <br>
+    <div class="request-btn-box">
+     
+   <button class="request-confirm-btn" data-ip="${ip}" data-index="${i}" onclick="allowAccess(event)"> Confirm </button>  
+   <button class="request-decline-btn" data-ip="${ip}" data-index="${i}" onclick="denyAccess(event)"> Decline </button>
+       
+   </div>
+       
+   </div>
+   
+
+          
+     </div><br><br>
+     
+   `)
+   
+   requestDiv += requestContent;
+     
+ });
+ 
+ 
+ document.querySelector("#request-div-details").innerHTML = requestDiv;
+      
+   
+  } 
+  }
+   
+   
+   } else {
+       
+  throw new Error();  
+       
+   }
+
+ } catch (err)  {
+       
+ document.querySelector("#confirm-message-box").style.display = "none";
+    
+  if(index == "false") {
+     
+  clientIp.delete(ip);
+  
+  } 
+  
+ alert ("An unknown error occurred.")
+   
+
+}
+
+ }
+
+
+async function denyAccess(e) {
+     
+     
+ let ip = e.currentTarget.getAttribute("data-ip");
+ 
+ let index = "false";
+ 
+  if(e.currentTarget.hasAttribute("data-index")) { 
+  
+  index = parseInt(e.currentTarget.getAttribute("data-index"));
+      
+  }
+ 
+ let request = new Request("{{%URLPREFIX%}}/confirmConnection", {
+     
+   method: "POST",
+   mode: "cors",
+   headers : {
+   'Content-Type': 'application/json'
+   },
+   body: JSON.stringify({data: "error_no", ip})
+   
+ });
+ 
+ 
+ try {
+ 
+ let response = await fetch(request);
+ 
+ let data = "";
+ 
+  if(response.status == 400) {
+      
+    
+   data = await response.text();
+   
+   alert (data);
+   
+  document.querySelector("#confirm-message-box").style.display = "none";
+  
+  if(index == "false") {
+     
+  clientIp.delete(ip);
+  
+  } 
+  
+   return;
+   
+  } else if (response.status == 403)  {
+   
+   data = await response.json();
+   
+  let { type } = data;
+   
+   if(type == "Forbidden") {
+       
+   alert (data.data);
+   
+  document.querySelector("#confirm-message-box").style.display = "none";
+  
+  if(index == "false") {
+     
+  clientIp.delete(ip);
+  
+  } 
+      
+  
+   } else if (type == "Permission") {
+      
+      alert (data.data);
+   
+  document.querySelector("#confirm-message-box").style.display = "none";
+  
+  if(index == "false") {
+     
+  clientIp.delete(ip);
+  
+  } 
+  
+      
+   } else {
+       
+  throw new Error();     
+       
+   }
+   
+   return;
+      
+  } else if (response.status == 200) {
+   
+ document.querySelector("#confirm-message-box").style.display = "none";
+  
+    clientIp.delete(ip);
+  
+  if(index != "false") {
+  
+ 
+ let reqDetailsArr = document.querySelectorAll(".request-details");
+ 
+ 
+ let currentElem  = reqDetailsArr[index];
+ 
+ let parentDiv  = document.querySelector("#request-div-details");
+ 
+ currentElem.style.display = "none";
+ 
+ parentDiv.removeChild(currentElem);
+ 
+ requestId -= 1;
+ 
+ requestDataArray.splice(index, 1);
+ 
+  if(requestDataArray.length == 0) {
+   
+  
+  document.querySelector("#request-icon-box").style.display = "none";     
+  
+ 
+  document.querySelector("#request-div").style.display = "none"; 
+  
+   
+ document.querySelector("#request-div-details").innerHTML  = "";
+
+       
+   } else {
+ 
+ let requestDiv = "";
+ 
+  document.querySelector("#request-no").innerHTML = requestId;
+  
+ 
+ Array.from(requestDataArray).forEach((el, i) => {
+     
+   
+ let {browser, deviceBrand, deviceModel, ip} = el;
+ 
+ let deviceName;
+ 
+ if((deviceBrand.toString().trim() == "") && (deviceModel.toString().trim() == "")) {
+     
+   deviceName = `${ip}`;
+   
+ } else {
+     
+     deviceName = `${deviceBrand} ${deviceModel}`;
+ }
+ 
+ 
+ let requestContent =  (`  
+ 
+ <div class="request-details">
+      
+   <div class="request-details-no">
+      
+      (${i + 1}) 
+       
+   </div> 
+   
+   
+   <div class="request-details-box">
+   
+ <div class="details-device-div">
+     
+  <span class="details-device-text"> Device Name: </span>
+  <span class="details-device-name"> ${deviceName} </span>
+     
+ </div>
+ 
+  <div class="details-browser-div">
+      
+           
+  <span class="details-browser-text"> Browser Name:  </span>
+  <span class="details-browser-name"> ${browser} </span>
+     
+  </div>
+    
+  <br>
+    <div class="request-btn-box">
+     
+   <button class="request-confirm-btn" data-ip="${ip}" data-index="${i}" onclick="allowAccess(event)"> Confirm </button>  
+   <button class="request-decline-btn" data-ip="${ip}" data-index="${i}" onclick="denyAccess(event)"> Decline </button>
+       
+   </div>
+       
+   </div>
+   
+
+          
+     </div><br><br>
+     
+   `)
+   
+   requestDiv += requestContent;
+     
+ });
+ 
+ 
+ document.querySelector("#request-div-details").innerHTML = requestDiv;
+      
+   
+  } 
+  }
+   
+   
+   } else {
+       
+  throw new Error();  
+       
+   }
+
+ } catch (err)  {
+       
+ document.querySelector("#confirm-message-box").style.display = "none";
+    
+  if(index == "false") {
+     
+  clientIp.delete(ip);
+  
+  } 
+  
+ alert ("An unknown error occurred.")
+   
+
+}
+
+ }
+
+ 
+async function allowAllAccess() {
+     
+  
+ let request = new Request("{{%URLPREFIX%}}/confirmConnection", {
+     
+   method: "POST",
+   mode: "cors",
+   headers : {
+   'Content-Type': 'application/json'
+   },
+   body: JSON.stringify({data: "error_yes", ip: "all"})
+   
+ });
+ 
+ try {
+     
+let response = await fetch(request);
+
+let data = "";
+
+ if(response.status == 400) {
+    
+   data = await response.text();
+   
+   alert (data);
+   
+  document.querySelector("#confirm-message-box").style.display = "none";
+
+   return;
+   
+  } else if (response.status == 403)  {
+   
+   data = await response.json();
+   
+  let { type } = data;
+   
+   if(type == "Forbidden") {
+       
+   alert (data.data);
+   
+  document.querySelector("#confirm-message-box").style.display = "none";
+ 
+  
+   } else if (type == "Permission") {
+      
+      alert (data.data);
+   
+  document.querySelector("#confirm-message-box").style.display = "none";
+  
+   } else {
+       
+  throw new Error();     
+       
+   }
+  
+  return; 
+      
+  } else if (response.status == 200) {
+      
+ document.querySelector("#confirm-message-box").style.display = "none";
+     
+  
+  document.querySelector("#request-icon-box").style.display = "none";     
+  
+ 
+  document.querySelector("#request-div").style.display = "none"; 
+       
+  document.querySelector("#request-no").innerHTML = "";
+   
+ document.querySelector("#request-div-details").innerHTML  = "";
+
+ requestId = 0;
+ 
+ clientIp.clear();
+ 
+ requestDataArray = [];
+ 
+return;
+} else {
+    
+    throw new Error();
+}
+
+  } catch(err)  {
+       
+ document.querySelector("#confirm-message-box").style.display = "none";
+     
+  
+    alert ("An unknown error occurred.");
+return;
+ }
+
+}
+
+
+async function denyAllAccess() {
+     
+  
+ let request = new Request("{{%URLPREFIX%}}/confirmConnection", {
+     
+   method: "POST",
+   mode: "cors",
+   headers : {
+   'Content-Type': 'application/json'
+   },
+   body: JSON.stringify({data: "error_no", ip: "all"})
+   
+ });
+ 
+ try {
+     
+let response = await fetch(request);
+
+let data = "";
+
+ if(response.status == 400) {
+    
+   data = await response.text();
+   
+   alert (data);
+   
+  document.querySelector("#confirm-message-box").style.display = "none";
+
+   return;
+   
+  } else if (response.status == 403)  {
+   
+   data = await response.json();
+   
+  let { type } = data;
+   
+   if(type == "Forbidden") {
+       
+   alert (data.data);
+   
+  document.querySelector("#confirm-message-box").style.display = "none";
+ 
+  
+   } else if (type == "Permission") {
+      
+      alert (data.data);
+   
+  document.querySelector("#confirm-message-box").style.display = "none";
+  
+   } else {
+       
+  throw new Error();     
+       
+   }
+  
+  return; 
+      
+  } else if (response.status == 200) {
+      
+ document.querySelector("#confirm-message-box").style.display = "none";
+     
+  
+  document.querySelector("#request-icon-box").style.display = "none";     
+  
+ 
+  document.querySelector("#request-div").style.display = "none"; 
+       
+  document.querySelector("#request-no").innerHTML = "";
+   
+ document.querySelector("#request-div-details").innerHTML  = "";
+
+ requestId = 0;
+ 
+ clientIp.clear();
+ 
+ requestDataArray = [];
+ 
+return;
+} else {
+    
+    throw new Error();
+}
+
+  } catch(err)  {
+       
+ document.querySelector("#confirm-message-box").style.display = "none";
+     
+  
+    alert ("An unknown error occurred.");
+return;
+ }
+
+}
+  
+ 
+ async function changeAccess() {
+     
+    
+if(typeof(EventSource) != undefined) {
+
+
+let source = new EventSource("{{%URLPREFIX%}}/sse/change");
+
+
+source.addEventListener("changeaccess", async (event) => {
+
+
+ let data  = JSON.parse(event.data);
+ 
+ let { ip, type } = data;
+ 
+ 
+ try {
+   
+   
+ let response = await fetch ("{{DETAILSURL}}/true");  
+  
+  if(response.status != 200) {
+      
+  return;
+  
+  }
+  
+ let resData = await response.json();
+ 
+ let  { ip: clientIp, owner } = resData.data;
+ 
+ if(owner) {
+     
+     return;
+ }
+ 
+ if(ip.toString() == clientIp.toString()) {
+  
+  if(type == "deny") {
+   
+   location.reload();   
+      
+  } else {
+      
+   return;
+   
+  }
+  
+     
+ } else {
+   
+   return;  
+     
+ }
+ 
+     
+ } catch (err)  {
+   
+   return;  
+     
+ }
+
+})
+
+
+} else {
+    
+    return;
+}
+ }
+ 
+ 
+
+</script>
+     
+
+     </body>
+</html>

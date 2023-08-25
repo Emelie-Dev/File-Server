@@ -1,0 +1,5031 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="The Godfather">
+<title> File Server </title>
+  <link rel="icon" type="image/x-icon" href={{%ICON%}} >
+
+ <style>
+ 
+ 
+  * {
+      box-sizing: border-box;
+  }
+  
+  
+ body {
+     
+ margin: 0;
+ /*
+ display: flex;
+ flex-direction: column;
+ justify-content: center;*/
+  background: rgba(0,0,0,0.5);
+  
+ }
+   
+ 
+ #head {
+    display: none; 
+   font-variant: small-caps;
+   text-decoration: underline;
+   font-family: "Times New Roman";
+   text-align: center;
+   margin-top: 15px;
+   font-size: 1.2rem;
+   
+ }
+ 
+ .config-box {
+   display: none;
+    margin: 5px;
+    margin-top: 5px;
+  font-family: "Times New Roman";
+  font-size: 0.8rem;
+  font-weight: bold;
+ align-items: center;
+
+
+ }
+ 
+ #port-input, #dir-input, #file-input, #password-input, #max-connection, #name-input {
+   font-size: 0.6rem;
+  margin-left: auto;
+  border: none;
+  outline: none;
+  border-bottom: 2px solid black;
+  align-self: flex-end;
+  width: auto;
+  font-family: "Times New Roman";
+ }
+ 
+ .config-property {
+  margin-right: auto;
+
+ }
+ 
+ .sub-text {
+     
+    font-style: italic;
+    font-size: 0.7rem;
+    font-weight: 200;
+ }
+ 
+  
+ .end-text {
+     
+    font-style: italic;
+    font-size: 0.8rem;
+    font-weight: 400;
+ }
+ 
+ #net-interface {
+     
+   font-size: 0.8rem;
+  margin-left: auto;
+  border: none;
+ background: black;
+ color: white;
+  border-bottom: 2px solid black;
+  align-self: flex-end;
+  width: auto;
+  font-family: "Times New Roman";
+  padding: 2px;
+ }
+ 
+ #file-box, #confirm-box {
+     
+  width: 1rem;
+  height: 1rem;
+  margin-left: auto;
+  border: none;
+  align-self: flex-end;
+   accent-color: black;
+ 
+ }
+ 
+ #save-btn {
+   
+   margin-right: auto;
+   margin-left: auto;
+   background: black;
+   color: white;
+   font-size: 1rem;
+   padding: 5px;
+   border-radius: 10px;
+   font-weight: 900;
+   font-family: "Times New Roman";
+ }
+ 
+ #save-animation-box  {
+     margin-top: 0;
+     padding: 0;
+     justify-content: center;
+     flex-direction: column;
+    display: none;
+ }
+ 
+ .dot {
+   font-size: 5rem;
+  animation-name: save;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  color: black;
+  font-weight: 900;
+ }
+ 
+ #save-text {
+   
+  
+ }
+ 
+ #animation-box {
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ }
+ 
+ #file-operation-password {
+     
+   pointer-events: none;
+   opacity: 0.2;
+ }
+ #animation-box  span:nth-child(1) {
+     
+    animation-delay: 0s;
+ }
+ 
+  
+ #animation-box  span:nth-child(2) {
+     
+    animation-delay: 0.25s;
+ }
+ 
+  
+ #animation-box  span:nth-child(3) {
+     
+    animation-delay: 0.5s;
+ }
+ 
+  
+ #animation-box  span:nth-child(4) {
+     
+    animation-delay: 0.75s;
+ }
+ 
+  
+ #animation-box  span:nth-child(5) {
+     
+    animation-delay: 1s;
+ }
+ 
+ 
+ 
+ @keyframes save {
+   
+   from {
+   
+   opacity: 0;
+ 
+ 
+   } to {
+    opacity: 1;
+ 
+   }
+     
+ }
+ 
+  #authentication-box {
+      
+ position: fixed;
+ background: transparent;
+ display: flex;
+align-items: flex-start;
+justify-content: center;
+width: 100%;
+height: 100%;
+
+ }
+ 
+ #dialogue-box {
+  z-index: 5;
+  background: white;
+  color: black;
+  border-radius: 10px;
+   padding: 10px;
+ box-shadow: 2px 2px 10px 2px black;
+ width: auto;
+ display: flex;
+ flex-direction: column;
+ margin-bottom: 20px;
+ }
+ 
+
+ #config-head {
+     
+     font-family: "Times New Roman";
+     font-size: 1.2rem;
+     color: blue;
+ }
+ 
+ #server-name {
+     
+      font-family: "Times New Roman";
+     font-size: 1rem;
+     margin-top: 20px;
+    color: grey;
+    font-weight: 900;
+ }
+
+ #password {
+     
+   border: none;
+   border-bottom: 3px solid blue;
+   font-size: 1rem;
+   margin-top: 20px;
+outline: none;
+padding: 5px;
+ }
+
+ ::-webkit-input-placeholder {
+     
+     color: gray;
+   font-weight: bold;
+   font-variant: small-caps;
+   font-family: "Times New Roman";
+   padding: 5px;
+ }
+ 
+ :-ms-input-placeholder {
+     
+     color: gray;
+   font-weight: bold;
+   font-variant: small-caps;
+   font-family: "Times New Roman";
+   padding: 5px;
+ }
+ 
+ ::placeholder {
+   color: gray;
+   font-weight: bold;
+   font-variant: small-caps;
+   font-family: "Times New Roman";
+   padding: 5px;
+ }
+ 
+
+ 
+ #btns {
+  
+  align-self: flex-end;
+  margin-left: auto;
+  margin-top: 10px;
+  padding: 5px;
+ }
+ 
+ #cancel, #submit {
+    padding: 5px;
+  font-size: 1rem;
+  color: blue;
+  font-family: "Times New Roman";
+  font-weight: bold;
+  transition: all 0.3s;
+ }
+ 
+
+#notice {
+    
+      font-family: "Times New Roman";
+     font-size: 0.8rem;
+    color: grey;
+    font-weight: 900;
+}
+
+
+ #cancel {
+    
+    margin-right: 10px;
+ }
+ 
+ #cancel:hover, #submit:hover {
+   border-radius: 10px;
+  
+   background: rgba(128,128,128,0.3)
+ 
+   
+ }
+ 
+#cancel-text, #error-text, #wrong-password {
+     margin: 5px;
+     color: red;
+     font-size: 1rem;
+     font-weight: bold;
+    display: none;
+     font-family: "Times New Roman";
+ }
+
+ #confirm-message-box {
+    top: 0;
+    left: 0;
+   position: fixed;
+   z-index: 50;
+  background: transparent;
+  display: none;
+  align-items: flex-start;
+  justify-content: center;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+ }
+ 
+ #confirm2-box {
+  width: 300px;
+  margin-top: 20px;
+  background: gold;
+  color: black;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 1px 1px 10px 1px black;
+  display: flex;
+  flex-direction: column;
+ }
+ 
+ #confirm-head-text {
+     
+    font-size: 1.3rem;
+   font-family: "Times New Roman";
+   font-weight: bold;
+   font-variant: small-caps;
+   display: block;
+   margin-bottom: 15px;
+   font-style: oblique;
+   text-decoration: underline;
+ }
+ 
+ 
+ #Confirm-text {
+  
+  font-size: 1rem;
+  font-family: "Times New Roman";
+  font-style: italic;
+  display: block;
+ }
+ 
+ #btn-box {
+     
+ 
+ margin-left: auto;
+ display: block;
+ margin-top: 15px;
+ margin-bottom: 10px;
+ }
+ 
+ #yes-btn {
+     
+   padding: 15px;
+   padding-bottom: 7px;
+   padding-top: 7px;
+   font-size: 1.2rem;
+   font-family: "Times New Roman";
+   font-weight: bold;
+   background: white;
+   color: black;
+   outline: none;
+   border: 2px solid black;
+   border-radius: 5px;
+   margin-right: 10px;
+ }
+ 
+ #no-btn {
+     
+   padding: 15px;
+   padding-bottom: 7px;
+   padding-top: 7px;
+   font-size: 1.2rem;
+   font-family: "Times New Roman";
+   font-weight: bold;
+   background: black;
+   color: white;
+   outline: none;
+   border: 2px solid black;
+   border-radius: 5px;
+ }
+ 
+ #yes-btn:hover {
+     
+ color: white;
+ background: black;
+ box-shadow: 2px 2px 10px 2px black;
+ }
+ 
+ #no-btn:hover {
+     
+ color: black;
+ background: white;
+ box-shadow: 2px 2px 10px 2px black; 
+ }
+ 
+ #notification-sound {
+     
+  display: none;
+ }
+ 
+ 
+ .other-body {
+  display: block;
+ }
+ 
+ 
+ 
+ #request-div {
+   top: 0; 
+    left: 0;
+  position: fixed;
+  z-index: 35;
+  background: rgba(0,0,0,0.7);
+  display: none;
+ 
+  justify-content: center;
+ /* align-items: flex-start;*/
+overflow: auto;
+ animation-name: showOperationDiv;
+ animation-duration: 0.3s;
+ animation-iteration-count: ease-in-out;
+ width: 100%;
+ height: 100%;
+ 
+ }
+ 
+ #request-div-content {
+     
+   position: relative;
+  margin-top: 20px;
+  margin-bottom: 20px;
+ background: gold;
+ padding: 10px;
+ display: flex;
+ width: auto;
+ flex-direction: column;
+ border-radius: 10px;
+ overflow: auto;
+
+
+ }
+ 
+#request-icon-box {
+  
+  z-index: 10;
+  display: none;
+  position: fixed;
+  justify-content: center;
+  align-items: center;
+  background: gold;
+  border-radius: 50%;
+  padding: 10px;
+  right: 25px;
+  top: 40px;
+}
+
+#request-icon-box:hover {
+    
+    box-shadow: 1px 1px 5px 1px black;
+}
+
+#request-icon {
+    
+    width: 30px;
+    height: 30px;
+}
+
+ #request-no  {
+  
+  position: absolute;
+  top: -8px;
+  right: 0px;
+  font-weight: bold;
+  font-size: 1.3rem;
+  font-style: italic;
+  font-family: "Times New Roman";
+   z-index: 12;
+ }
+ 
+ 
+ #close-request-svg {
+     
+   width: 28px;
+   height: 28px;
+   position: fixed;
+   transition: all 0.3s;
+   z-index: 38;
+ }
+ 
+ 
+  #close-request-svg:hover {
+      
+   background: black; 
+   color: gold;
+   padding: 5px;
+   transform: scale(1.25);
+   border-radius: 50%;
+   
+  }
+  
+
+  #request-div-head  {
+      
+    margin-top: 10px; 
+ font-weight: bold;
+ font-family: "Times New Roman";
+ color: black;
+ font-size: 1.3rem;
+ text-decoration: underline;
+ font-variant: small-caps;
+ text-align: left;
+ 
+      
+  }
+  
+  #request-div-text {
+      
+      
+ font-family: "Times New Roman";
+ color: black;
+ font-size: 1rem;
+ font-style: italic;
+ 
+  }
+  
+  .request-details {
+      
+    display: flex;
+    align-items: flex-start;
+    
+  }
+  
+  .request-details-box  {
+      
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .details-device-div, .details-browser-div  {
+      
+    display: flex;  
+    margin-bottom: 5px;
+    word-break: break-all;
+    margin-right: 5px;
+  }
+  
+  .request-btn-box  {
+    
+    display: flex;  
+    align-items: center;
+  margin-left: auto;
+  margin-right: 5px;
+  
+  }
+  
+  .request-details-no {
+      
+     font-size: 1.3rem;
+     font-family: "Times New Roman";
+     font-weight: bold;
+    margin-right: 18px;
+    transform: translateY(-2px);
+    white-space: nowrap;
+  }
+  
+  .details-device-text, .details-browser-text  {
+      
+ font-variant: small-caps;
+ font-size: 1.1rem;
+ font-family: "Times New Roman";
+ font-weight: bold;
+ margin-right: 10px;
+ transform: translateY(-2px);
+ white-space: nowrap;
+  }
+  
+  .request-confirm-btn {
+      
+    padding: 5px;
+   font-size: 1rem;
+   font-family: "Times New Roman";
+   font-weight: bold;
+   background: white;
+   color: black;
+   outline: none;
+   border-radius: 5px;
+   margin-right: 15px;
+   
+  }
+  
+   .request-decline-btn {
+      
+    padding: 5px;
+   font-size: 1rem;
+   font-family: "Times New Roman";
+   font-weight: bold;
+   background: black;
+   color: white;
+   outline: none;
+   border-radius: 5px;
+   margin-right: 15px;
+   
+  }
+  
+  .request-confirm-btn:hover, .request-decline-btn:hover {
+      
+    box-shadow:  1px 1px 10px 1px black;
+    
+  } 
+  
+  #request-all-btn-div {
+      z-index: 40;
+       position: fixed;
+      bottom: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+     
+  }
+  
+ .confirm-all-btn {
+      
+    padding: 5px;
+   font-size: 1rem;
+   font-family: "Times New Roman";
+   font-weight: bold;
+   background: white;
+   color: black;
+   outline: none;
+   border-radius: 5px;
+   margin-right: 20px;
+   
+  }
+  
+   .decline-all-btn {
+       
+    padding: 5px;
+   font-size: 1rem;
+   font-family: "Times New Roman";
+   font-weight: bold;
+   background: black;
+   color: white;
+   outline: none;
+   border-radius: 5px;
+   margin-right: 10px;
+   
+  }
+  
+  .confirm-all-btn:hover, .decline-all-btn:hover {
+      
+    box-shadow:  1px 1px 10px 1px black;
+    
+  } 
+  
+  #client-btn-box {
+      
+   display: none;
+   justify-content: space-between;
+   width: 100%;
+   align-items: center;
+  margin-bottom: 30px;
+  }
+  
+  
+  #notification-sound {
+      display: none;
+  }
+  
+  #access-btn {
+      
+   color: white;
+ background: black;
+ padding: 5px;
+ font-size: 1rem;
+ font-weight: bold;
+ font-family: "Times New Roman";
+  border-radius: 5px;
+  text-transform: capitalize;
+ margin-left: 10px;
+ 
+  }
+#deny-btn  {
+      
+   color: white;
+ background: black;
+ padding: 5px;
+ font-size: 1rem;
+ font-weight: bold;
+ font-family: "Times New Roman";
+  border-radius: 5px;
+  text-transform: capitalize;
+ margin-right: 10px;
+ 
+  }
+  
+  #access-btn:hover, #deny-btn:hover {
+      
+    box-shadow: 1px 1px 10px 1px black;
+      
+  }
+  
+  #confirmed-clients-div {
+      
+       top: 0; 
+    left: 0;
+  position: fixed;
+  z-index: 25;
+  background: rgba(0,0,0,0.7);
+  display: none;
+ 
+  justify-content: center;
+
+overflow: auto;
+ animation-name: showOperationDiv;
+ animation-duration: 0.3s;
+ animation-iteration-count: ease-in-out;
+ width: 100%;
+ height: 100%;
+ 
+  }
+  
+  #confirmed-clients-content {
+      
+     position: relative;
+  margin-top: 20px;
+  margin-bottom: 20px;
+ background: gold;
+ padding: 10px;
+ display: flex;
+ width: auto;
+ flex-direction: column;
+ border-radius: 10px;
+ overflow: auto;
+      
+  }
+  
+  
+ #close-confirm-svg {
+     
+   width: 28px;
+   height: 28px;
+   position: fixed;
+   transition: all 0.3s;
+   z-index: 29;
+ }
+ 
+ 
+  #close-confirm-svg:hover {
+      
+   background: black; 
+   color: gold;
+   padding: 5px;
+   transform: scale(1.25);
+   border-radius: 50%;
+   
+  }
+  
+  #confirmed-clients-div-head {
+      
+    margin-top: 10px; 
+ font-weight: bold;
+ font-family: "Times New Roman";
+ color: black;
+ font-size: 1.3rem;
+ text-decoration: underline;
+ font-variant: small-caps;
+ text-align: left;
+ 
+      
+  }
+  
+  
+  #confirmed-clients-div-text {
+      
+      
+ font-family: "Times New Roman";
+ color: black;
+ font-size: 1rem;
+ font-style: italic;
+ 
+  }
+  
+  .confirmed-client-box {
+     
+   display: flex; 
+   align-items: flex-start;
+  margin-bottom: 30px;
+    
+  }
+  
+  .confirmed-client-no  {
+      
+       font-size: 1.3rem;
+     font-family: "Times New Roman";
+     font-weight: bold;
+    margin-right: 18px;
+    white-space: nowrap;
+      transform: translateY(-2px);
+  }
+  
+ .confirmed-client-details {
+     
+   display: flex;
+   flex-direction: column;
+  
+ }
+ 
+ .confirmed-client-device-div, .confirmed-client-ip-div, .confirmed-client-time-div {
+     
+   display: flex;  
+    margin-bottom: 10px;
+    word-break: break-all;
+    margin-right: 5px;
+    
+ }
+ 
+ .confirmed-client-device-text,  .confirmed-client-ip-text, .confirmed-client-time-text {
+     
+ font-variant: small-caps;
+ font-size: 1.1rem;
+ font-family: "Times New Roman";
+ font-weight: bold;
+ margin-right: 10px;
+ white-space: nowrap;
+ transform: translateY(-2px);
+ }
+ 
+ .confirmed-client-time {
+   
+   transform: translateY(-3px);
+   word-break: keep-all;
+ }
+ 
+ #confirmed-client-text  {
+       
+ font-variant: small-caps;
+ font-size: 1.5rem;
+display: none;
+justify-content: center;
+align-items: center;
+margin-top: 30px;
+font-weight: bold;
+     
+ }
+  
+  
+ #confirmed-clients-animation  {
+       
+ font-variant: small-caps;
+ font-size: 1.2rem;
+display: flex;
+justify-content: center;
+align-items: center;
+margin-top: 20px;
+font-weight: bold;
+     
+ }
+ 
+ .confirmed-client-deny-btn {
+     
+     color: white;
+ background: black;
+ padding: 5px;
+ font-size: 1rem;
+ font-weight: bold;
+ font-family: "Times New Roman";
+  border-radius: 5px;
+  text-transform: capitalize;
+ 
+ }
+ 
+ 
+  #denied-clients-div {
+      
+       top: 0; 
+    left: 0;
+  position: fixed;
+  z-index: 25;
+  background: rgba(0,0,0,0.7);
+  display: none;
+ 
+  justify-content: center;
+
+overflow: auto;
+ animation-name: showOperationDiv;
+ animation-duration: 0.3s;
+ animation-iteration-count: ease-in-out;
+ width: 100%;
+ height: 100%;
+ 
+  }
+  
+  #denied-clients-content {
+      
+     position: relative;
+  margin-top: 20px;
+  margin-bottom: 20px;
+ background: gold;
+ padding: 10px;
+ display: flex;
+ width: auto;
+ flex-direction: column;
+ border-radius: 10px;
+ overflow: auto;
+      
+  }
+  
+  
+ #close-denied-svg {
+     
+   width: 28px;
+   height: 28px;
+   position: fixed;
+   transition: all 0.3s;
+   z-index: 29;
+ }
+ 
+ 
+  #close-denied-svg:hover {
+      
+   background: black; 
+   color: gold;
+   padding: 5px;
+   transform: scale(1.25);
+   border-radius: 50%;
+   
+  }
+  
+  #denied-clients-div-head {
+      
+    margin-top: 10px; 
+ font-weight: bold;
+ font-family: "Times New Roman";
+ color: black;
+ font-size: 1.3rem;
+ text-decoration: underline;
+ font-variant: small-caps;
+ text-align: left;
+ 
+      
+  }
+  
+  
+  #denied-clients-div-text {
+      
+      
+ font-family: "Times New Roman";
+ color: black;
+ font-size: 1rem;
+ font-style: italic;
+ 
+  }
+  
+  .denied-client-box {
+     
+   display: flex; 
+   align-items: flex-start;
+  margin-bottom: 30px;
+    
+  }
+  
+  .denied-client-no  {
+      
+       font-size: 1.3rem;
+     font-family: "Times New Roman";
+     font-weight: bold;
+    margin-right: 18px;
+    white-space: nowrap;
+      transform: translateY(-2px);
+  }
+  
+ .denied-client-details {
+     
+   display: flex;
+   flex-direction: column;
+  
+ }
+ 
+ .denied-client-device-div, .denied-client-ip-div, .denied-client-time-div {
+     
+   display: flex;  
+    margin-bottom: 10px;
+    word-break: break-all;
+    margin-right: 5px;
+    
+ }
+ 
+ .denied-client-device-text,  .denied-client-ip-text, .denied-client-time-text {
+     
+ font-variant: small-caps;
+ font-size: 1.1rem;
+ font-family: "Times New Roman";
+ font-weight: bold;
+ margin-right: 10px;
+ white-space: nowrap;
+ transform: translateY(-2px);
+ }
+ 
+ .denied-client-time {
+   
+   transform: translateY(-3px);
+   word-break: keep-all;
+ }
+ 
+ #denied-client-text  {
+       
+ font-variant: small-caps;
+ font-size: 1.5rem;
+display: none;
+justify-content: center;
+align-items: center;
+margin-top: 30px;
+font-weight: bold;
+     
+ }
+  
+  
+ #denied-clients-animation  {
+       
+ font-variant: small-caps;
+ font-size: 1.2rem;
+display: flex;
+justify-content: center;
+align-items: center;
+margin-top: 20px;
+font-weight: bold;
+     
+ }
+ 
+ .denied-client-confirm-btn {
+     
+     color: white;
+ background: black;
+ padding: 5px;
+ font-size: 1rem;
+ font-weight: bold;
+ font-family: "Times New Roman";
+  border-radius: 5px;
+  text-transform: capitalize;
+ 
+ }
+ 
+ #confirmed-clients-deny-all-btn, #denied-clients-confirm-all-btn {
+     color: white;
+ background: black;
+ padding: 5px;
+ font-size: 1rem;
+ font-weight: bold;
+ font-family: "Times New Roman";
+  border-radius: 5px;
+  text-transform: capitalize;
+  position: fixed;
+  z-index: 28;
+  pointer-events: all;
+  opacity: 1;
+ }
+ 
+ 
+ #confirmed-clients-deny-all-btn:hover, #denied-clients-confirm-all-btn:hover {
+  
+  box-shadow: 2px 2px 10px 2px black;   
+     
+ }
+ 
+ #new-client-svg {
+   
+   width: 30px;
+   height: 30px;
+ }
+ 
+ #connected-client-btn-div {
+     
+   display: flex;
+   justify-content: center;
+   margin-bottom: 30px;
+ }
+  
+  #connected-client-btn {
+      
+      color: white;
+ background: black;
+ padding: 5px;
+ font-size: 1rem;
+ font-weight: bold;
+ font-family: "Times New Roman";
+  border-radius: 5px;
+  text-transform: capitalize;
+  
+  }
+  
+  #connected-client-div  {
+      
+  top: 0; 
+  left: 0;
+  position: fixed;
+  z-index: 25;
+  background: rgba(0,0,0,0.7);
+  display: none;
+ 
+  justify-content: center;
+
+overflow: auto;
+ animation-name: showOperationDiv;
+ animation-duration: 0.3s;
+ animation-iteration-count: ease-in-out;
+ width: 100%;
+ height: 100%;
+ 
+  }
+  
+  #connected-client-content {
+      
+     position: relative;
+  margin-top: 20px;
+  margin-bottom: 20px;
+ background: gold;
+ padding: 10px;
+ display: flex;
+ width: auto;
+ flex-direction: column;
+ border-radius: 10px;
+ overflow: auto;
+      
+  }
+  
+  
+ #close-connect-svg {
+     
+   width: 28px;
+   height: 28px;
+   position: fixed;
+   transition: all 0.3s;
+   z-index: 29;
+ }
+ 
+ 
+  #close-connect-svg:hover {
+      
+   background: black; 
+   color: gold;
+   padding: 5px;
+   transform: scale(1.25);
+   border-radius: 50%;
+   
+  }
+  
+  
+  #connected-clients-div-head {
+      
+    margin-top: 10px; 
+ font-weight: bold;
+ font-family: "Times New Roman";
+ color: black;
+ font-size: 1.3rem;
+ text-decoration: underline;
+ font-variant: small-caps;
+ text-align: left;
+ 
+      
+  }
+  
+  
+  #connected-clients-div-text {
+      
+      
+ font-family: "Times New Roman";
+ color: black;
+ font-size: 1rem;
+ font-style: italic;
+ 
+  }
+  
+  
+@keyframes showOperationDiv {
+    
+  from {
+      
+  transform: scale(0);
+  } to {
+      
+ transform: scale (1);
+  }
+  
+  
+}
+ </style>
+ 
+ </head>
+ 
+ 
+ <body onload="changeSize()" onresize="changeSize()" data-owner="{{%OWNER%}}">
+ 
+ <!-- Connected clients div 
+ 
+ <div id="connected-client-div">
+  
+  
+  <div id="connected-client-content">
+   
+    <span id="close-connect-div" title="Close"> 
+  
+  <svg onclick="closeConnectedClientsDiv()" id="close-connect-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <line x1="6" y1="18" x2="18" y2="6" />
+  <line x1="6" y1="6" x2="18" y2="18" />
+</svg>
+
+ </span>
+ 
+   
+ <span id="connected-clients-div-head">
+   
+   Connected Clients 
+     
+ </span>    
+ 
+ 
+      <br>
+      
+        
+ <span id="connected-clients-div-text">
+   
+ This shows the list of all clients that are connected to your server. This list is only available when the <b>Connection Limit</b> is set. Click on the corresponding "Disconnect" button to disconnect a client.
+ 
+    </span>
+     
+      
+  </div>  
+     
+ </div>
+     -->
+     
+   <!-- confirmed clients div -->
+     
+   <div id="confirmed-clients-div">
+   
+     <div id="confirmed-clients-content"> 
+     
+  <div id="confirmed-clients-deny-all-div">
+   
+   <button id="confirmed-clients-deny-all-btn" onclick="changeAllConfirmedClient()"> Deny All</button> 
+      
+  </div>
+  
+  <span id="close-confirm-div" title="Close"> 
+  
+  <svg onclick="closeConfirmedClientsDiv()" id="close-confirm-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <line x1="6" y1="18" x2="18" y2="6" />
+  <line x1="6" y1="6" x2="18" y2="18" />
+</svg>
+
+ </span>
+ 
+ 
+ <span id="confirmed-clients-div-head">
+   
+   Confirmed Clients 
+     
+ </span>    
+ 
+ 
+      <br>
+      
+        
+ <span id="confirmed-clients-div-text">
+   
+ This shows the list of all clients you granted access to your server. Click the corresponding 'Deny' button if you wish to deny access for a client.
+ 
+    </span>
+    
+  <br><br>
+  
+  <div id="confirmed-clients-animation">
+    
+    Loading....  
+      
+  </div>
+  
+  <div id="confirmed-clients-container">
+  
+
+  
+  
+  <!--
+ <div class="confirmed-client-box">
+     
+ <div class="confirmed-client-no">
+   
+   (1)  
+     
+ </div>
+ 
+ <div class="confirmed-client-details">
+  
+  <div class="confirmed-client-device-div">
+      
+  <span class="confirmed-client-device-text"> Device Name: </span>
+      
+  <span class="confirmed-client-device"> Redmi 10C </span>
+      
+  </span>
+     
+ </div>
+ 
+ <div class="confirmed-client-ip-div">
+   
+  <span class="confirmed-client-ip-text">
+    IP Address:   
+  </span> 
+  
+    <span class="confirmed-client-ip">
+   388.3883.3883   
+  </span> 
+  
+     
+ </div>
+     
+ </div>
+      
+      
+  </div>
+    -->
+     
+     </div>
+    
+    <div id="confirmed-client-text">
+   
+  There are no confirmed clients.     
+        
+    </div>
+    <br>
+ </div>   
+       
+   </div>
+ 
+ <!-- denied clients div -->  
+     
+  <div id="denied-clients-div">
+   
+     <div id="denied-clients-content"> 
+  
+  <div id="denied-clients-confirm-all-div">
+   
+   <button id="denied-clients-confirm-all-btn" onclick="changeAllDeniedClient()"> Confirm All</button> 
+      
+  </div>
+  
+  <span id="close-denied-div" title="Close"> 
+  
+  <svg onclick="closeDeniedClientsDiv()" id="close-denied-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <line x1="6" y1="18" x2="18" y2="6" />
+  <line x1="6" y1="6" x2="18" y2="18" />
+</svg>
+
+ </span>
+ 
+ 
+ <span id="denied-clients-div-head">
+   
+   Denied Clients 
+     
+ </span>    
+ 
+ 
+      <br>
+      
+        
+ <span id="denied-clients-div-text">
+   
+ This shows the list of all clients you denied access to your server. Click the corresponding 'Confirm' button if you wish to confirm access for a client.
+ 
+    </span>
+    
+  <br><br>
+  
+  <div id="denied-clients-animation">
+    
+    Loading....  
+      
+  </div>
+  
+  <div id="denied-clients-container">
+  
+     </div>
+    
+    <div id="denied-client-text">
+   
+  There are no denied clients.     
+        
+    </div>
+    <br>
+ </div>   
+       
+   </div>
+   
+   
+ <span id="request-icon-box" title="Confirm clients requests." onclick="showRequestDiv()">
+   
+   <span id="request-no"></span>  
+     
+     <svg id="request-icon"  fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+         
+  <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+</svg>
+
+     
+ </span>
+ 
+ 
+ <div id="request-div">
+     
+  <div id="request-div-content">
+    
+  <div id="request-all-btn-div" >
+      
+ <button class="confirm-all-btn" onclick="allowAllAccess()">
+    Confirm All
+ </button>
+ 
+  <button class="decline-all-btn" onclick="denyAllAccess()">
+    Decline All
+ </button>
+ 
+  </div>    
+  
+  <span id="close-request" title="Close"> 
+  
+  <svg onclick="closeRequest()" id="close-request-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <line x1="6" y1="18" x2="18" y2="6" />
+  <line x1="6" y1="6" x2="18" y2="18" />
+</svg>
+
+ </span>
+ 
+ <span id="request-div-head">
+   
+   Confirm Connection  
+     
+ </span>    
+      <br>
+      
+ <span id="request-div-text">
+   
+  Click the 'Confirm' or 'Decline' buttons to allow or deny access to your server, respectively. Clicking 'Confirm' gives all browsers on the same device,  access to your server.
+        
+    </span>
+    
+    <br><br>
+    
+    
+  <div id="request-div-details">
+
+  
+  </div>
+  
+    <br> <br>
+  </div>
+     
+ </div>
+      
+  
+     
+   <!-- For the Confirmation box -->
+   
+   
+<div id="confirm-message-box">
+    
+   <div id="confirm2-box">
+    
+    <span id="confirm-head-text"> Confirm Connection </span>
+    
+   
+    <span id="Confirm-text"> 
+    
+      </span>
+      
+  <span id="btn-box">
+      
+       <button id="yes-btn" onclick="allowAccess(event)"> Yes </button> 
+  
+  <button id="no-btn" onclick="denyAccess(event)"> No </button> </span>
+  
+  
+   </div>
+    
+ </div>
+  
+   
+   <!-- For the cancel button-->  
+      
+   <div id="cancel-text">
+   
+   Provide the required credentials to continue.
+       
+   </div>
+  
+  <!-- For the wrong password -->
+    
+    <div id="wrong-password">
+   
+ The password you provided is incorrect.
+       
+   </div>
+   
+   <!-- For the error text -->
+   
+  <div id="error-text">
+      
+   An error occurred, type in "rs" in the terminal to restart the server and try again.  
+   </div>
+   
+  <div id="authentication-box">
+        
+     
+   <div id="dialogue-box">
+      
+      <div id="config-head"> Authentication Required </div>
+ 
+    <div id="server-name"> Configuration File </div>
+   <br>
+   <div id="notice">
+    
+    Password is required anytime you try to access the Configuration file for security purposes. Leave empty if you didn't set a password for authentication.
+   </div>
+    <br>
+    <input size="25" id="password" type="password" placeholder="Enter Password">
+ <br>
+ 
+ <div id="btns">
+     <span id="cancel" onclick="closeAuthentication()"> Cancel </span>
+     <span id="submit" onclick="logIn()"> Submit </span>
+  
+ </div>
+   </div>
+        
+   
+   </div>
+        
+  
+  <!-- Main page -->
+  
+  
+    
+   <div id="head">
+     
+   {{%SERVERNAME%}}  File Server  
+     <br>
+ 
+    </div>
+    <br><br>
+    
+   <!--
+  <div id="connected-client-btn-div">
+      
+      <button id="connected-client-btn" onclick="getConnectedClients()"> Connected clients </button>
+  </div>
+    -->
+    <!-- Client buttons -->
+    
+ <div id="client-btn-box">
+  
+  <button id="access-btn" onclick="getConfirmedClients()"> Confirmed Clients</button>
+ 
+  <button id="deny-btn" onclick="getDeniedClients()"> Denied Clients </button>
+      
+     
+ </div>
+   
+ 
+    
+  <!-- PORT number -->
+    
+  <div class="config-box">
+    
+ <span class="config-property"> Default Port Number
+<br>
+<span class="sub-text"> Port number must be between "1024" and "65535".</span>
+</span>  
+ 
+ <input type="number" id="port-input">
+    
+  </div>
+     
+    <br><br>
+     
+  <!-- Root Directory -->
+     
+     
+  <div class="config-box">
+    
+ <span class="config-property"> Default Root Directory 
+<br>
+
+</span>  
+ 
+ <input type="text" id="dir-input">
+    
+  </div>
+     
+    <br><br>
+     
+ 
+ <!-- Network Interface -->
+ 
+   <div class="config-box">
+    
+ <span class="config-property"> Default Network Interface 
+<br>
+
+<span class="sub-text">
+ 
+ Select the empty option if you don't want a default network interface.   
+  </span>
+</span>  
+ 
+ <select id="net-interface">
+     
+  <option value="none"> </option>
+  
+  <option value="1"> WLAN </option>
+  
+  <option value="2"> Localhost </option>
+  
+    
+ </select>
+  </div>
+     
+    <br><br>
+    
+    
+  <!-- Enable file operations -->
+    
+       
+  <div class="config-box">
+    
+ <span class="config-property"> File operations 
+<br>
+<span class="sub-text"> Enables file operations such as delete, upload e.t.c. </span>
+</span>  
+ 
+ <input type="checkbox" id="file-box" oninput="showFilePassword()">
+    
+  </div>
+     
+    <br><br>
+    
+    
+ <!-- Files operations password -->
+ 
+     
+  <div class="config-box" id="file-operation-password">
+    
+ <span class="config-property"> File operations password
+<br>
+
+<span class="sub-text">
+    
+  Password for file operations must be less than "21". It's optional.
+</span>
+</span>  
+ 
+ <input type="text" id="file-input">
+    
+  </div>
+     
+    <br><br>
+    
+       
+  <!-- confirm connections  -->
+    
+       
+  <div class="config-box">
+    
+ <span class="config-property"> Confirm connections
+<br>
+<span class="sub-text">  Asks for confirmation when someone tries to connect to your server. You must be connected to get notified. </span>
+</span>  
+ 
+ <input type="checkbox" id="confirm-box">
+    
+  </div>
+     
+    <br><br>
+    
+   
+   
+ <!-- Require authentication -->
+ 
+     
+  <div class="config-box">
+    
+ <span class="config-property"> Require authentication 
+<br>
+
+<span class="sub-text">
+  Asks for password before connecting. 
+  Password must be less than "21" characters.
+</span>
+</span>  
+ 
+ <input type="text" id="password-input">
+    
+  </div>
+     
+    <br><br>
+    
+    
+     
+  <!-- connection Limit  -->
+    
+  <div class="config-box">
+    
+ <span class="config-property"> Connection Limit 
+<br>
+<span class="sub-text"> Maximum number of people that can connect to your server. The owner of the server isn't included. </span>
+</span>  
+ 
+ <input type="number" id="max-connection">
+    
+  </div>
+     
+    <br><br>
+   
+        
+ <!--  Server name  -->
+ 
+     
+  <div class="config-box">
+    
+ <span class="config-property"> Server Name
+<br>
+
+<span class="sub-text">
+    
+  This will be displayed at the top of the web pages. It is optional.
+</span>
+</span>  
+ 
+ <input type="text" id="name-input">
+    
+  </div>
+     
+    <br><br>
+    <br>
+   <!-- Ending text -->
+   
+    <div class="config-box">
+       
+   <span class="end-text"> This configuration is not compulsory, but it's advisable for better experience and for security reasons.</span>
+   </div>
+   <br>
+
+ 
+ <!-- saving animation -->
+ 
+ <div id="save-animation-box" class="config-box">
+     
+   <div id="animation-box">
+
+ <span class="dot">.</span> 
+    <span class="dot">.</span>
+     <span class="dot">.</span>
+    <span class="dot">.</span>
+    <span class="dot">.</span>
+      
+      </div><br>
+      <div id="save-text"> saving... </div>
+ </div>
+  <br>
+  <!-- Save button -->
+   
+   
+   <div class="config-box">
+       
+  <button id="save-btn" onclick="submitChanges()"> Save </button>
+       
+   </div>
+  
+  <!-- Ending -->
+  
+  <br><br>
+  
+  
+  
+<audio id="notification-sound">
+     
+ <source src="{{%URLPREFIX%}}/notification.mp3" type="audio/mpeg">
+  </audio>
+  
+
+
+<script>
+
+
+
+let configData = {};
+
+let confirmedClientsArray = [];
+
+let deniedClientsArray = [];
+
+ function detailsEvent(data) {
+     
+ let detailEvent = new CustomEvent("detailsevent", {
+     
+     detail: data
+ });
+ 
+ document.querySelector("body").dispatchEvent(detailEvent);
+   
+ }
+
+// For converting the client time
+
+function convertDate(param) {
+    
+ let day = "";
+ 
+ let date = new Date(param).getDate();
+ 
+ let month = "";
+ 
+ let year = new Date(param).getFullYear();
+ 
+ let hour = new Date(param).getHours();
+ 
+ let realHour = hour > 12 ? hour - 12 : hour == 0 ? 12 : hour;
+ 
+ 
+ if(parseInt(realHour) < 10) {
+     
+     realHour = `0${realHour}`;
+ }
+ 
+ let minutes = new Date(param).getMinutes();
+ 
+ if(parseInt(minutes) < 10) {
+     
+     minutes = `0${minutes}`;
+ }
+ 
+ let seconds = new Date(param).getSeconds();
+
+ 
+ if(parseInt(seconds) < 10) {
+     
+     seconds = `0${seconds}`;
+ }
+ 
+ switch(new Date(param).getDay()) {
+     
+  case 0:
+  day = "Sunday"
+  break;
+  
+  case 1:
+  day = "Monday"
+  break;
+  
+  case 2:
+  day = "Tuesday"
+  break;
+  
+  case 3:
+  day = "Wednesday"
+  break;
+  
+  case 4:
+  day = "Thursday"
+  break;
+  
+  case 5:
+  day = "Friday"
+  break;
+  
+  case 6:
+  day = "Saturday"
+  break;
+  
+  default:
+  day = "";
+  
+ }
+ 
+ switch (new Date(param).getMonth()) {
+   
+   case 0:
+   month = "January"
+   break; 
+   
+   case 1:
+   month = "February"
+   break;
+    
+   case 2:
+   month = "March"
+   break; 
+   
+   case 3:
+   month = "April"
+   break; 
+   
+   case 4:
+   month = "May"
+   break; 
+   
+   case 5:
+   month = "June"
+   break; 
+   
+   case 6:
+   month = "July"
+   break; 
+   
+   case 7:
+   month = "August"
+   break; 
+   
+   case 8:
+   month = "September"
+   break; 
+   
+   case 9:
+   month = "October"
+   break; 
+   
+   case 10:
+   month = "November"
+   break; 
+   
+   case 11:
+   month = "December"
+   break;
+   
+   default:
+   month = "";
+  
+   
+ }
+ 
+ let realDay = day == "" ? "" : `${day}, `;
+ 
+ let dateSuffix =  date.toString() == "11" ? "<sup><b>th</b></sup>" :date.toString() == "12" ? "<sup><b>th</b></sup>" : date.toString() == "13" ? "<sup><b>th</b></sup>" : date.toString().endsWith("1") ? "<sup><b>st</b></sup>" : date.toString().endsWith("2") ? "<sup><b>nd</b></sup>" : date.toString().endsWith("3") ? "<sup><b>rd</b></sup>" : "<sup><b>th</b></sup>";
+ 
+ let time = hour > 11 ? "<b>PM</b>" : "<b>AM</b>";
+ 
+ let fullTime = `${realDay}&nbsp;${date}${dateSuffix} &nbsp;${month} &nbsp;${year}  &nbsp;(${realHour}:${minutes}:${seconds} ${time})`;
+ 
+  return fullTime;
+}
+
+// function for showing connected clients
+
+function getConnectedClients() {
+ 
+ document.querySelector("#connected-client-div").style.display = "flex"; 
+     
+    
+}
+
+// function for closing connected clients div
+
+function closeConnectedClientsDiv() {
+    
+ document.querySelector("#connected-client-div").style.display = "none"; 
+  
+}
+
+// for getting client details
+
+
+ (async () => {
+     
+     try {
+       
+  let res = await fetch ("{{DETAILSURL}}");  
+  
+  if(res.status != 200) {
+      
+  throw new Error ();
+  
+  }
+  
+  let data = await res.json();
+  
+  configData = data;
+  
+  
+  detailsEvent({state : "success"})
+
+   } catch(err) {
+       
+    configData = {};
+    detailsEvent({state : "error"})
+
+   }
+      
+  
+     
+ })();
+      
+ // for getting Confirmed Clients
+ 
+ async function getConfirmedClients() {
+   
+ let owner  = document.querySelector("body").getAttribute("data-owner");
+ 
+ 
+ document.querySelector("#confirmed-clients-container").innerHTML = ""; 
+     
+   if(owner) {
+    
+  document.querySelector("#confirmed-clients-div").style.display = "flex";
+     
+ document.querySelector("#confirmed-clients-animation").style.display  = "flex";
+ 
+   document.querySelector("#confirmed-client-text").style.display = "none";
+
+
+
+    try {
+
+  let response  =  await fetch("{{DETAILSURL}}");  
+ 
+  if(response.status != 200) {
+     
+ document.querySelector("#confirmed-clients-animation").style.display  = "none";
+ 
+  alert (`An unknown error occurred.`);  
+  
+   document.querySelector("#confirmed-clients-div").style.display = "none"; 
+   
+  return;
+  
+  }
+  
+    
+  var { data } = await response.json();
+   
+  
+    } catch (err) {
+        
+   document.querySelector("#confirmed-clients-animation").style.display  = "none";
+ 
+  alert (`An unknown error occurred.`);  
+  
+   document.querySelector("#confirmed-clients-div").style.display = "none"; 
+   
+  return;      
+        
+    }
+  
+ 
+ if(data.owner) {
+    
+  if(data.confirmConn) {
+  
+  var request = new Request ("{{%URLPREFIX%}}/config/clients", {
+    
+    method: "POST",
+    mode: "cors",
+    headers: {
+   "Content-Type": "application/json"
+    }
+  
+})
+
+    try {
+   
+  let res  = await fetch(request);
+  
+  let resData  = "";
+  
+  if(res.status == 400) {
+  
+ document.querySelector("#confirmed-clients-animation").style.display  = "none";    
+   
+   alert ("An unknown error occurred.");
+   
+   document.querySelector("#confirmed-clients-div").style.display = "none"; 
+   
+   return;
+   
+  }  else if (res.status == 403)  {
+    
+ document.querySelector("#confirmed-clients-animation").style.display  = "none";
+ 
+resData  = await res.json();
+
+document.querySelector("#confirmed-clients-div").style.display = "none"; 
+   
+
+if(resData.type == "Forbidden") {
+    
+  alert(`You must tick the confirm connection box before you can view the confirmed clients.`);
+    
+    return;
+    
+}  else if (resData.type  == "Permission") {
+  
+  document.write(`${resData.data.text}`);
+  
+  return;
+    
+} else {
+    
+  alert (`An unknown error occurred
+  `);
+    
+  return;
+}
+   
+      
+  } else if (res.status == 200) {
+ 
+ document.querySelector("#confirmed-clients-animation").style.display  = "none";
+      
+resData  = await res.json();
+
+let { data: clientsDetails } = resData;
+
+let { confirmedList } =  clientsDetails;
+
+confirmedList = confirmedList.reverse();
+
+confirmedClientsArray = [...confirmedList];
+
+let confirmedContent  = "";
+
+ if(confirmedList.length != 0) {
+   
+ confirmedList.forEach((el, index )  => {
+ 
+ confirmedContent += (`
+ 
+ <div class="confirmed-client-box">
+     
+   <!-- For the number -->
+  
+ <div class="confirmed-client-no">
+   
+   (${index + 1})  
+     
+ </div>
+ 
+ <div class="confirmed-client-details">
+  
+  <!-- For the device name -->
+  
+  <div class="confirmed-client-device-div">
+      
+  <span class="confirmed-client-device-text"> Device Name: </span>
+      
+  <span class="confirmed-client-device"> ${el.deviceName} </span>
+      
+  </span>
+     
+ </div>
+ 
+  <!-- For the device ip -->
+  
+ <div class="confirmed-client-ip-div">
+   
+  <span class="confirmed-client-ip-text">
+    IP Address:   
+  </span> 
+  
+    <span class="confirmed-client-ip">
+   ${el.ip}  
+  </span> 
+  
+     
+ </div>
+     
+     <!-- For the time  -->
+     
+ <div class="confirmed-client-time-div">
+   
+  <span class="confirmed-client-time-text">
+    Time:   
+  </span> 
+  
+    <span class="confirmed-client-time">
+   ${convertDate(el.time)}  
+  </span> 
+  
+     
+ </div>
+ 
+ <!-- For the deny button -->
+    
+ <div class="confirmed-client-deny-div">
+ 
+  <button class="confirmed-client-deny-btn" onclick="changeConfirmedClient(event)"  data-ip="${el.ip}" data-type="deny"> Deny </button>
+ 
+ </div>
+ 
+ 
+ </div>
+      
+    
+      
+  </div>
+    `) 
+       
+   })
+   
+  document.querySelector("#confirmed-clients-container").innerHTML = `${confirmedContent}`;
+  
+ document.querySelector("#confirmed-clients-deny-all-btn").style.display = "block";
+     
+ } else {
+     
+ document.querySelector("#confirmed-clients-deny-all-btn").style.display = "none";
+     
+ document.querySelector("#confirmed-client-text").style.display = "flex";
+     
+ }
+
+
+
+  } else {
+  
+ document.querySelector("#confirmed-clients-animation").style.display  = "none";
+ 
+ alert (`An unknown error occurred
+  `);
+  
+  document.querySelector("#confirmed-clients-div").style.display = "none"; 
+   
+   return;
+   
+  }
+  
+    } catch (err) {
+       
+  document.querySelector("#confirmed-clients-animation").style.display  = "none";
+ 
+ alert (`An unknown error occurred.`);
+  
+  document.querySelector("#confirmed-clients-div").style.display = "none"; 
+   
+   return;      
+    }
+    
+    
+  } else {
+      
+    document.querySelector("#confirmed-clients-div").style.display = "none"; 
+   
+      
+ alert(`You must tick the confirm connection box before you can view the confirmed clients.`);
+    
+    return;
+   
+  }
+     
+     
+ } else {
+     
+     document.querySelector("#confirmed-clients-div").style.display = "none"; 
+   
+ alert (`You are not allowed to view the confirmed clients.`);
+     
+   return;
+ }
+       
+   } else {
+       
+  document.querySelector("#confirmed-clients-div").style.display = "none"; 
+   
+   alert (`You are not allowed to view the confirmed clients.`);
+     
+   return;
+   }
+     
+     
+   
+ }
+ 
+ // for getting denied clients
+ 
+ 
+ async function getDeniedClients() {
+   
+ let owner  = document.querySelector("body").getAttribute("data-owner");
+ 
+ 
+ document.querySelector("#denied-clients-container").innerHTML = ""; 
+     
+   if(owner) {
+    
+  document.querySelector("#denied-clients-div").style.display = "flex";
+     
+ document.querySelector("#denied-clients-animation").style.display  = "flex";
+ 
+   document.querySelector("#denied-client-text").style.display = "none";
+
+
+
+    try {
+
+  let response  =  await fetch("{{DETAILSURL}}");  
+ 
+  if(response.status != 200) {
+     
+ document.querySelector("#denied-clients-animation").style.display  = "none";
+ 
+  alert (`An unknown error occurred.`);  
+  
+   document.querySelector("#denied-clients-div").style.display = "none"; 
+   
+  return;
+  
+  }
+  
+    
+  var { data } = await response.json();
+   
+  
+    } catch (err) {
+        
+   document.querySelector("#denied-clients-animation").style.display  = "none";
+ 
+  alert (`An unknown error occurred.`);  
+  
+   document.querySelector("#denied-clients-div").style.display = "none"; 
+   
+  return;      
+        
+    }
+  
+ 
+ if(data.owner) {
+    
+  if(data.confirmConn) {
+  
+  var request = new Request ("{{%URLPREFIX%}}/config/clients", {
+    
+    method: "POST",
+    mode: "cors",
+    headers: {
+   "Content-Type": "application/json"
+    }
+  
+})
+
+    try {
+   
+  let res  = await fetch(request);
+  
+  let resData  = "";
+  
+  if(res.status == 400) {
+  
+ document.querySelector("#denied-clients-animation").style.display  = "none";    
+   
+   alert ("An unknown error occurred.");
+   
+   document.querySelector("#denied-clients-div").style.display = "none"; 
+   
+   return;
+   
+  }  else if (res.status == 403)  {
+    
+ document.querySelector("#denied-clients-animation").style.display  = "none";
+ 
+resData  = await res.json();
+
+document.querySelector("#denied-clients-div").style.display = "none"; 
+   
+
+if(resData.type == "Forbidden") {
+    
+  alert(`You must tick the confirm connection box before you can view the denied clients.`);
+    
+    return;
+    
+}  else if (resData.type  == "Permission") {
+  
+  document.write(`${resData.data.text}`);
+  
+  return;
+    
+} else {
+    
+  alert (`An unknown error occurred
+  `);
+    
+  return;
+}
+   
+      
+  } else if (res.status == 200) {
+ 
+ document.querySelector("#denied-clients-animation").style.display  = "none";
+      
+resData  = await res.json();
+
+let { data: clientsDetails } = resData;
+
+let { deniedList } =  clientsDetails;
+
+deniedList = deniedList.reverse();
+
+deniedClientsArray = [...deniedList];
+
+let deniedContent  = "";
+
+ if(deniedList.length != 0) {
+   
+ deniedList.forEach((el, index )  => {
+ 
+ deniedContent += (`
+ 
+ <div class="denied-client-box">
+     
+   <!-- For the number -->
+  
+ <div class="denied-client-no">
+   
+   (${index + 1})  
+     
+ </div>
+ 
+ <div class="denied-client-details">
+  
+  <!-- For the device name -->
+  
+  <div class="denied-client-device-div">
+      
+  <span class="denied-client-device-text"> Device Name: </span>
+      
+  <span class="denied-client-device"> ${el.deviceName} </span>
+      
+  </span>
+     
+ </div>
+ 
+  <!-- For the device ip -->
+  
+ <div class="denied-client-ip-div">
+   
+  <span class="denied-client-ip-text">
+    IP Address:   
+  </span> 
+  
+    <span class="denied-client-ip">
+   ${el.ip}  
+  </span> 
+  
+     
+ </div>
+     
+     <!-- For the time  -->
+     
+ <div class="denied-client-time-div">
+   
+  <span class="denied-client-time-text">
+    Time:   
+  </span> 
+  
+    <span class="denied-client-time">
+   ${convertDate(el.time)}  
+  </span> 
+  
+     
+ </div>
+ 
+ <!-- For the deny button -->
+    
+ <div class="denied-client-confirm-div">
+ 
+  <button class="denied-client-confirm-btn" onclick="changeDeniedClient(event)"  data-ip="${el.ip}" data-type="confirm"> Confirm </button>
+ 
+ </div>
+ 
+ 
+ </div>
+      
+    
+      
+  </div>
+    `) 
+       
+   })
+   
+  document.querySelector("#denied-clients-container").innerHTML = `${deniedContent}`;
+  
+ document.querySelector("#denied-clients-confirm-all-btn").style.display = "block";
+       
+  
+ } else {
+     
+ document.querySelector("#denied-client-text").style.display = "flex";
+     
+ document.querySelector("#denied-clients-confirm-all-btn").style.display = "none";
+       
+ }
+
+
+
+  } else {
+  
+ document.querySelector("#denied-clients-animation").style.display  = "none";
+ 
+ alert (`An unknown error occurred
+  `);
+  
+  document.querySelector("#denied-clients-div").style.display = "none"; 
+   
+   return;
+   
+  }
+  
+    } catch (err) {
+       
+  document.querySelector("#denied-clients-animation").style.display  = "none";
+ 
+ alert (`An unknown error occurred.`);
+  
+  document.querySelector("#denied-clients-div").style.display = "none"; 
+   
+   return;      
+    }
+    
+    
+  } else {
+      
+    document.querySelector("#denied-clients-div").style.display = "none"; 
+   
+      
+ alert(`You must tick the confirm connection box before you can view the denied clients.`);
+    
+    return;
+   
+  }
+     
+     
+ } else {
+     
+     document.querySelector("#denied-clients-div").style.display = "none"; 
+   
+ alert (`You are not allowed to view the denied clients.`);
+     
+   return;
+ }
+       
+   } else {
+       
+  document.querySelector("#denied-clients-div").style.display = "none"; 
+   
+   alert (`You are not allowed to view the denied clients.`);
+     
+   return;
+   }
+     
+     
+   
+ }
+ 
+ // function for denying a client
+ 
+ async function changeConfirmedClient(e) {
+     
+  let ip = e.currentTarget.getAttribute("data-ip");
+  
+  let reqType = e.currentTarget.getAttribute("data-type").toString();
+   
+ let deniedIndex = confirmedClientsArray.findIndex(el => el.ip == ip);
+
+let deviceName  = confirmedClientsArray[deniedIndex].deviceName;
+
+ let request = new Request("{{%URLPREFIX%}}/confirmConnection", {
+     
+   method: "PATCH",
+   mode: "cors",
+   headers : {
+   'Content-Type': 'application/json'
+   },
+   body: JSON.stringify({reqType,ip, deviceName})
+  
+   
+ });
+ 
+  try {
+ 
+ let response = await fetch(request);
+ 
+ let data = "";
+ 
+ if(response.status == 400) {
+  
+  data = await response.text();
+  
+  alert (data);
+  
+  return;
+     
+ } else if (response.status == 404) {
+     
+ data = await response.text();
+  
+  alert (data);
+  
+  return;    
+     
+   } else if (response.status == 403) {
+     
+ let { data, type } = await response.json();
+ 
+ if(type == "Forbidden") {
+ 
+ alert (data);
+ 
+ return;
+   
+ } else if (type == "Permission") {
+  
+document.write(`${data}`);
+  return;
+  
+ } else {
+     
+ alert ("An unknown error occurred.");
+     
+     return;
+ }
+     
+ } else if (response.status == 200) {
+   
+let deniedElem = Array.from(document.querySelectorAll(".confirmed-client-box"))[deniedIndex];
+
+let parentDiv = document.querySelector("#confirmed-clients-container");
+
+deniedElem.style.display = "none";
+
+parentDiv.removeChild(deniedElem);
+
+confirmedClientsArray.splice(deniedIndex, 1);
+
+
+let confirmedContent  = "";
+
+ if(confirmedClientsArray.length != 0) {
+
+ confirmedClientsArray.forEach((el, index )  => {
+ 
+ confirmedContent += (`
+ 
+ <div class="confirmed-client-box">
+     
+   <!-- For the number -->
+  
+ <div class="confirmed-client-no">
+   
+   (${index + 1})  
+     
+ </div>
+ 
+ <div class="confirmed-client-details">
+  
+  <!-- For the device name -->
+  
+  <div class="confirmed-client-device-div">
+      
+  <span class="confirmed-client-device-text"> Device Name: </span>
+      
+  <span class="confirmed-client-device"> ${el.deviceName} </span>
+      
+  </span>
+     
+ </div>
+ 
+  <!-- For the device ip -->
+  
+ <div class="confirmed-client-ip-div">
+   
+  <span class="confirmed-client-ip-text">
+    IP Address:   
+  </span> 
+  
+    <span class="confirmed-client-ip">
+   ${el.ip}  
+  </span> 
+  
+     
+ </div>
+     
+     <!-- For the time  -->
+     
+ <div class="confirmed-client-time-div">
+   
+  <span class="confirmed-client-time-text">
+    Time:   
+  </span> 
+  
+    <span class="confirmed-client-time">
+   ${convertDate(el.time)}  
+  </span> 
+  
+     
+ </div>
+ 
+ <!-- For the deny button -->
+    
+ <div class="confirmed-client-deny-div">
+ 
+  <button class="confirmed-client-deny-btn" onclick="changeConfirmedClient(event)"  data-ip="${el.ip}" data-type="deny"> Deny </button>
+ 
+ </div>
+ 
+ 
+ </div>
+      
+    
+      
+  </div>
+    `) 
+       
+   })
+   
+ document.querySelector("#confirmed-clients-container").innerHTML = `${confirmedContent}`;
+  
+ document.querySelector("#confirmed-clients-deny-all-btn").style.display = "block";
+     
+} else {
+  
+ document.querySelector("#confirmed-clients-container").innerHTML = ``;
+
+ document.querySelector("#confirmed-clients-deny-all-btn").style.display = "none";
+     
+   
+ document.querySelector("#confirmed-client-text").style.display = "flex"; 
+    
+}
+
+ } else {
+     
+    
+ alert ("An unknown error occurred.");
+     
+     return;   
+     
+ }
+ 
+  } catch (err) {
+      
+   
+ alert ("An unknown error occurred.");
+     
+     return;   
+      
+  }
+  
+ }
+ 
+ // for confirming a client
+ 
+ 
+ async function changeDeniedClient(e) {
+     
+  let ip = e.currentTarget.getAttribute("data-ip");
+  
+  let reqType = e.currentTarget.getAttribute("data-type").toString();
+  
+ let confirmedIndex = deniedClientsArray.findIndex(el => el.ip == ip);
+
+let deviceName  = deniedClientsArray[confirmedIndex].deviceName;
+
+ let request = new Request("{{%URLPREFIX%}}/confirmConnection", {
+     
+   method: "PATCH",
+   mode: "cors",
+   headers : {
+   'Content-Type': 'application/json'
+   },
+   body: JSON.stringify({reqType,ip, deviceName})
+  
+   
+ });
+ 
+  try {
+ 
+ let response = await fetch(request);
+ 
+ let data = "";
+ 
+ if(response.status == 400) {
+  
+  data = await response.text();
+  
+  alert (data);
+  
+  return;
+     
+ } else if (response.status == 404) {
+     
+ data = await response.text();
+  
+  alert (data);
+  
+  return;    
+     
+   }  else if (response.status == 403) {
+     
+ let { data, type } = await response.json();
+ 
+ if(type == "Forbidden") {
+ 
+ alert (data);
+ 
+ return;
+   
+ } else if (type == "Permission") {
+  
+document.write(`${data}`);
+  return;
+  
+ } else {
+     
+ alert ("An unknown error occurred.");
+     
+     return;
+ }
+     
+ } else if (response.status == 200) {
+     
+ 
+let confirmedElem = Array.from(document.querySelectorAll(".denied-client-box"))[confirmedIndex];
+
+
+let parentDiv = document.querySelector("#denied-clients-container");
+
+confirmedElem.style.display = "none";
+
+parentDiv.removeChild(confirmedElem);
+
+deniedClientsArray.splice(confirmedIndex, 1);
+
+
+let deniedContent  = "";
+
+ if(deniedClientsArray.length != 0) {
+
+ deniedClientsArray.forEach((el, index )  => {
+ 
+ deniedContent +=  (`
+ 
+ <div class="denied-client-box">
+     
+   <!-- For the number -->
+  
+ <div class="denied-client-no">
+   
+   (${index + 1})  
+     
+ </div>
+ 
+ <div class="denied-client-details">
+  
+  <!-- For the device name -->
+  
+  <div class="denied-client-device-div">
+      
+  <span class="denied-client-device-text"> Device Name: </span>
+      
+  <span class="denied-client-device"> ${el.deviceName} </span>
+      
+  </span>
+     
+ </div>
+ 
+  <!-- For the device ip -->
+  
+ <div class="denied-client-ip-div">
+   
+  <span class="denied-client-ip-text">
+    IP Address:   
+  </span> 
+  
+    <span class="denied-client-ip">
+   ${el.ip}  
+  </span> 
+  
+     
+ </div>
+     
+     <!-- For the time  -->
+     
+ <div class="denied-client-time-div">
+   
+  <span class="denied-client-time-text">
+    Time:   
+  </span> 
+  
+    <span class="denied-client-time">
+   ${convertDate(el.time)}  
+  </span> 
+  
+     
+ </div>
+ 
+ <!-- For the deny button -->
+    
+ <div class="denied-client-confirm-div">
+ 
+  <button class="denied-client-confirm-btn" onclick="changeDeniedClient(event)"  data-ip="${el.ip}" data-type="confirm"> Confirm </button>
+ 
+ </div>
+ 
+ 
+ </div>
+      
+    
+      
+  </div>
+    `) 
+       
+   })
+   
+ document.querySelector("#denied-clients-container").innerHTML = `${deniedContent}`;
+  
+ document.querySelector("#denied-clients-confirm-all-btn").style.display = "block";
+       
+} else {
+  
+ document.querySelector("#denied-clients-container").innerHTML = ``;
+   
+ document.querySelector("#denied-client-text").style.display = "flex"; 
+  
+ document.querySelector("#denied-clients-confirm-all-btn").style.display = "none";
+         
+}
+
+ } else {
+     
+    
+ alert ("An unknown error occurred.");
+     
+     return;   
+     
+ }
+ 
+  } catch (err) {
+      
+   
+ alert ("An unknown error occurred.");
+     
+     return;   
+      
+  }
+  
+ }
+ 
+ // for denying all confirmed clients
+ 
+ async function changeAllConfirmedClient() {
+    
+ let request = new Request("{{%URLPREFIX%}}/confirmConnection", {
+     
+   method: "PATCH",
+   mode: "cors",
+   headers : {
+   'Content-Type': 'application/json'
+   },
+   body: JSON.stringify({reqType: "denyall"})
+  
+   
+ });
+ 
+ 
+ document.querySelector("#confirmed-clients-deny-all-btn").style.pointerEvents = "none";
+ 
+ document.querySelector("#confirmed-clients-deny-all-btn").style.opacity = 0.2;
+ 
+ try {
+     
+ let response = await fetch(request);
+ 
+ let data = "";
+ 
+ 
+ if(response.status == 400) {
+  
+  data = await response.text();
+  
+  alert (data);
+  
+ document.querySelector("#confirmed-clients-deny-all-btn").style.pointerEvents = "all";
+ 
+ document.querySelector("#confirmed-clients-deny-all-btn").style.opacity = 1;
+  return;
+     
+ }  else if (response.status == 403) {
+     
+ let { data, type } = await response.json();
+ 
+ 
+ document.querySelector("#confirmed-clients-deny-all-btn").style.pointerEvents = "all";
+ 
+ document.querySelector("#confirmed-clients-deny-all-btn").style.opacity = 1;
+ 
+ if(type == "Forbidden") {
+ 
+ alert (data);
+ 
+ return;
+   
+ } else if (type == "Permission") {
+  
+document.write(`${data}`);
+  return;
+  
+ } else {
+     
+ alert ("An unknown error occurred.");
+     
+     return;
+ }
+     
+
+     
+     
+ } else if (response.status == 200) {
+   
+ 
+ document.querySelector("#confirmed-clients-container").innerHTML = ``;
+
+   
+ document.querySelector("#confirmed-client-text").style.display = "flex"; 
+ 
+ confirmedClientsArray = [];
+ 
+   document.querySelector("#confirmed-clients-deny-all-btn").style.display = "none";
+     
+ document.querySelector("#confirmed-clients-deny-all-btn").style.pointerEvents = "all";
+ 
+ document.querySelector("#confirmed-clients-deny-all-btn").style.opacity = 1;
+     
+ } else {
+   
+ alert ("An unknown error occurred.");
+   
+ document.querySelector("#confirmed-clients-deny-all-btn").style.pointerEvents = "all";
+ 
+ document.querySelector("#confirmed-clients-deny-all-btn").style.opacity = 1;  
+     return;   
+        
+     
+ }
+ } catch (err) {
+  
+  
+ alert ("An unknown error occurred.");
+   
+ document.querySelector("#confirmed-clients-deny-all-btn").style.pointerEvents = "all";
+ 
+ document.querySelector("#confirmed-clients-deny-all-btn").style.opacity = 1;  
+ 
+     return;   
+      
+     
+ }
+ 
+     
+ }
+ 
+ // for confirming all denied clients
+ 
+ 
+ async function changeAllDeniedClient() {
+    
+ let request = new Request("{{%URLPREFIX%}}/confirmConnection", {
+     
+   method: "PATCH",
+   mode: "cors",
+   headers : {
+   'Content-Type': 'application/json'
+   },
+   body: JSON.stringify({reqType: "confirmall"})
+  
+   
+ });
+ 
+ 
+ document.querySelector("#denied-clients-confirm-all-btn").style.pointerEvents = "none";
+ 
+ document.querySelector("#denied-clients-confirm-all-btn").style.opacity = 0.2;
+ 
+ try {
+     
+ let response = await fetch(request);
+ 
+ let data = "";
+ 
+ 
+ if(response.status == 400) {
+  
+  data = await response.text();
+  
+  alert (data);
+  
+ document.querySelector("#denied-clients-confirm-all-btn").style.pointerEvents = "all";
+ 
+ document.querySelector("#denied-clients-confirm-all-btn").style.opacity = 1;
+ 
+  return;
+     
+ }  else if (response.status == 403) {
+     
+ let { data, type } = await response.json();
+ 
+ document.querySelector("#denied-clients-confirm-all-btn").style.pointerEvents = "all";
+ 
+ document.querySelector("#denied-clients-confirm-all-btn").style.opacity = 1;
+ 
+ if(type == "Forbidden") {
+ 
+ alert (data);
+ 
+ return;
+   
+ } else if (type == "Permission") {
+  
+document.write(`${data}`);
+  return;
+  
+ } else {
+     
+ alert ("An unknown error occurred.");
+     
+     return;
+ }
+     
+
+     
+     
+ } else if (response.status == 200) {
+ 
+ document.querySelector("#denied-clients-container").innerHTML = ``;
+   
+ document.querySelector("#denied-client-text").style.display = "flex"; 
+    
+ 
+  deniedClientsArray = [];
+ 
+ document.querySelector("#denied-clients-confirm-all-btn").style.display = "none";
+       
+    
+ document.querySelector("#denied-clients-confirm-all-btn").style.pointerEvents = "all";
+ 
+ document.querySelector("#denied-clients-confirm-all-btn").style.opacity = 1;
+       
+ 
+ } else {
+   
+ alert ("An unknown error occurred.");
+   
+ document.querySelector("#denied-clients-confirm-all-btn").style.pointerEvents = "all";
+ 
+ document.querySelector("#denied-clients-confirm-all-btn").style.opacity = 1;
+ 
+     return;   
+        
+     
+ }
+ } catch (err) {
+  
+  
+ alert ("An unknown error occurred.");
+   
+ 
+ document.querySelector("#denied-clients-confirm-all-btn").style.pointerEvents = "all";
+ 
+ document.querySelector("#denied-clients-confirm-all-btn").style.opacity = 1;
+ 
+     return;   
+      
+     
+ }
+ 
+     
+ }
+ 
+ 
+ function closeConfirmedClientsDiv() {
+   
+   document.querySelector("#confirmed-clients-div").style.display = "none";
+     
+  document.querySelector("#confirmed-clients-container").innerHTML = "";
+  
+  confirmedClientsArray = [];
+  
+ }
+
+
+ function closeDeniedClientsDiv() {
+   
+   document.querySelector("#denied-clients-div").style.display = "none";
+     
+  document.querySelector("#denied-clients-container").innerHTML = "";
+  
+  deniedClientsArray = [];
+  
+ }
+
+ function changeSize() {
+        
+  let  screenWidth = parseFloat(screen.availWidth);
+
+let screenHeight = parseFloat(screen.availHeight);
+
+  
+
+ let marginVal = (-1575 / 31) + (screenWidth * (17 / 93));
+  
+let topMargin = ((screenHeight -  parseFloat(document.querySelector("#dialogue-box").offsetHeight)) / 2.5);
+
+
+let confirmedClientsLeft = 
+  parseFloat(document.querySelector("#confirmed-clients-content").offsetLeft) + parseFloat(document.querySelector("#confirmed-clients-content").offsetWidth);
+  
+  let confirmedClientsTop =  parseFloat(document.querySelector("#confirmed-clients-content").offsetTop);
+
+
+let deniedClientsLeft = 
+  parseFloat(document.querySelector("#denied-clients-content").offsetLeft) + parseFloat(document.querySelector("#denied-clients-content").offsetWidth);
+  
+  let deniedClientsTop =  parseFloat(document.querySelector("#denied-clients-content").offsetTop);
+
+
+
+let closeRequestLeft = 
+  parseFloat(document.querySelector("#request-div-content").offsetLeft) + parseFloat(document.querySelector("#request-div-content").offsetWidth);
+  
+  let closeRequestTop =  parseFloat(document.querySelector("#request-div-content").offsetTop);
+
+
+  let requestLeft = 
+  (parseFloat(document.querySelector("#request-div-content").offsetLeft) + parseFloat(document.querySelector("#request-div-content").offsetWidth))  - parseFloat(document.querySelector("#request-all-btn-div").offsetWidth);
+  
+ let denyAllTop = parseFloat(document.querySelector("#confirmed-clients-content").offsetTop) + parseFloat(document.querySelector("#confirmed-clients-content").offsetHeight);
+
+
+  let confirmAllTop =  parseFloat(document.querySelector("#denied-clients-content").offsetTop) + parseFloat(document.querySelector("#denied-clients-content").offsetHeight);
+/*
+let closeConnectLeft = 
+  parseFloat(document.querySelector("#connected-client-content").offsetLeft) + parseFloat(document.querySelector("#connected-client-content").offsetWidth);
+  
+  let closeConnectTop =  parseFloat(document.querySelector("#connected-client-content").offsetTop);
+*/
+
+document.querySelector("#dialogue-box").style.marginLeft = `${marginVal}px`;
+
+
+document.querySelector("#dialogue-box").style.marginRight = `${marginVal}px`;
+
+
+document.querySelector("#dialogue-box").style.marginTop = `${topMargin}px`;
+
+document.querySelector("#request-div-content").style.marginLeft = `${marginVal}px`;
+
+
+document.querySelector("#request-div-content").style.marginRight = `${marginVal}px`;
+
+document.querySelector("#request-all-btn-div").style.left = `${requestLeft - 10}px`;
+
+document.querySelector("#confirmed-clients-content").style.marginLeft = `${marginVal}px`;
+
+
+document.querySelector("#confirmed-clients-content").style.marginRight = `${marginVal}px`;
+
+document.querySelector("#close-confirm-svg").style.left = `${confirmedClientsLeft - 40}px`;
+
+document.querySelector("#close-confirm-svg").style.top = `${confirmedClientsTop + 15}px`;
+
+document.querySelector("#denied-clients-content").style.marginLeft = `${marginVal}px`;
+
+
+document.querySelector("#denied-clients-content").style.marginRight = `${marginVal}px`;
+
+document.querySelector("#close-denied-svg").style.left = `${deniedClientsLeft - 40}px`;
+
+document.querySelector("#close-denied-svg").style.top = `${deniedClientsTop + 15}px`;
+
+
+document.querySelector("#close-request-svg").style.left = `${closeRequestLeft - 40}px`;
+
+document.querySelector("#close-request-svg").style.top = `${closeRequestTop + 15}px`;
+
+document.querySelector("#confirmed-clients-deny-all-btn").style.left = `${confirmedClientsLeft - 105}px`;
+
+document.querySelector("#confirmed-clients-deny-all-btn").style.top = `${denyAllTop - 50}px`;
+
+
+document.querySelector("#denied-clients-confirm-all-btn").style.top = `${confirmAllTop - 50}px`;
+
+
+document.querySelector("#denied-clients-confirm-all-btn").style.left = `${deniedClientsLeft - 130}px`;
+/*
+document.querySelector("#connected-client-content").style.marginLeft = `${marginVal}px`;
+
+
+document.querySelector("#connected-client-content").style.marginRight = `${marginVal}px`;
+
+document.querySelector("#close-connect-svg").style.left = `${closeConnectLeft - 40}px`;
+
+document.querySelector("#close-connect-svg").style.top = `${closeConnectTop + 15}px`;
+
+*/
+}
+
+
+
+
+setInterval(changeSize, 0);
+    
+  
+ function closeAuthentication() {
+  
+  document.querySelector("body").style.background = "white";
+  
+  document.querySelector("#authentication-box").style.display = "none";
+  
+  
+document.querySelector("#wrong-password").style.display = "none";
+
+document.querySelector("#error-text").style.display = "none";
+     
+ Array.from(document.querySelectorAll(".config-box")).forEach(el => {
+  
+  el.style.display = "none";
+  
+     
+ })
+  document.querySelector("#cancel-text").style.display = "block";
+   
+   
+ }
+ 
+  
+  function logIn() {
+     
+ let body = document.querySelector("#password").value.toString();
+     
+  let request = new Request("{{%URL%}}", {
+     
+    method: "POST",
+    mode: "cors",
+    headers: {
+    "Content-Type": "text/plain"
+    },
+    
+    body
+  });
+  
+ 
+  fetch(request)
+ .then(response => {
+      if(response.status == 200) {
+
+ document.querySelector("body").style.display = "flex";
+ 
+ document.querySelector("body").style.flexDirection = "column";
+ 
+document.querySelector("body").style.justifyContent = "center";
+ 
+  
+ document.querySelector("#head").style.display = "block";
+ 
+ if(configData.data.confirmConn) {
+ 
+ document.querySelector("#client-btn-box").style.display = "flex";
+ 
+ }
+
+ Array.from(document.querySelectorAll(".config-box")).forEach(el => {
+  
+  el.style.display = "flex";
+  
+     
+ })
+ 
+ document.querySelector("#save-animation-box").style.display = "none";
+ 
+  document.querySelector("body").style.background = "white";
+  
+  document.querySelector("#authentication-box").style.display = "none";
+  
+  
+document.querySelector("#wrong-password").style.display = "none";
+
+document.querySelector("#error-text").style.display = "none";
+     
+
+  document.querySelector("#cancel-text").style.display = "none";
+   
+
+ 
+ }else if(response.status == 401) {
+     
+      document.querySelector("#authentication-box").style.display = "none";
+   
+  document.querySelector("body").style.background = "white";
+  
+
+  document.querySelector("#cancel-text").style.display = "none";
+  
+document.querySelector("#error-text").style.display = "none";
+     
+document.querySelector("#wrong-password").style.display = "block";
+
+  
+ document.querySelector("#head").style.display = "none";
+ 
+ 
+      Array.from(document.querySelectorAll(".config-box")).forEach(el => {
+  
+  el.style.display = "none";
+  
+     
+ })
+ 
+     
+     
+ } else if(response.status == 403) {
+  
+  document.write(`<!DOCTYPE HTML>
+
+<html>
+    
+  <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="The Godfather">
+    <title>File Server</title>
+    <style>
+     body {
+         
+      background: white; 
+      display: block;
+     }
+    </style>
+    </head>
+    <body>
+ <span style="color:red;font-size: 1.2rem;"><b>You don't have access to the configuration file.</b></span>
+ </body>
+ </html>`);
+     
+   }  else {
+     
+    throw new Error ();
+ }
+     
+  return response.text();
+ 
+ }).then(data => {
+     
+     })
+ .catch(err => {
+      
+  
+    document.querySelector("#authentication-box").style.display = "none";
+   
+  document.querySelector("body").style.background = "white";
+  
+
+  document.querySelector("#cancel-text").style.display = "none";
+  
+document.querySelector("#wrong-password").style.display = "none";
+       
+ document.querySelector("#head").style.display = "none";
+ 
+ 
+  Array.from(document.querySelectorAll(".config-box")).forEach(el => {
+  
+  el.style.display = "none";
+  
+     
+ })
+ 
+ 
+document.querySelector("#error-text").style.display = "block";
+
+  })
+ 
+ }
+ 
+    
+   
+    
+ function submitChanges() {
+          
+ let port = document.querySelector("#port-input").value;
+    
+ let rootDirectory = document.querySelector("#dir-input").value;
+ 
+ let netInterface = document.querySelector("#net-interface").value;
+ 
+ let enableFileOperations = document.querySelector("#file-box").checked;
+
+let  fileOperationsPassword = document.querySelector("#file-input").value;
+
+let  confirmConnection = document.querySelector("#confirm-box").checked;
+
+let  connectionPassword = document.querySelector("#password-input").value;
+
+let  connectionLimit = document.querySelector("#max-connection").value;
+
+let serverName =  document.querySelector("#name-input").value;
+
+  
+ if(port != "") {
+       
+  if((parseInt(port) < 1024) || (parseInt(port) > 65535)) {
+      
+  alert(`Port Number must be between "1024" and "65535".`);
+  
+  return;
+  }
+       
+   }
+   
+ if(fileOperationsPassword.length > 20) {
+     
+    alert ("Password for file operations must be less than '21' characters.");
+    
+   return;
+ }
+ 
+ 
+ if (connectionPassword.length > 20) {
+     
+    alert ("Password for connecting to the server must be less than '21'.");
+    return;
+ }
+ 
+ // Sends a put request
+
+let body = JSON.stringify({port, rootDirectory, netInterface, enableFileOperations, fileOperationsPassword, confirmConnection, connectionPassword, connectionLimit, serverName});
+
+
+ 
+let request = new Request ("{{%URL%}}", {
+    
+    method: "PUT",
+    mode: "cors",
+    headers: {
+   "Content-Type": "application/json"
+    },
+    body
+})
+
+ document.querySelector("#save-animation-box").style.display = "flex";
+
+   
+  fetch(request)
+  .then(response => {
+
+ 
+ if(response.status == 200) {
+    
+ return response.text();
+ 
+} else if(response.status == 403) {
+  
+  document.write(`<!DOCTYPE HTML>
+
+<html>
+    
+  <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="The Godfather">
+    <title>File Server</title>
+    <style>
+     body {
+         
+      background: white; 
+      display: block;
+     }
+    </style>
+    </head>
+    <body>
+ <span style="color:red;font-size: 1.2rem;"><b>You don't have access to the configuration file.</b></span>
+ </body>
+ </html>`);
+     
+   } else {
+    
+  throw new Error();
+}
+  })
+ .then(data => {
+     
+  document.querySelector("#save-animation-box").style.display = "none";
+ 
+    alert (data);
+  })
+  .catch (err => {
+      
+  document.querySelector("#save-animation-box").style.display = "none";
+
+
+ alert ("Changes could not be saved.")
+ 
+  })
+
+   }
+   
+ function showFilePassword() {
+     
+     
+ let enableFileOperations = document.querySelector("#file-box").checked;
+
+  if(enableFileOperations) {
+      
+   document.querySelector("#file-operation-password").style.pointerEvents = "all";
+   
+   document.querySelector("#file-operation-password").style.opacity = 1;
+   
+  } else {
+      
+   document.querySelector("#file-operation-password").style.pointerEvents = "none";
+   
+   document.querySelector("#file-operation-password").style.opacity = 0.2;
+   
+  }
+     
+ }
+   
+ 
+
+ function closeRequest()  {
+     
+     
+  document.querySelector("#request-div").style.display = "none";   
+  
+ document.querySelector("body").style.display = "flex";
+ 
+ 
+ }
+
+ function showRequestDiv() {
+    
+  document.querySelector("#request-div").style.display = "flex";
+  
+ document.querySelector("body").style.display = "block";
+ 
+ }
+
+
+let requestId = 0;
+
+ let requestDataArray  = [];
+ 
+ let clientIp = new Set();
+ 
+ 
+ 
+ 
+async function confirmClient() {
+ 
+  
+  
+if(typeof(EventSource) != undefined) {
+    
+
+//let source = new EventSource("{{%EVENTURL%}}");
+
+let source = new EventSource("{{%URLPREFIX%}}/sse");
+
+
+
+source.addEventListener("newclient", (event) => {
+ 
+ let authDisplay =  getComputedStyle(document.querySelector("#authentication-box")).getPropertyValue("display").toString().toLowerCase();
+ 
+ 
+ let cancelDisplay =  getComputedStyle(document.querySelector("#cancel-text")).getPropertyValue("display").toString().toLowerCase();
+ 
+
+ let errorDisplay =  getComputedStyle(document.querySelector("#error-text")).getPropertyValue("display").toString().toLowerCase();
+ 
+  
+ let passwordDisplay =  getComputedStyle(document.querySelector("#wrong-password")).getPropertyValue("display").toString().toLowerCase();
+ 
+
+  
+  if((authDisplay == "flex") || (cancelDisplay != "none") || (errorDisplay != "none") || (passwordDisplay != "none")) {
+ 
+      return;
+  }
+ 
+  let { ip: reqIp } = JSON.parse(event.data);
+   
+ if(clientIp.has(reqIp)) {
+     
+    return;
+ }
+   
+ clientIp.add(reqIp);
+   
+let disp1 = getComputedStyle(document.querySelector('#confirm-message-box')).getPropertyValue("display").toString().toLowerCase();
+ 
+let disp2 = getComputedStyle(document.querySelector('#request-icon-box')).getPropertyValue("display").toString().toLowerCase();
+ 
+  if((disp1 == "flex") || (disp2 == "flex")) {
+      
+    requestId += 1;
+     
+ let reqNo = requestId == `0` ? "" : requestId  > 999 ? `999<sup><b>+</b></sup>` : `${requestId}`;
+  
+      
+         
+  document.querySelector("#request-no").innerHTML = reqNo;
+  
+  document.querySelector("#request-icon-box").style.display = "flex";
+  
+ let requestData  = JSON.parse(event.data);
+ 
+ 
+  requestDataArray.push(requestData);
+  
+  
+ let {browser, deviceBrand, deviceModel, ip} = requestData;
+ 
+ let deviceName;
+ 
+ if((deviceBrand.toString().trim() == "") && (deviceModel.toString().trim() == "")) {
+     
+   deviceName = `${ip}`;
+   
+ } else {
+     
+     deviceName = `${deviceBrand} ${deviceModel}`;
+ }
+ 
+ 
+ let requestDiv  = document.querySelector("#request-div-details").innerHTML;
+ 
+ let requestContent =  (`  
+ 
+ <div class="request-details">
+      
+   <div class="request-details-no">
+      
+      (${requestId}) 
+       
+   </div> 
+   
+   
+   <div class="request-details-box">
+   
+ <div class="details-device-div">
+     
+  <span class="details-device-text"> Device Name: </span>
+  <span class="details-device-name"> ${deviceName} </span>
+     
+ </div>
+ 
+  <div class="details-browser-div">
+      
+           
+  <span class="details-browser-text"> Browser Name:  </span>
+  <span class="details-browser-name"> ${browser} </span>
+     
+  </div>
+    
+  <br>
+    <div class="request-btn-box">
+     
+   <button class="request-confirm-btn" data-ip="${ip}" data-index="${requestId - 1}" onclick="allowAccess(event)"> Confirm </button>  
+   <button class="request-decline-btn" data-ip="${ip}" data-index="${requestId - 1}" onclick="denyAccess(event)"> Decline </button>
+       
+   </div>
+       
+   </div>
+   
+
+          
+     </div>
+     
+   `)
+   
+ document.querySelector("#request-div-details").innerHTML = `${requestDiv}${requestContent}<br><br>`;
+ 
+ 
+       
+   } else {
+ 
+ let {browser, deviceBrand, deviceModel, ip} = JSON.parse(event.data);
+ 
+ let deviceName;
+ 
+ if((deviceBrand.toString().trim() == "") && (deviceModel.toString().trim() == "")) {
+     
+   deviceName = `${ip}`;
+   
+ } else {
+     
+     deviceName = `${deviceBrand} ${deviceModel}`;
+ }
+
+ document.querySelector("#Confirm-text").innerHTML = `<b>${deviceName}</b> on <b>${browser}</b> browser is trying to connect to your server. Clicking 'yes' gives all browsers on the same device,  access to your server.`;
+ 
+ 
+    
+// document.body.appendChild(createComfirmBox(deviceName, browser));
+ 
+ 
+ document.querySelector("#yes-btn").setAttribute("data-ip", `${ip}`);
+ 
+ document.querySelector("#no-btn").setAttribute("data-ip", `${ip}`);
+ 
+ 
+ 
+document.querySelector("#confirm-message-box").style.display = "flex"; 
+  
+   }
+   
+   
+ document.querySelector("#notification-sound").play();
+
+ 
+try {
+    
+
+ navigator.vibrate(200);
+
+} catch (err) {
+    
+    
+}
+
+   
+});
+
+source.addEventListener("errorcalled", event => {
+    
+  document.querySelector("#confirm-message-box").style.display = "none";
+ 
+})
+
+source.addEventListener("configcalled", event => {
+    
+  document.querySelector("#confirm-message-box").style.display = "none";
+ 
+    
+})
+    
+ 
+source.addEventListener("successcalled", event => {
+    
+  document.querySelector("#confirm-message-box").style.display = "none";
+ 
+    
+})
+       
+} else {
+    
+   return;
+}
+
+}
+
+
+ if (document.querySelector("body").getAttribute("data-owner")) {
+     
+  document.querySelector("body").addEventListener("detailsevent", e => {
+      
+  let { state } = e.detail;
+ 
+    if(state.toString() == "success") {
+        
+ let owner = configData.data.owner;
+ 
+ if(owner.toString() == "true") {
+     
+   confirmClient();
+   
+   addClient();
+   
+ } else {
+     
+   return;
+ }
+        
+    } else {
+        
+
+confirmClient();
+
+ addClient();
+    }
+  })
+
+     
+     
+  }
+ 
+
+ 
+async function allowAccess(e) {
+     
+     
+ let ip = e.currentTarget.getAttribute("data-ip");
+ 
+ let index = "false";
+ 
+  if(e.currentTarget.hasAttribute("data-index")) { 
+  
+  index = parseInt(e.currentTarget.getAttribute("data-index"));
+      
+  }
+ 
+ let request = new Request("{{%URLPREFIX%}}/confirmConnection", {
+     
+   method: "POST",
+   mode: "cors",
+   headers : {
+   'Content-Type': 'application/json'
+   },
+   body: JSON.stringify({data: "config_yes", ip})
+   
+ });
+ 
+ 
+ try {
+ 
+ let response = await fetch(request);
+ 
+ let data = "";
+ 
+  if(response.status == 400) {
+      
+    
+   data = await response.text();
+   
+   alert (data);
+   
+  document.querySelector("#confirm-message-box").style.display = "none";
+  
+  if(index == "false") {
+     
+  clientIp.delete(ip);
+  
+  } 
+  
+   return;
+   
+  } else if (response.status == 403)  {
+   
+   data = await response.json();
+   
+  let { type } = data;
+   
+   if(type == "Forbidden") {
+       
+   alert (data.data);
+   
+  document.querySelector("#confirm-message-box").style.display = "none";
+  
+  if(index == "false") {
+     
+  clientIp.delete(ip);
+  
+  } 
+      
+  
+   } else if (type == "Permission") {
+      
+      alert (data.data);
+   
+  document.querySelector("#confirm-message-box").style.display = "none";
+  
+  if(index == "false") {
+     
+  clientIp.delete(ip);
+  
+  } 
+  
+      
+   } else {
+       
+  throw new Error();     
+       
+   }
+  
+  return; 
+      
+  } else if (response.status == 200) {
+   
+ document.querySelector("#confirm-message-box").style.display = "none";
+  
+    clientIp.delete(ip);
+  
+  if(index != "false") {
+  
+ 
+ let reqDetailsArr = document.querySelectorAll(".request-details");
+ 
+ 
+ let currentElem  = reqDetailsArr[index];
+ 
+ let parentDiv  = document.querySelector("#request-div-details");
+ 
+ currentElem.style.display = "none";
+ 
+ parentDiv.removeChild(currentElem);
+ 
+ requestId -= 1;
+ 
+ requestDataArray.splice(index, 1);
+ 
+  if(requestDataArray.length == 0) {
+   
+  
+  document.querySelector("#request-icon-box").style.display = "none";     
+  
+ 
+  document.querySelector("#request-div").style.display = "none"; 
+  
+   
+ document.querySelector("#request-div-details").innerHTML  = "";
+
+       
+   } else {
+ 
+ let requestDiv = "";
+ 
+  document.querySelector("#request-no").innerHTML = requestId;
+  
+ 
+ Array.from(requestDataArray).forEach((el, i) => {
+     
+   
+ let {browser, deviceBrand, deviceModel, ip} = el;
+ 
+ let deviceName;
+ 
+ if((deviceBrand.toString().trim() == "") && (deviceModel.toString().trim() == "")) {
+     
+   deviceName = `${ip}`;
+   
+ } else {
+     
+     deviceName = `${deviceBrand} ${deviceModel}`;
+ }
+ 
+ 
+ let requestContent =  (`  
+ 
+ <div class="request-details">
+      
+   <div class="request-details-no">
+      
+      (${i + 1}) 
+       
+   </div> 
+   
+   
+   <div class="request-details-box">
+   
+ <div class="details-device-div">
+     
+  <span class="details-device-text"> Device Name: </span>
+  <span class="details-device-name"> ${deviceName} </span>
+     
+ </div>
+ 
+  <div class="details-browser-div">
+      
+           
+  <span class="details-browser-text"> Browser Name:  </span>
+  <span class="details-browser-name"> ${browser} </span>
+     
+  </div>
+    
+  <br>
+    <div class="request-btn-box">
+     
+   <button class="request-confirm-btn" data-ip="${ip}" data-index="${i}" onclick="allowAccess(event)"> Confirm </button>  
+   <button class="request-decline-btn" data-ip="${ip}" data-index="${i}" onclick="denyAccess(event)"> Decline </button>
+       
+   </div>
+       
+   </div>
+   
+
+          
+     </div><br><br>
+     
+   `)
+   
+   requestDiv += requestContent;
+     
+ });
+ 
+ 
+ document.querySelector("#request-div-details").innerHTML = requestDiv;
+      
+   
+  } 
+  }
+   
+   
+   } else {
+       
+  throw new Error();  
+       
+   }
+
+ } catch (err)  {
+       
+ document.querySelector("#confirm-message-box").style.display = "none";
+    
+  if(index == "false") {
+     
+  clientIp.delete(ip);
+  
+  } 
+  
+ alert ("An unknown error occurred.")
+   
+
+}
+
+ }
+
+
+async function denyAccess(e) {
+     
+     
+ let ip = e.currentTarget.getAttribute("data-ip");
+ 
+ let index = "false";
+ 
+  if(e.currentTarget.hasAttribute("data-index")) { 
+  
+  index = parseInt(e.currentTarget.getAttribute("data-index"));
+      
+  }
+ 
+ let request = new Request("{{%URLPREFIX%}}/confirmConnection", {
+     
+   method: "POST",
+   mode: "cors",
+   headers : {
+   'Content-Type': 'application/json'
+   },
+   body: JSON.stringify({data: "config_no", ip})
+   
+ });
+ 
+ 
+ try {
+ 
+ let response = await fetch(request);
+ 
+ let data = "";
+ 
+  if(response.status == 400) {
+      
+    
+   data = await response.text();
+   
+   alert (data);
+   
+  document.querySelector("#confirm-message-box").style.display = "none";
+  
+  if(index == "false") {
+     
+  clientIp.delete(ip);
+  
+  } 
+  
+   return;
+   
+  } else if (response.status == 403)  {
+   
+   data = await response.json();
+   
+  let { type } = data;
+   
+   if(type == "Forbidden") {
+       
+   alert (data.data);
+   
+  document.querySelector("#confirm-message-box").style.display = "none";
+  
+  if(index == "false") {
+     
+  clientIp.delete(ip);
+  
+  } 
+      
+  
+   } else if (type == "Permission") {
+      
+      alert (data.data);
+   
+  document.querySelector("#confirm-message-box").style.display = "none";
+  
+  if(index == "false") {
+     
+  clientIp.delete(ip);
+  
+  } 
+  
+      
+   } else {
+       
+  throw new Error();     
+       
+   }
+   
+   return;
+      
+  } else if (response.status == 200) {
+   
+ document.querySelector("#confirm-message-box").style.display = "none";
+  
+    clientIp.delete(ip);
+  
+  if(index != "false") {
+  
+ 
+ let reqDetailsArr = document.querySelectorAll(".request-details");
+ 
+ 
+ let currentElem  = reqDetailsArr[index];
+ 
+ let parentDiv  = document.querySelector("#request-div-details");
+ 
+ currentElem.style.display = "none";
+ 
+ parentDiv.removeChild(currentElem);
+ 
+ requestId -= 1;
+ 
+ requestDataArray.splice(index, 1);
+ 
+  if(requestDataArray.length == 0) {
+   
+  
+  document.querySelector("#request-icon-box").style.display = "none";     
+  
+ 
+  document.querySelector("#request-div").style.display = "none"; 
+  
+   
+ document.querySelector("#request-div-details").innerHTML  = "";
+
+       
+   } else {
+ 
+ let requestDiv = "";
+ 
+  document.querySelector("#request-no").innerHTML = requestId;
+  
+ 
+ Array.from(requestDataArray).forEach((el, i) => {
+     
+   
+ let {browser, deviceBrand, deviceModel, ip} = el;
+ 
+ let deviceName;
+ 
+ if((deviceBrand.toString().trim() == "") && (deviceModel.toString().trim() == "")) {
+     
+   deviceName = `${ip}`;
+   
+ } else {
+     
+     deviceName = `${deviceBrand} ${deviceModel}`;
+ }
+ 
+ 
+ let requestContent =  (`  
+ 
+ <div class="request-details">
+      
+   <div class="request-details-no">
+      
+      (${i + 1}) 
+       
+   </div> 
+   
+   
+   <div class="request-details-box">
+   
+ <div class="details-device-div">
+     
+  <span class="details-device-text"> Device Name: </span>
+  <span class="details-device-name"> ${deviceName} </span>
+     
+ </div>
+ 
+  <div class="details-browser-div">
+      
+           
+  <span class="details-browser-text"> Browser Name:  </span>
+  <span class="details-browser-name"> ${browser} </span>
+     
+  </div>
+    
+  <br>
+    <div class="request-btn-box">
+     
+   <button class="request-confirm-btn" data-ip="${ip}" data-index="${i}" onclick="allowAccess(event)"> Confirm </button>  
+   <button class="request-decline-btn" data-ip="${ip}" data-index="${i}" onclick="denyAccess(event)"> Decline </button>
+       
+   </div>
+       
+   </div>
+   
+
+          
+     </div><br><br>
+     
+   `)
+   
+   requestDiv += requestContent;
+     
+ });
+ 
+ 
+ document.querySelector("#request-div-details").innerHTML = requestDiv;
+      
+   
+  } 
+  }
+   
+   
+   } else {
+       
+  throw new Error();  
+       
+   }
+
+ } catch (err)  {
+       
+ document.querySelector("#confirm-message-box").style.display = "none";
+    
+  if(index == "false") {
+     
+  clientIp.delete(ip);
+  
+  } 
+  
+ alert ("An unknown error occurred.")
+   
+
+}
+
+ }
+
+ 
+async function allowAllAccess() {
+     
+  
+ let request = new Request("{{%URLPREFIX%}}/confirmConnection", {
+     
+   method: "POST",
+   mode: "cors",
+   headers : {
+   'Content-Type': 'application/json'
+   },
+   body: JSON.stringify({data: "config_yes", ip: "all"})
+   
+ });
+ 
+ try {
+     
+let response = await fetch(request);
+
+let data = "";
+
+ if(response.status == 400) {
+    
+   data = await response.text();
+   
+   alert (data);
+   
+  document.querySelector("#confirm-message-box").style.display = "none";
+
+   return;
+   
+  } else if (response.status == 403)  {
+   
+   data = await response.json();
+   
+  let { type } = data;
+   
+   if(type == "Forbidden") {
+       
+   alert (data.data);
+   
+  document.querySelector("#confirm-message-box").style.display = "none";
+ 
+  
+   } else if (type == "Permission") {
+      
+      alert (data.data);
+   
+  document.querySelector("#confirm-message-box").style.display = "none";
+  
+   } else {
+       
+  throw new Error();     
+       
+   }
+  
+  return; 
+      
+  } else if (response.status == 200) {
+      
+ document.querySelector("#confirm-message-box").style.display = "none";
+     
+  
+  document.querySelector("#request-icon-box").style.display = "none";     
+  
+ 
+  document.querySelector("#request-div").style.display = "none"; 
+       
+  document.querySelector("#request-no").innerHTML = "";
+   
+ document.querySelector("#request-div-details").innerHTML  = "";
+
+ requestId = 0;
+ 
+ clientIp.clear();
+ 
+ requestDataArray = [];
+ 
+return;
+} else {
+    
+    throw new Error();
+}
+
+  } catch(err)  {
+       
+ document.querySelector("#confirm-message-box").style.display = "none";
+     
+  
+    alert ("An unknown error occurred.");
+return;
+ }
+
+}
+
+
+async function denyAllAccess() {
+     
+  
+ let request = new Request("{{%URLPREFIX%}}/confirmConnection", {
+     
+   method: "POST",
+   mode: "cors",
+   headers : {
+   'Content-Type': 'application/json'
+   },
+   body: JSON.stringify({data: "config_no", ip: "all"})
+   
+ });
+ 
+ try {
+     
+let response = await fetch(request);
+
+let data = "";
+
+ if(response.status == 400) {
+    
+   data = await response.text();
+   
+   alert (data);
+   
+  document.querySelector("#confirm-message-box").style.display = "none";
+
+   return;
+   
+  } else if (response.status == 403)  {
+   
+   data = await response.json();
+   
+  let { type } = data;
+   
+   if(type == "Forbidden") {
+       
+   alert (data.data);
+   
+  document.querySelector("#confirm-message-box").style.display = "none";
+ 
+  
+   } else if (type == "Permission") {
+      
+      alert (data.data);
+   
+  document.querySelector("#confirm-message-box").style.display = "none";
+  
+   } else {
+       
+  throw new Error();     
+       
+   }
+  
+  return; 
+      
+  } else if (response.status == 200) {
+      
+ document.querySelector("#confirm-message-box").style.display = "none";
+     
+  
+  document.querySelector("#request-icon-box").style.display = "none";     
+  
+ 
+  document.querySelector("#request-div").style.display = "none"; 
+       
+  document.querySelector("#request-no").innerHTML = "";
+   
+ document.querySelector("#request-div-details").innerHTML  = "";
+
+ requestId = 0;
+ 
+ clientIp.clear();
+ 
+ requestDataArray = [];
+ 
+return;
+} else {
+    
+    throw new Error();
+}
+
+  } catch(err)  {
+       
+ document.querySelector("#confirm-message-box").style.display = "none";
+     
+  
+    alert ("An unknown error occurred.");
+return;
+ }
+
+}
+  
+ 
+ async function addClient() {
+     
+     
+if(typeof(EventSource) != undefined) {
+    
+    
+let source = new EventSource("{{%URLPREFIX%}}/sse/client");
+
+
+source.addEventListener("addclient", (event) => {
+    
+ 
+ let textDisplay =  getComputedStyle(document.querySelector("#confirmed-client-text")).getPropertyValue("display").toString().toLowerCase();
+ 
+ if(confirmedClientsArray.length != 0) { 
+     
+let data = JSON.parse(event.data);
+ 
+for (let val of confirmedClientsArray) {
+    
+  if (data.ip == val.ip) {
+      
+      return;
+      
+  }
+    
+}
+
+confirmedClientsArray.unshift(data)
+
+let newClient = (`
+ 
+ <div class="confirmed-client-box">
+     
+   <!-- For the number -->
+  
+ <div class="confirmed-client-no">
+   
+ (1)
+     
+ </div>
+ 
+ <div class="confirmed-client-details">
+  
+  <!-- For the device name -->
+  
+  <div class="confirmed-client-device-div">
+      
+  <span class="confirmed-client-device-text"> Device Name: </span>
+      
+  <span class="confirmed-client-device"> ${data.deviceName} </span>
+      
+  </span>
+     
+ </div>
+ 
+  <!-- For the device ip -->
+  
+ <div class="confirmed-client-ip-div">
+   
+  <span class="confirmed-client-ip-text">
+    IP Address:   
+  </span> 
+  
+    <span class="confirmed-client-ip">
+   ${data.ip}  
+  </span> 
+  
+     
+ </div>
+     
+     <!-- For the time  -->
+     
+ <div class="confirmed-client-time-div">
+   
+  <span class="confirmed-client-time-text">
+    Time:   
+  </span> 
+  
+    <span class="confirmed-client-time">
+   ${convertDate(data.time)}  
+  </span> 
+  
+     
+ </div>
+ 
+ <!-- For the deny button -->
+    
+ <div class="confirmed-client-deny-div">
+ 
+  <button class="confirmed-client-deny-btn" onclick="changeConfirmedClient(event)"  data-ip="${data.ip}" data-type="deny"> Deny </button>
+ 
+ </div>
+ 
+ 
+ </div>
+      
+    
+      
+  </div>
+       `)
+       
+let numArray = Array.from(document.querySelectorAll(".confirmed-client-no"));
+
+
+  numArray.forEach((el, index) => {
+ 
+  el.innerHTML = `(${index + 2})`;
+  
+})
+ 
+let formerContent = document.querySelector("#confirmed-clients-container").innerHTML;
+
+document.querySelector("#confirmed-clients-container").innerHTML = `${newClient}${formerContent}`;
+
+ document.querySelector("#confirmed-clients-deny-all-btn").style.display = "block";
+     
+   return; 
+
+ } else if (textDisplay == "flex") {
+     
+     
+let data = JSON.parse(event.data);
+ 
+ 
+confirmedClientsArray.unshift(data)
+
+let newClient = (`
+ 
+ <div class="confirmed-client-box">
+     
+   <!-- For the number -->
+  
+ <div class="confirmed-client-no">
+   
+   (1)
+     
+ </div>
+ 
+ <div class="confirmed-client-details">
+  
+  <!-- For the device name -->
+  
+  <div class="confirmed-client-device-div">
+      
+  <span class="confirmed-client-device-text"> Device Name: </span>
+      
+  <span class="confirmed-client-device"> ${data.deviceName} </span>
+      
+  </span>
+     
+ </div>
+ 
+  <!-- For the device ip -->
+  
+ <div class="confirmed-client-ip-div">
+   
+  <span class="confirmed-client-ip-text">
+    IP Address:   
+  </span> 
+  
+    <span class="confirmed-client-ip">
+   ${data.ip}  
+  </span> 
+  
+     
+ </div>
+     
+     <!-- For the time  -->
+     
+ <div class="confirmed-client-time-div">
+   
+  <span class="confirmed-client-time-text">
+    Time:   
+  </span> 
+  
+    <span class="confirmed-client-time">
+   ${convertDate(data.time)}  
+  </span> 
+  
+     
+ </div>
+ 
+ <!-- For the deny button -->
+    
+ <div class="confirmed-client-deny-div">
+ 
+  <button class="confirmed-client-deny-btn" onclick="changeConfirmedClient(event)"  data-ip="${data.ip}" data-type="deny"> Deny </button>
+ 
+ </div>
+ 
+ 
+ </div>
+      
+    
+      
+  </div>
+       `)
+   
+document.querySelector("#confirmed-client-text").style.display = "none";
+     
+document.querySelector("#confirmed-clients-container").innerHTML = `${newClient}`;
+
+
+ document.querySelector("#confirmed-clients-deny-all-btn").style.display = "block";
+     
+  
+  } else {
+     
+ return;    
+     
+ }
+  
+
+ 
+})
+
+
+source.addEventListener("denyclient", (event) => {
+    
+ 
+ let textDisplay =  getComputedStyle(document.querySelector("#denied-client-text")).getPropertyValue("display").toString().toLowerCase();
+ 
+ if(deniedClientsArray.length != 0) { 
+     
+let data = JSON.parse(event.data);
+ 
+ 
+for (let val of deniedClientsArray) {
+    
+  if (data.ip == val.ip) {
+      
+      return;
+      
+  }
+    
+}
+
+
+deniedClientsArray.unshift(data);
+
+let newClient = (`
+ 
+ <div class="denied-client-box">
+     
+   <!-- For the number -->
+  
+ <div class="denied-client-no">
+   
+   (1)  
+     
+ </div>
+ 
+ <div class="denied-client-details">
+  
+  <!-- For the device name -->
+  
+  <div class="denied-client-device-div">
+      
+  <span class="denied-client-device-text"> Device Name: </span>
+      
+  <span class="denied-client-device"> ${data.deviceName} </span>
+      
+  </span>
+     
+ </div>
+ 
+  <!-- For the device ip -->
+  
+ <div class="denied-client-ip-div">
+   
+  <span class="denied-client-ip-text">
+    IP Address:   
+  </span> 
+  
+    <span class="denied-client-ip">
+   ${data.ip}  
+  </span> 
+  
+     
+ </div>
+     
+     <!-- For the time  -->
+     
+ <div class="denied-client-time-div">
+   
+  <span class="denied-client-time-text">
+    Time:   
+  </span> 
+  
+    <span class="denied-client-time">
+   ${convertDate(data.time)}  
+  </span> 
+  
+     
+ </div>
+ 
+ <!-- For the deny button -->
+    
+ <div class="denied-client-confirm-div">
+ 
+  <button class="denied-client-confirm-btn" onclick="changeDeniedClient(event)"  data-ip="${data.ip}" data-type="confirm"> Confirm </button>
+ 
+ </div>
+ 
+ 
+ </div>
+      
+    
+      
+  </div>
+    `) 
+       
+let numArray = Array.from(document.querySelectorAll(".denied-client-no"));
+
+
+  numArray.forEach((el, index) => {
+ 
+  el.innerHTML = `(${index + 2})`;
+  
+})
+ 
+let formerContent = document.querySelector("#denied-clients-container").innerHTML;
+
+document.querySelector("#denied-clients-container").innerHTML = `${newClient}${formerContent}`;
+
+ document.querySelector("#denied-clients-confirm-all-btn").style.display = "block";
+       
+    
+   return; 
+
+ } else if (textDisplay == "flex") {
+     
+     
+let data = JSON.parse(event.data);
+ 
+ 
+deniedClientsArray.unshift(data)
+
+let newClient = (`
+ 
+ <div class="denied-client-box">
+     
+   <!-- For the number -->
+  
+ <div class="denied-client-no">
+   
+   (1)  
+     
+ </div>
+ 
+ <div class="denied-client-details">
+  
+  <!-- For the device name -->
+  
+  <div class="denied-client-device-div">
+      
+  <span class="denied-client-device-text"> Device Name: </span>
+      
+  <span class="denied-client-device"> ${data.deviceName} </span>
+      
+  </span>
+     
+ </div>
+ 
+  <!-- For the device ip -->
+  
+ <div class="denied-client-ip-div">
+   
+  <span class="denied-client-ip-text">
+    IP Address:   
+  </span> 
+  
+    <span class="denied-client-ip">
+   ${data.ip}  
+  </span> 
+  
+     
+ </div>
+     
+     <!-- For the time  -->
+     
+ <div class="denied-client-time-div">
+   
+  <span class="denied-client-time-text">
+    Time:   
+  </span> 
+  
+    <span class="denied-client-time">
+   ${convertDate(data.time)}  
+  </span> 
+  
+     
+ </div>
+ 
+ <!-- For the deny button -->
+    
+ <div class="denied-client-confirm-div">
+ 
+  <button class="denied-client-confirm-btn" onclick="changeDeniedClient(event)"  data-ip="${data.ip}" data-type="confirm"> Confirm </button>
+ 
+ </div>
+ 
+ 
+ </div>
+      
+    
+      
+  </div>
+    `) 
+   
+document.querySelector("#denied-client-text").style.display = "none";
+     
+document.querySelector("#denied-clients-container").innerHTML = `${newClient}`;
+
+ document.querySelector("#denied-clients-confirm-all-btn").style.display = "block";
+       
+      
+  } else {
+     
+ return;    
+     
+ }
+  
+ 
+ 
+})
+
+
+
+ } else {
+     
+    return; 
+ }
+ 
+ }
+ 
+ 
+ 
+</script>
+
+
+   </body>
+  
+  </html>
+ 
+ 
