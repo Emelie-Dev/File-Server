@@ -786,14 +786,10 @@ console.warn(`It's advisable you configure your server appropriately for better 
      
      type: "terminal",
     errorCorrectionLevel: "l",
-   /* version: 1,
-     margin: 2,
-     width: 350
-    
-     */
+  
  }
  
- /*
+ 
 QRcode.toString(`http://${domainName}:${PORT}/files/`, options, (err, url) => {
     
     if(err) {
@@ -805,7 +801,7 @@ QRcode.toString(`http://${domainName}:${PORT}/files/`, options, (err, url) => {
    console.log(url);
 })
   
- */
+ 
 
  })
   
@@ -1168,14 +1164,10 @@ console.warn(`It's advisable you configure your server appropriately for better 
      
      type: "terminal",
     errorCorrectionLevel: "l",
-   /* version: 1,
-     margin: 2,
-     width: 350
-    
-     */
+  
  }
  
- /*
+ 
 QRcode.toString(`http://${domainName}:${PORT}/files/`, options, (err, url) => {
     
     if(err) {
@@ -1187,7 +1179,7 @@ QRcode.toString(`http://${domainName}:${PORT}/files/`, options, (err, url) => {
    console.log(url);
 })
   
- */
+ 
 
  })
   
@@ -1210,18 +1202,10 @@ server.on("error", () => {
 }
  
  
- /* process.on("uncaughtException", (err) => {
+ process.on("uncaughtException", (err) => {
     
-   if(domainName == "127.0.0.1") {
-       
- console.error(`\nYour server has been disconnected because of an unknown error occurred.\nType in "rs" to restart your server and view your files.\n`);
- process.exit(0);
-   } else {
-       
-      console.error(`\nYour server has been disconnected because the Wi-fi connection was switched off.\nConnect to a Wi-fi connection and type in "rs" to restart your server and view your files.\n`);
-  process.exit(0)
-   }
-   
+  console.log("\nAn unknown error occurred, please type in 'rs' in the terminal to restart the server.");
+  process.exit(0);
        
  })
- */
+ 
