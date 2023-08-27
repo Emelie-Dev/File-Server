@@ -6,7 +6,7 @@ File server is used to share and manage files across devices connected to the sa
 
 ## Table of Contents
 
-- [General Info](#General_Info)
+- [General Info](#General-Info)
 - [Technologies](#Technologies)
 - [Setup](#Setup)
 - [Usage](#Usage)
@@ -59,5 +59,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 --- 
 
-For support or questions, contact [author](godfatheremerie@gmail.com).
+For support or questions, contact [author](MAILTO:godfatheremerie@gmail.com).
 
