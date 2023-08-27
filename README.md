@@ -59,4 +59,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 --- 
 
-For support or questions, contact [author.](MAILTO:godfatheremerie@gmail.com?cc=&bcc=&subject=File%20Server&body=)
+For support or questions, contact [author.](MAILTO:godfatheremerie@gmail.com?cc=&bcc=&subject=File%20Server&body= )
